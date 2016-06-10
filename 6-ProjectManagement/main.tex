@@ -1,0 +1,101 @@
+\documentclass[main.tex]{subfiles}
+
+\begin{document}
+\chapter{Project Management}
+\chaplabel{projectManagement}
+This chapter provides a high level overview of various management aspects of the project. A status update summarises the work completed to date, and gives details of the changes that have occurred since the submission of the project charter. The main stakeholders involved with the project are then identified, and their roles are explained. The division of the project workload amongst the team members is shown in the work breakdown structure, and a Gantt chart is used to organise this work over the timeline of the project. A risk assessment is performed to find and address safety risks, as well as risks to project failure. Finally, the budget for the project is presented and analysed.  
+
+\section{Status Update}
+Project progress has advanced at a reasonable pace. The initial project scope, as described in the project charter, only considered a hovercraft as the platform. Sponsorship requirements resulted in the change of scope to further consider other ground vehicles, as a hovercraft was not a platform of interest for the DSTG. The group voted on whether to continue with the hovercraft and risk not gaining project funding, or change the scope of the project and guarantee funding. As the hovercraft project would require substantial funding which could not be obtained in any other way, the route that guaranteed funding was chosen. This halted the project progress, as further platform research was necessary to ensure the best possible platform was selected. Delays in the signing of the sponsorship agreement further set the project back, as access to the required sensors and selected platform was limited. However, during this time, software development for the hand held tablet and the automation and navigation framework for the platform was conducted, with the aim to have a full system simulation created by the time the platform was received. Ambiguity as to the type of sensors to be received from the DSTG also led to a delay in the project. The lack of information regarding the type of signal output and required controlling software left little room to develop the required software framework. It was also first anticipated that both sensors would be arrays, but use of military equipment rendered that unobtainable, further changing the initial project scope. This led to the use of a single commercially available GPR and a store bought metal detector. Once the actual sensor type and signal processes were known, progress on the signal processing was fast paced. Potential access to sensor arrays is still being considered with the use of civilian accessible arrays.      
+
+Compared to the current work breakdown structure, the project is two weeks behind schedule. Due to the project gaining access to the DSTG Quad bike, design for the throttle, brake and steering actuation is not necessary as they are already in place. The equipment loan agreement is currently being finalised to allow access to all necessary components. Once the required components and funding is actually received then it is expected that progress will be swift. 
+
+The updated Gantt chart highlights the required work to be completed. The missed deadlines include: platform acquisition, sensor frame fabrication and software development for various aspects of the detection phases. 
+
+Completed objectives are platform selection and platform modification for remote control capabilities. Large amounts of work has been conducted on software development and signal processing for the detection of landmines as well as for the automation and navigation of the platform.
+
+\section{Stakeholders}
+
+The stakeholders of the project remain largely the same as in the project charter, except the DSTG is now listed as a project partner and sponsor. \Tabref{stakeholders} shows all contributing members, and describes the roles they fulfil in the project.  
+
+\nohyphens{	% Stop hyphenation in table
+\begin{longtable}{L{0.2\textwidth} L{0.25\textwidth} L{0.45\textwidth}}
+\caption[Stakeholders]{Stakeholders of the project.}\tablabel{stakeholders}\\ \toprule
+\textbf{Members} & \textbf{Roles} & \textbf{Description}\\ \midrule\endfirsthead 
+\caption[]{Stakeholders of the project (continued).}\\ \toprule
+\textbf{Members} & \textbf{Roles} & \textbf{Description}\\ \midrule\endhead
+
+Peter Dawson & Project Manager, Document Manager & The project manager is responsible for the overall management of the project. Their tasks involve communicating with the supervisor, group members, project sponsor and other external parties. Additionally, they are responsible for assignment of tasks and chairing of meetings. The document manager is responsible for document collation and data backup. \\ \midrule
+
+Jonathan Targett & Technical Manager & The technical manager’s responsibility is the overall management of the technical aspects of the project. The technical aspects may include procurement mechanical resources, electronic resources and other materials for the project.\\ \midrule
+
+Rahul Kalampattel & Safety Manager & The safety manager is responsible for lloking after the safety aspects of the project. This includes conducting risk assessments, providing a safe operating procedure (SOP), overseeing the completion of such documents and liaising with the necessary third parties to provide relevant safety information.\\ \midrule
+
+Racquel Punu & Secretary, Test Manager & The secretary is responsible for the administrative requirements of the project, including producing meeting minutes, and submission of documents through MyUni. The test manager is responsible for overall management of any testing conducted on systems and their components as required.\\ \midrule
+
+Harrison Vince & Treasurer, Manufacturing Manager & The treasurer is responsible for managing finances within the project. The manufacturing manager is responsible for overseeing any manufacturing processes undertaken, and dealing with other design related issues.\\ \midrule
+
+Dr Maziar Arjomandi & Project Supervisor & Supervises student members and guides them accordingly.\\ \midrule
+
+DSTG & Project Partner and Sponsor & Supports the project and project members in providing expertise, loaning of equipment, and funding. A research agreement entitles the Project Partner to share in all knowledge gained over the course of the project.\\ \bottomrule
+
+\end{longtable}}
+
+Minor stakeholders include, but are not limited to, the mechanical and electrical engineering workshop staff, School of Mechanical Engineering administration staff, honours project coordinator and others as deemed necessary by the project members. Communication between all stakeholders includes, but is not limited to, email, mobile messages, phone calls, and social media. %Added because we missed it last time. 
+
+\section{Work Breakdown Structure and Gantt Chart}
+The Work Breakdown Structure and Gantt chart are significantly different from what was presented in the charter, due to the change in project direction. Tasks had to be re-evaluated, and due to the delay in receiving details about project sponsorship, the timeline for the project had to be pushed back significantly. The current versions of both documents, as well as the Gantt chart present in the project charter, are attached in \Chapref{WBS,ganttChart} respectively.  
+%\textcolor{red}{Need to update WBS to reflect changes in project (same goes with Gantt chart)}
+
+\section{Risk Management}
+This section deals with the management of the various risks associated with the project. In \secref{safety}, safety risks are identified through a formal risk assessment. In \secref{risk}, risks to project failure are listed, and the consequences, controls and potential recovery methods are discussed. 
+
+\subsection{Safety Risks}
+\seclabel{safety}
+Safety risks refer to those hazards that may adversely affect a person involved in the operation of the landmine detection platform. After performing a formal risk assessment (\Chapref{riskAss}), two safety risks were identified:
+\begin{enumerate}
+\item Risk of being caught between moving parts of a machine. This risk exists because motors and actuators are present on the quad bike, and may act as pinch points. However, the likelihood of someone interacting with the platform during operation is low, hence the residual risk is low.
+\item Risk of being struck by a vehicle. This risk exists because the quad bike has the potential to behave unpredictably during testing, or become uncontrollable. Again, the likelihood of this occurring is low, and in the even that it does, controls have been put in place (emergency stop and remote kill switch). As a result, the residual risk is low.
+\end{enumerate}
+In order to minimise the likelihood of risks, a SOP has been developed (\Chapref{riskAss}). This document MUST be consulted before operating the quad bike. 
+\nomenclature[A]{SOP}{Safe Operating Procedure}% 
+
+\subsection{Risks of Project Failure}
+\seclabel{risk}
+There are a variety of reasons for which the project objectives may not be achieved; in this case, the project could be deemed a failure. The risks to project failure can be analysed by assigning each potential event with a risk level. The risk level is found by using a risk matrix, \Tabref{riskmatrix} in \Chapref{riskFailureApp}, and determining the likelihood and impact of the event. \Tabref{risks} in \Chapref{riskFailureApp} then outlines the consequences of each event, as well as the controls put in place to avoid the event, and ways to recover if the event does take place.
+
+\section{Budget}
+Project resources have been identified as follows:
+\begin{itemize}
+\item School Funding: The School of Mechanical Engineering will provide Honours Project students with up to \$200 per student to cover approved expenses.
+\item Workshop Support: the workshop will provide up to 40 hours of workshop time per student valued at \$50 per hour.
+\item Supervisor time: The project supervisor will contribute up to 32 hours towards the project via weekly one hour meetings.
+\item Quad Bike: Through liaising with the DSTG a remotely operated quad bike has been made available.
+\item Detection Equipment: Through liaising with the DSTG detection equipment has been made available.
+\end{itemize}
+The current standing of the project is \$17,332.10 in credit with \$5,990.00 expected future expenditure. \$45,899.30 has been tallied in labour costs thus far. See \secref{sponsorship}, and \Chapref{budgetApp} for further detail. The project is on target with regards to finance.
+
+\subsection{Sponsorship}
+\seclabel{sponsorship}
+It was clear from the objectives that funding would be needed to progress with the project, primarily in gaining access to expensive detection equipment and securing a mobile platform.  Contact with DSTG was made and through mutual views on project outcomes, funding was granted to the value of \$16,500 as well as the supply of a remotely operated quad bike, and detection equipment (metal detector and ground penetrating radar units).
+
+\nohyphens{	% Stop hyphenation in table
+\begin{longtable}{L{0.45\textwidth} L{0.27\textwidth} L{0.18\textwidth}}
+\caption{Project funding} \tablabel{funding}\\ \toprule
+\textbf{Sponsor} & \textbf{Date Approved} & \textbf{Funding (\$)} \\ \midrule\endfirsthead 
+\caption[]{Project Funding (continued)}\\ \toprule
+\textbf{Sponsor} & \textbf{Date Approved} & \textbf{Funding (\$)} \\ \midrule\endhead
+The University of Adelaide & 29/02/2016 & 1,000\\
+Defence Science and Technology Group & - & 16,500 \\ \midrule
+\multicolumn{2}{r}{\textbf{TOTAL}} & 17,500 \\ \bottomrule 
+\end{longtable}}
+
+\subsection{Labour Costs}
+To obtain a figure for the total project cost thus far, labour hours put in by each student have been tallied and included.  Each team member recorded their hourly input on a daily basis, a detailed table can be seen in \Chapref{budgetApp}. Salaries are calculated at the rate of \$26/hr, with other direct and indirect costs included. Direct costs incur an additional 30\% on top of salary for items such as superannuation, payroll tax, workcover, long service leave, etc. Indirect costs incur an additional 130\% on top of salary for items such as administration and tech support, infrastructure, rent, phone, internet, etc. As at June 1st, labour costs total \$45,731.40.
+
+\subsection{Deliverables and Milestones}
+\seclabel{deliverables}
+%\textcolor{red}{DELIVERABLES NEED TO BE DISCUSSED SOMEWHERE, INCLUDING the platform simulation that Maz wanted for the expo. Plus all the other deliverables}
+The deliverables for the project in semester 1, 2016 are the project charter and preliminary report. These deliverables were due on 24th March and 3rd June, 2016, respectively. The workshop drawings were included as deliverables for the project, however, due to delays in obtaining platform measurements, this will not be submitted for semester 1, 2016. In addition to the submission of the preliminary report to the University of Adelaide, it will also be submitted to DSTG at a later date, to be determined. Deliverables for semester 2, 2016 include, and is not limited to, seminar presentation, final report and  Ingenuity expo. The tentative dates for these deliverables are 20th to 22nd September, 21st October and 27th to 28th October, 2016, respectively. In addition, a deliverable for a computer simulation of the platform automation and navigation is required by the date of the Ingenuity expo as this will be displayed in lieu of a platform demonstration. There are further deliverables and milestones listed in \Chapref{ganttChart} and will be modified accordingly should the need arise. 
+
+\end{document}

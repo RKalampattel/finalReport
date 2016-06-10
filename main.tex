@@ -1,0 +1,85 @@
+% =================================================================== %
+% Project main.tex file - all preamble entries should go here. Other  %
+% edits should be made to the main.tex file in the relevant folder.   %
+% =================================================================== %
+
+\documentclass[a4paper, 12pt,draft]{report} 	% Document class, paper and font size
+%\usepackage[hidelinks]{hyperref} 		% See comment at end of preamble
+\renewcommand{\baselinestretch}{1.3} 	% 1.3 line spacing
+\renewcommand{\arraystretch}{1.1} 		% 1.1 spacing in tables
+\usepackage[left=0.75in, right=0.75in, top=1in, bottom=1in]{geometry} % 1" T/B, 0.75" L/R margins 
+
+\usepackage{subfiles}		% For multi-part documents 
+\usepackage[normalem]{ulem}	% Allows strikthrough using \sout{}
+\usepackage{setspace}		% To change line spacing for WBS
+
+\usepackage{filecontents} 				% To include .bib file
+\usepackage[backend=biber,style=authoryear,dashed=false,maxbibnames=99]{biblatex} % Bibliography stuff, dashed=false allow repeats in bibliography
+\addbibresource{references.bib}			% File with references
+\setlength\bibitemsep{2\itemsep}		% Add spacing between references 
+\DeclareNameAlias{sortname}{last-first}	% Make bibliography entries surname first
+
+\usepackage{titlesec} % For changing heading titles
+\titlespacing*{\chapter}{0pt}{0pt}{40pt} % Adjust spacing before chapters
+\titleformat{\chapter}[display]{\normalfont\huge\bfseries}{\chaptertitlename\ \thechapter}{20pt}{\Huge}	% Redefine default chapter title format so that spacing can be changed
+
+\usepackage{booktabs}	% For prettier looking tables
+\usepackage{longtable}	% For multipage table functionality
+\usepackage[labelfont=bf]{caption} 			% For bold table/figure headings
+\captionsetup[table]{singlelinecheck=false}	% For left aligning table captions
+\usepackage{multirow}	% Allows row merging in tables
+\usepackage{hyphenat}	% To remove hyphenation in tables with lots of text
+\usepackage[dvipsnames,table]{xcolor}		% For coloured table cells
+
+\usepackage{ragged2e} % For non-justified text
+\newcolumntype{L}[1]{>{\RaggedRight\arraybackslash}p{#1}} % Define a new multicolumn type with left aligned text
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}} % Define a new multicolumn type with centred text
+\newcommand{\mcrot}[4]{\multicolumn{#1}{#2}{\rlap{\rotatebox{#3}{#4}~}}} % Define a new multicolumn type with rotated text
+
+\usepackage{tocloft} % For editing preamble elements
+\setlength{\cftbeforetoctitleskip}{20pt} % Change spacing before ToC
+\setlength{\cftbeforeloftitleskip}{20pt} % Change spacing before LoF
+\setlength{\cftbeforelottitleskip}{20pt} % Change spacing before LoT
+\renewcommand{\cftfigfont}{Figure }		 % Putting the word 'Figure' in LoF
+\renewcommand{\cfttabfont}{Table }		 % Putting the word 'Table' in LoT
+\usepackage[titletoc,title]{appendix} 	 % Putting the word 'Appendix' in ToC, 'title' behaviour is present by default, but need to specify here to make sure appendix letters show up in PDF bookmarks
+
+\usepackage[intoc]{nomencl}	% Nomenclature
+\usepackage{multicol}		% To split nomenclature into 2 columns
+\makenomenclature			
+\usepackage{etoolbox}		% Sort nomenclature into sections as well
+\renewcommand\nomgroup[1]{%
+\item[\bfseries
+\ifstrequal{#1}{A}{Acronyms}{ 	% First section of nomenclature 	
+\ifstrequal{#1}{S}{Symbols}{	% Second section
+{}}}]}
+
+\usepackage{bookmark}	 % For changing PDF bookmark settings
+\bookmarksetup{numbered} % Numbered bookmarks for sections	
+\usepackage{pdfpages}	 % To include pdf pages
+\usepackage{graphicx}	 % Graphics stuff
+\usepackage{subfig}		 % For subfigures
+\usepackage{amsmath, amssymb, mathtools} % For maths stuff
+\usepackage{siunitx}	 % Makes it easy to put units in
+\usepackage{enumitem}	 % For multilevel numbered lists
+\usepackage{color}		 % To change text colour
+\usepackage{refstyle}	 % Smart figure/table referencing
+%\usepackage{hyperref}	 % Advanced cross referencing, COMMENT THIS LINE TO HIDE RED BOXES, uncomment line 7 to maintain functionality
+\hypersetup{final} 	 % COMMENT OUT WHEN NOT USING DRAFT MODE 
+
+\begin{document}
+\subfile{0-Preamble/main.tex}		
+\subfile{1-Introduction/main.tex}	
+%%\subfile{2-Benchmarking/main.tex}	% Has been moved to appendix
+\subfile{3-LiteratureReview/main.tex}
+\subfile{4-ConceptDesign/main.tex}		
+\subfile{5-DetailedDesign/main.tex}			
+\subfile{6-ProjectManagement/main.tex}		
+\subfile{7-Conclusion/main.tex}		
+
+\printbibliography[title={References}]	% References
+\addcontentsline{toc}{chapter}{References}	% Add Reference to ToC
+
+\subfile{8-Appendices/main.tex}		
+
+\end{document}          

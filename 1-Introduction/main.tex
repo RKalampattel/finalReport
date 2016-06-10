@@ -1,0 +1,137 @@
+\documentclass[main.tex]{subfiles}
+
+\begin{document}
+\pagenumbering{arabic}	% Numbering style for body
+
+\chapter{Introduction}
+\chaplabel{introduction}
+\section{Background and Motivation}
+\seclabel{background}
+
+It is estimated that over one hundred million landmines are currently unaccounted for in past and present conflict zones across the globe. Remaining active for many years after initial deployment, these landmines are responsible for injuring thousands of civilians and military personnel each year \parencite{landmineMonitor2015}.
+
+The Defence Science and Technology Group (DSTG) is an Australian Government organisation that develops new technologies with the aim of defending Australia and it's national interests. A current focus for the DSTG is reducing the risks posed to Australian Defence Force (ADF) personnel by landmines in conflict zones. There are two primary methods of landmine detection currently employed by the ADF: manual screening with the use of a metal detector, and vehicle mounted screening using a metal detector and a Ground Penetrating Radar (GPR). Both methods require operators to be in close proximity to landmines and are unable to consistently and accurately locate them. This in turn makes demining operations an inefficient and high risk endeavour. 
+As a solution, the DSTG is looking to use an integrated platform mounted sensor array that can detect and locate threats in a single sweep, while removing operators from potential harm. This requirement to increase detection accuracy while ensuring the safety of ADF personnel is the major motivation for the current project.
+
+%the developed of an autonomous platform with landmine detection capabilities.  
+%\textcolor{red}{NEED TO FIX THIS SENTENCE} This requires the removal of both manual and vehicle mounted methods which require an operator to be in close proximity to mines, and is therefore, a major incentive for the development of an autonomous platform with landmine detection capabilities.
+
+This project proposes the development of an autonomous and unmanned platform to mount DSTG landmine detection equipment, which would eliminate the risk to operators entirely. Through the use of an integrated multi-sensor system consisting of a metal detector and a GPR, the aim will be to reduce false positives, thereby increasing detection accuracy.
+
+%The focus of the project will be the development of an autonomous platform as well as multi sensor integration of a metal detector and GPR.
+% reduce with the aim to increase detection accuracy.
+\nomenclature[A]{DSTG}{Defence Science and Technology Group}% 
+\nomenclature[A]{ADF}{Australian Defence Force}% 
+\nomenclature[A]{GPR}{Ground Penetrating Radar}%
+
+\section{Project Goal}
+\seclabel{projectGoal}
+
+The goal for this project is to develop an autonomous platform for landmine detection and confirmation, with a focus on the reduction of false positives. Achieving this goal will require multi sensor integration and advanced signal processing, as well as software development for the platform navigation and automation. The project objectives necessary to achieve this goal are described below.
+ 
+\subsection{Primary Objectives}
+\seclabel{primary}
+The primary objectives are the minimum allowable outcomes for the project and should be delivered upon completion. These objectives are:
+\begin{itemize}
+\item Selection and subsequent modification of an existing platform for remote control via a hand held device. Necessary control systems will be implemented within the platform. There will be emphasis on the throttle, steering and brake actuation to allow for full system control in a safe manner. Each system will be tested separately to ensure that they function correctly and are safe to operate remotely. Once all systems are operating independently, simultaneous operation shall be conducted with the aim to be in control of the platform at all instances. Once the platform is able to be operated remotely, the objective will be achieved with the deliverable of a working remote control platform.
+
+\item Modify an existing platform to accommodate a GPR and a metal detector array. Structural modifications will be conducted on the platform so that it can support and carry the chosen sensors safely while adhering to the operating requirements of both the platform and sensors. There should be no interference to the sensor output due to outside influences such as the platform or supporting material. The objective will be achieved when the sensors are mounted to the platform without interference.
+
+\item Implement software to function as the framework for platform automation, allowing for navigation and data requisition under supervision from an operator. The required navigation and control systems will be implemented once the platform is able to be directly controlled by a remote operator. The location, heading, speed, and status of the metal detector, GPR, and platform will be required to be known for the framework for automation to be considered complete.
+
+\item Implementation of autonomous detection and classification of subsurface objects, with a focus on identifying objects with a high likelihood of being a landmine. The output signals from the GPR and metal detector will be processed with the aim to identify the likelihood of a threat. Operational trials are needed to be conducted to test the effectiveness of the developed system. 
+
+\item Logging of detected objects with GPS coordinates and the confidence of the object being a landmine. Once an object has been located, location data and percentage probability will be recorded and transmitted to a hand held device held by a supervising operator.
+\end{itemize}
+
+\subsection{Extended Objectives}
+\seclabel{extended}
+Extended objectives are those that are slightly outside the scope of the project and may be completed time permitted. These objectives are:
+
+\begin{itemize}
+\item Automatic traversal of a designated area enclosed by a user defined region. This is the second stage of automation. Initially, single way-point navigation will be conducted, requiring the platform to travel from one predefined point to another before coming to a stop. Once this is achieved, way-points enclosing an area will be used requiring the platform to generate its own path to traverse the enclosed area.
+\item Provide a live video feed as well as live updates of vehicle location and direction to the operator's handheld device. This allows for greater visualisation of operating conditions of the remote vehicle, as well as greater ability to detect and respond appropriately to unknown obstacles in the search area.
+\item Physical marking of landmine locations by the remote platform at the time of detection, allowing mine removal technicians to easily identify the location of interest with greater accuracy, and free from any potential calibration errors or systematic offsets from a GPS position.
+\end{itemize}
+
+\section{Project Definition}
+\seclabel{projectDefinition}
+Due to the large number of countries where ADF personnel are deployed, and the differing terrain and geographical properties present in these location, it is a challenge to build a single dedicated landmine detecting device. This section will cover the platform's operational scenarios, environments and performance specifications for different possible operating locations. 
+
+\subsection{Scenario of Operation}
+\seclabel{scenario}
+
+\subsubsection{General Mission Profile}
+\seclabel{MissionProfile}
+The general mission profile describes the intended use case of the platform, regardless of the platform selected or geographical variables. This is the expected manner in which the delivered system will be used by an operator to achieve the project goal of autonomous landmine detection, and will form the basis of hardware and software designs.
+\begin{quote}\textit{The platform starts from its home location, and travels via remote control to an area of interest; the boundaries of this area are selected using GPS coordinates. Once it has arrived, the platform autonomously scans its surroundings for landmines using both a metal detector and GPR. Possible points where landmines are identified are logged with GPS coordinates, allowing for a map of the area to be developed. On-board sensors are used for object detection (object avoidance is not expected to be implemented), and a video feed may be streamed in real time to the operator. Once the platform has scanned the designated area, it returns back to the starting location where it is manually controlled back to its home location. If at any point the operator wishes to abort the mission or signal between the platform and the tablet becomes lost, the platform will stop immediately.}
+\end{quote}
+\subsection{Operating Environments}
+\seclabel{operatingEnvironments}
+\subsubsection{Real World Environments}
+\seclabel{IRL}
+
+Real world operating conditions for the platform in different locations are considered, taking into account types of vegetation, soil, terrain, mine types and the size of affected areas. The two countries considered, Egypt and Iran, are regions where ADF personnel are present and heavily affected by mines \parencite{AustralianGovernment2016}. The operating conditions here are used to identify the requirements for an effective mine detection system.
+
+\subsubsection{Eqypt}
+\seclabel{Egypt}
+Egypt is listed as the country most contaminated by mines, with an area of roughly 25,000 kilometres squared containing over 23 million buried anti-tank and anti-personnel mines \parencite{Rushfan2008}. The main contaminated areas are along the North coast and the Sinai Peninsula. These areas represent 22\% of the total area of Egypt and consist of barren shifting sands and Lithosols with large flat expanses of sandy land \parencite{Nahrawy2011}. The chosen platform would then be required to travel over sandy terrains and over small obstacles such as rocks, with the sensors being able to detect landmines through sandy and loose soil. 
+ \subsubsection{Iran}
+ \seclabel{Iran}
+Iran has an area of approximately 18 thousand square kilometres of land contaminated with 12-16 million mines left over from the 1980-1988 Iran-Iraq conflict \parencite{landmineMonitor2015}. The main areas of contamination are along the provinces of Khuzestan, which is mainly covered with sandy soils similar to those in Egypt. Thus the system requirements for the platform would be similar to those required for Egypt.
+
+\subsection{Performance Specifications}
+\seclabel{performance}
+Knowing the basic operating environment and chosen scenario of operation, performance specifications can be defined. These specifications encompass the platform, environment and sensors.
+\subsubsection{Platform}
+\seclabel{platform}
+The platform is required to be able to perform certain tasks to ensure that the objectives can be completed. In order to do this, it needs to satisfy some basic specifications and requirements: 
+\begin{itemize}
+\item The platform must be able to travel forwards and maintain a certain speed while following a predefined course. Reverse, as well as left and right turning, will be required for navigation purposes.
+ \item The platform should be able to carry a payload of 100 kg. The metal detector and GPR with their respective control boxes have an estimated gross weight of 80 kg. This allows 20 kg for the necessary control units and computers, as well as any unforeseen weight contributions. 
+\item The platform should be easily modified for controlling remotely, as well as for the attachment of sensors. Easy attachment of sensors would ensure that there are no unnecessary delays in the project due to design issues. A platform which has the ability to have off the shelf supports attached to it would be ideal, as minimal modifications would be required. This would result in more time for testing the system. 
+\item The platform should be easily transportable with minimum disassembly required, allowing for ease of transport from one location to another. Thus, it should be able to fit on the back of a ute or small truck.
+\item Operate at a speed of 5 km/h, as this is the current operational speed defined by the DSTG.
+\item Come to a complete stop from operational speed in 1 metre.
+\end{itemize}
+\subsubsection{Environment}
+\seclabel{environment}
+
+The platform should be designed to operate under certain environmental conditions:
+\begin{itemize}
+\item Terrain: The platform should be able to operate over dry, loose sand or gravel with sparse vegetation. Ideal terrains will be roads, but testing on open fields with minimal obstacles and vegetation will also be conducted.
+\item Gradient: The platform should be able to operate over a maximum slope of 15 degrees
+\item Obstacles: The platform should be able to operate over sparse vegetation with some large obstacles such as a tree or wall.
+\item Moisture: The platform should be able to operate in low moisture environments with no rain or mud.
+\end{itemize}
+\subsection{Sensors}
+\seclabel{sensors} %needs to be reworked
+The sensor parameters for landmine detection that the project aims to comply to are listed below:
+\begin{itemize}
+\item Detection depth: 300mm 
+\item Detection speed: Real time detection at operational speed
+\item Detection rate: Maximise detection rate while minimising false positives
+\item Detection halo: 1 metre
+\end{itemize}
+
+\section{Project Scope}
+\seclabel{projectScope}
+%Justification: A brief statement regarding the business need your project addresses. (A more detailed discussion of the justification for the project appears in the project charter.)
+%Product scope description: The characteristics of the products, services, and/or results your project will produce.
+%Acceptance criteria: The conditions that must be met before project deliverables are accepted.
+%Deliverables: The products, services, and/or results your project will produce (also referred to as objectives).
+%Project Exclusions: Statements about what the project will not accomplish or produce.
+%Constraints: Restrictions that limit what you can achieve, how and when you can achieve it, and how much achieving it can cost.
+%Assumptions: Statements about how you will address uncertain information as you conceive, plan, and perform your project.
+
+The scope of this project includes the automation and modification of an existing platform for landmine detection. %Included in the scope.......
+
+The automation of an existing platform is to assist with unmanned operations for landmine detection. The platform will be completed with the necessary framework for autonomous operation through basic remote control and transmission to an operator device. Both navigation and control systems will be included, such as, GPS, relevant platform sensors, actuators and micro controllers. These will be implemented using relevant navigation and control algorithms for the platform to travel in a straight line and turning at specified angles. However, traversing autonomously within a specified area and to way-points will be outside of this scope. 
+
+An existing platform will be modified to accommodate for GPR and metal detector sensors through the design and manufacture of a sensor mount. The attachment will be designed according to platform and sensor dimensions, weight and operational limitations. The limitations to mount both the metal detector and GPR sensors include any interference that occurs between them and the material used for the sensor mount.
+
+Landmine detection will include the autonomous detection and classification of subsurface objects based on statistical probability. The object is identified with a percentage likelihood that it is a landmine. Various signal processing methods for landmine detection using both GPR and metal detector sensors will be considered, including background and image processing and statistical (fuzzy logic) algorithms. These algorithms will assume specific operating environments and subsurface electromagnetic properties. The operating environment for this project is limited to certain environmental conditions. Physical marking and automatic removal of the landmines are not included within the scope of the project.
+
+The platform operation conditions, landmine location coordinates and percentage probability will be transmitted to an operator device. This is implemented through software development in conjunction with the remote control of the platform. The software device will not include live video feed of the current operations and mission data, as this is outside of the project scope. A limitation of the software is that the development will be tailored for the specific devices chosen for this project and cross-platform compatibility will not be guaranteed.
+ 
+\end{document}
