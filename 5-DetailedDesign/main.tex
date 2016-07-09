@@ -12,6 +12,7 @@ is broken down into a series of waypoints which the quad bike will attempt to fo
 alternate use case, the user will specify a path directly and the navigation system will operate
 directly on these waypoints.
 \subsection{Waypoint Generation}
+\seclabel{detailedwaypointgen}
 The waypoints are generated from a zone of interest to facilitate the autonomous surveying of areas that are suspected to contain mines. This zone must be capable of being user defined to match real world boundaries. The algorithm used to generate these waypoints is a modified linescan algorithm which will be tuned to output scanlines of the same width as the equipment's scan width.
 
 To allow for complex polygonal zones to be entered by the user, the original user-defined polygon boundary is split into a series of convex hulls, simplifying the line scanning algorithm. The split of the user polygon is shown in \Figref{wayPointGeneration}, where the user-defined polygon is outlined in bold blue and the series of generated convex search regions are shaded within. The black path shows the output of the linescan algorithm starting at the origin (marked by the red dot in the south-east corner), and ends at the second red dot at the far end of the path. The linescan algorithm searches for the nearest corner from the nearest convex polygon and begins plotting successive alternating scanlines through the polygon. After a convex polygon has been completely covered, the linescan algorithm connects to the next nearest corner of the next nearest polygon and the process continues. This system allows for multiple user defined regions to be connected and autonomously scanned in a single pass.
@@ -23,7 +24,7 @@ To allow for complex polygonal zones to be entered by the user, the original use
 \end{figure}
 
 \subsection{Low Curvature Path Following}
-For low curvature path following Pure Pursuit is used. The tracker works through determining an arc that connects the non steering wheel axle to a goal point on the path (refer back to \Figref{purePursuitGeom}).  The goal point ($g_x, g_y$) is determined from a look-ahead distance $l_d$. The angle, $\alpha$, can be related to the geometry using the law of sines,
+For low curvature path following (such as a straight line connecting waypoints discussed in \secref{detailedwaypointgen}) Pure Pursuit is used. The tracker works through determining an arc that connects the non steering wheel axle to a goal point on the path (refer back to \Figref{purePursuitGeom}).  The goal point ($g_x, g_y$) acts as an intermediate waypoint and is determined from a look-ahead distance $l_d$. The angle, $\alpha$, can be related to the geometry using the law of sines,
 \begin{align*}
 \frac{l_d}{\sin(2\alpha)} &= \frac{R}{\sin(^{\pi}/_2-\alpha)},\\
 \frac{l_d}{2\sin(\alpha)\cos(\alpha)} &= \frac{R}{\cos(\alpha)},\\
@@ -33,7 +34,7 @@ Then the steer angle, $\delta$, can be determined from the geometry shown in \Fi
 \begin{figure}[ht]
 \includegraphics[width=0.7\textwidth]{5-DetailedDesign/Geometric_Bicycle_Model.png}
 \centering
-\caption{Geometric Bicycle Model} \figlabel{geometricBicycleModel}
+\caption{Geometric bicycle model} \figlabel{geometricBicycleModel}
 \end{figure} 
 \begin{align*}
 R &= \frac{l_d}{2\sin(\alpha)},
@@ -43,7 +44,7 @@ R &= \frac{l_d}{2\sin(\alpha)},
 where $\alpha$ and thus $\delta$ will be functions of time (calculated in real time in practice).
 A separate algorithm is used for turning a specified angle due to real quad bike geometry where a minimum turn radius is introduced.
 \subsection{Turning the Platform a Specified Angle}
-It is evident from \Figref{wayPointGeneration} that many sudden and sharp turns will be encountered during the navigation process. If the quad bike is not to stray a great distance from the path, the pure pursuit method breaks down due to turn angle limitations on the quad bike.  In these situations an alternate method will need to be processed in the code to effectively turn the quad bike the required angle while not leaving an area which has previously been scanned. The simplest method is to conduct an N-point turn within the swathe which is achieved through placing waypoints at each of the end turn points. This will be implemented in future work where the analysis of a map of scanned areas could also be used to achieve more efficient turning. 
+It is evident from \Figref{wayPointGeneration} that many sudden and sharp turns will be encountered during the navigation process. If the quad bike is not to stray a great distance from the path, the pure pursuit method breaks down due to turn angle limitations on the quad bike.  In these situations an alternate method will need to be processed in the code to turn the quad bike the required angle while not leaving a scanned region (governed by the width of the detection array). One solution is to conduct an N-point turn within the swathe which is achieved through placing waypoints at each of the end turn points.
 
 \section{Sensor Mount}
 Both the GPR and metal detector are required to be mounted to the platform in a cantilever-like fashion in order to avoid contact with the ground where it would risk detonation of a landmine. Each of the sensor arrays is expected to weigh between 10 kg and 30 kg.
@@ -58,6 +59,7 @@ Initial simulations showed that front mounted sensors with rear-wheel steering i
 \item Trial 2, represented by the middle diagram in \Figref{turnCoverage}, shows the results for a case where the turning wheels are 1.5 metres behind the focal point of the turn, or rear wheel steering. The sensor array is placed 0.5 metres in front of the focal axle. This trial shows a much tighter scanning loop than the previous test and the path of the quad bike is entirely within the scanned area. This is ideal.
 \item The third trial, represented by the rightmost diagram in \Figref{turnCoverage}, is purely for comparison and shows the coverage area of a vehicle with turning wheels 1.5 metres in front of the focal axle, but with the sensing array only 0.5 metres in front of the focal axle. This would place the sensing array between the two axles of the vehicle. Under this arrangement an identical scanning path is achieved using a front-wheel steering setup. This is not useful for the application as the sensors must be in front of the vehicle to detect landmines.
 \end{itemize}
+% Split, subfig
 \begin{figure}[ht]
 \includegraphics[width=0.8\textwidth]{5-DetailedDesign/Detector_Coverage.png}
 \centering

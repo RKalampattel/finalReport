@@ -5,13 +5,13 @@
 
 \chapter{Introduction}
 \chaplabel{introduction}
-\section{Background and Motivation}
+\section{Background and motivation}
 \seclabel{background}
 
 It is estimated that over one hundred million landmines are currently unaccounted for in past and present conflict zones across the globe. Remaining active for many years after initial deployment, these landmines are responsible for injuring thousands of civilians and military personnel each year \parencite{landmineMonitor2015}.
 
-The Defence Science and Technology Group (DSTG) is an Australian Government organisation that develops new technologies with the aim of defending Australia and it's national interests. A current focus for the DSTG is reducing the risks posed to Australian Defence Force (ADF) personnel by landmines in conflict zones. There are two primary methods of landmine detection currently employed by the ADF: manual screening with the use of a metal detector, and vehicle mounted screening using a metal detector and a Ground Penetrating Radar (GPR). Both methods require operators to be in close proximity to landmines and are unable to consistently and accurately locate them. This in turn makes demining operations an inefficient and high risk endeavour. 
-As a solution, the DSTG is looking to use an integrated platform mounted sensor array that can detect and locate threats in a single sweep, while removing operators from potential harm. This requirement to increase detection accuracy while ensuring the safety of ADF personnel is the major motivation for the current project.
+The Defence Science and Technology Group (DSTG) is an Australian Government organisation that develops new technologies with the aim of defending Australia and it's national interests. A current focus for the DSTG is reducing the risks posed to Australian Defence Force (ADF) personnel by landmines in conflict zones. There are two primary methods of landmine detection currently employed by the ADF: manual screening with the use of a metal detector, and vehicle mounted screening using a metal detector and a Ground Penetrating Radar (GPR). Both methods require operators to be in close proximity to landmines and are unable to consistently and accurately locate them. This, in turn, makes demining operations an inefficient and high risk endeavour. 
+As a solution, the DSTG is investigating the use of an integrated platform mounted sensor array that can detect and locate threats in a single sweep, while removing operators from potential harm. This requirement to increase detection accuracy while ensuring the safety of ADF personnel is the major motivation for the current project.
 
 %the developed of an autonomous platform with landmine detection capabilities.  
 %\textcolor{red}{NEED TO FIX THIS SENTENCE} This requires the removal of both manual and vehicle mounted methods which require an operator to be in close proximity to mines, and is therefore, a major incentive for the development of an autonomous platform with landmine detection capabilities.
@@ -27,7 +27,7 @@ This project proposes the development of an autonomous and unmanned platform to 
 \section{Project Goal}
 \seclabel{projectGoal}
 
-The goal for this project is to develop an autonomous platform for landmine detection and confirmation, with a focus on the reduction of false positives. Achieving this goal will require multi sensor integration and advanced signal processing, as well as software development for the platform navigation and automation. The project objectives necessary to achieve this goal are described below.
+The goal of this project is to develop an autonomous platform for landmine detection and confirmation, with a focus on the reduction of false positives. Achieving this goal will require multi sensor integration and advanced signal processing, as well as software development for the platform navigation and automation. The project objectives necessary to achieve this goal are described below.
  
 \subsection{Primary Objectives}
 \seclabel{primary}
@@ -39,18 +39,18 @@ The primary objectives are the minimum allowable outcomes for the project and sh
 
 \item Implement software to function as the framework for platform automation, allowing for navigation and data requisition under supervision from an operator. The required navigation and control systems will be implemented once the platform is able to be directly controlled by a remote operator. The location, heading, speed, and status of the metal detector, GPR, and platform will be required to be known for the framework for automation to be considered complete.
 
-\item Implementation of autonomous detection and classification of subsurface objects, with a focus on identifying objects with a high likelihood of being a landmine. The output signals from the GPR and metal detector will be processed with the aim to identify the likelihood of a threat. Operational trials are needed to be conducted to test the effectiveness of the developed system. 
+\item Implementation of autonomous detection and classification of subsurface objects, with a focus on identifying objects with a high likelihood of being a landmine. The output signals from the GPR and metal detector will be processed with the aim to identify the likelihood of a mine. Operational trials are needed to be conducted to test the effectiveness of the developed system. 
 
 \item Logging of detected objects with GPS coordinates and the confidence of the object being a landmine. Once an object has been located, location data and percentage probability will be recorded and transmitted to a hand held device held by a supervising operator.
 \end{itemize}
 
 \subsection{Extended Objectives}
 \seclabel{extended}
-Extended objectives are those that are slightly outside the scope of the project and may be completed time permitted. These objectives are:
+Extended objectives are those that are beyond the scope of the project, but may be attempted on completion of the primary objectives. These objectives are:
 
 \begin{itemize}
 \item Automatic traversal of a designated area enclosed by a user defined region. This is the second stage of automation. Initially, single way-point navigation will be conducted, requiring the platform to travel from one predefined point to another before coming to a stop. Once this is achieved, way-points enclosing an area will be used requiring the platform to generate its own path to traverse the enclosed area.
-\item Provide a live video feed as well as live updates of vehicle location and direction to the operator's handheld device. This allows for greater visualisation of operating conditions of the remote vehicle, as well as greater ability to detect and respond appropriately to unknown obstacles in the search area.
+\item Provide a live video feed as well as live updates of vehicle location and direction to the operator's handheld device. This allows for visualisation of operating conditions of the remote vehicle, as well as greater ability to detect and respond appropriately to unknown obstacles in the search area.
 \item Physical marking of landmine locations by the remote platform at the time of detection, allowing mine removal technicians to easily identify the location of interest with greater accuracy, and free from any potential calibration errors or systematic offsets from a GPS position.
 \end{itemize}
 
@@ -73,12 +73,14 @@ The general mission profile describes the intended use case of the platform, reg
 
 Real world operating conditions for the platform in different locations are considered, taking into account types of vegetation, soil, terrain, mine types and the size of affected areas. The two countries considered, Egypt and Iran, are regions where ADF personnel are present and heavily affected by mines \parencite{AustralianGovernment2016}. The operating conditions here are used to identify the requirements for an effective mine detection system.
 
+% MAZIAR: Link the scenarios here (1.3.2) more closely with the performance specifications (1.3.3)
+
 \subsubsection{Eqypt}
 \seclabel{Egypt}
-Egypt is listed as the country most contaminated by mines, with an area of roughly 25,000 kilometres squared containing over 23 million buried anti-tank and anti-personnel mines \parencite{Rushfan2008}. The main contaminated areas are along the North coast and the Sinai Peninsula. These areas represent 22\% of the total area of Egypt and consist of barren shifting sands and Lithosols with large flat expanses of sandy land \parencite{Nahrawy2011}. The chosen platform would then be required to travel over sandy terrains and over small obstacles such as rocks, with the sensors being able to detect landmines through sandy and loose soil. 
+Egypt is listed as the country most contaminated by mines, with an area of roughly 25,000 square kilometres containing over 23 million buried anti-tank and anti-personnel mines \parencite{Rushfan2008}. The main contaminated areas are along the North coast and the Sinai Peninsula. These areas represent 22\% of the total area of Egypt and consist of barren shifting sands and Lithosols with large flat expanses of sandy land \parencite{Nahrawy2011}. The chosen platform would then be required to travel over sandy terrains and over small obstacles such as rocks, with the sensors being able to detect landmines through sandy and loose soil. 
  \subsubsection{Iran}
  \seclabel{Iran}
-Iran has an area of approximately 18 thousand square kilometres of land contaminated with 12-16 million mines left over from the 1980-1988 Iran-Iraq conflict \parencite{landmineMonitor2015}. The main areas of contamination are along the provinces of Khuzestan, which is mainly covered with sandy soils similar to those in Egypt. Thus the system requirements for the platform would be similar to those required for Egypt.
+Iran has an area of approximately 18,000 square kilometres of land contaminated with 12-16 million mines left over from the 1980-1988 Iran-Iraq conflict \parencite{landmineMonitor2015}. The main areas of contamination are along the provinces of Khuzestan, which is mainly covered with sandy soils similar to those in Egypt. Thus the system requirements for the platform would be similar to those required for Egypt.
 
 \subsection{Performance Specifications}
 \seclabel{performance}
