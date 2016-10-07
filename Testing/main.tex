@@ -1,0 +1,42 @@
+\documentclass[main.tex]{subfiles}
+
+\begin{document}
+\chapter{Testing}
+\chaplabel{testing}
+Tests were completed to ensure that the each subsystem is functioning correctly overall. Quad bike testing includes initial testing of electronic components with subsequent stages added to ensure that the autonomous navigation objective is complete. 
+(\textcolor{red}{Need to explain testing for GPR and metal detector and the integration of systems testing})
+
+\section{Quad bike}
+Preliminary testing of the quad bike subsystems were required to determine their working range, functionalities and integration. The systems tested were the brakes, steering, throttle and gear selector. Additional safety systems were also tested to ensure they functioned as intended.
+
+\subsection{Brake testing}
+The brakes were required to control the quad bike speed as well as the bring the platform to a complete stop when commanded or in the case of an emergency. This requires accurate knowledge of the brake position for the required varying brake intensities. 
+The original brake system incorporated a limit switch and strain gauge to determine if the brake was actuated. The limit switch limited the brake motion at the extreme limit and the strain gauge dictated the brake intensity and ensured the brake lever was not being over strained. Testing of this system revealed that the brake intensity fluctuated by \textcolor{red}{15 percent NEED TOP CHECK } which would have resulted in inconsistent stopping distances. This was tested by requesting certain braking intensities and measuring the travel distance of the actuator arm and by spinning the wheel. The tests lead to the redesign of the brake measurement for greater accuracy. 
+
+Improved braking accuracy was achieved through the use of a linear transducer installed on the actuator. This transducer allowed for the travel of the actuator arm to be controlled and for the position to be known to the nearest millimetre. Knowing the position of the actuator arm allows for accurate and uniform brake intensities and thus, braking distances. The maximum brake intensity was chosen as the point where the wheels were unable to be turned by hand. This was found through small 5 percent increments in the actuator extension until the wheels were unable to rotate. The time required for actuator to go from nill brake to maximum was \textcolor{red}{measured to be 3 seconds}. This coupled with a reduction in throttle would ensure that the quad bike is able to stop in the required distance of 60cm. 
+
+\subsection{Gear testing}
+The ability to control what gear the quad bike is in was essential to the control and navigation of the project. As highlighted in the platform requirements, forwards and reverse motion is required for the desired mission profile. A linear actuator in conjunction of two hall effect sensors were used to move the gear selector lever. Hall effect sensors measured the forwards or backwards motion of the actuator and dictated the limits of the motion. Neutral was the position in the middle of the sensors while Drive and Reverse were to the left and right respectively. Selecting Drive or Reverse resulted in the actuator pushing the gear lever to a point until the hall effect sensor reached a certain value and the arduino ordered the actuator to stop. \textcolor{red}{need to discuss the different test cases here}  
+%% Need to insert the following into relevant section
+\subsection{Initial testing of quad bike subsystems}
+The quad bike subsystems, such as gears, brakes, throttle and steering were initially tested in order to ensure their functionality after electronic component upgrades and determine their relevant state conditions and values. The relevant test cases were documented in separate files (\textcolor{red}{REFER TO APPENDIX??}).
+
+\subsection{Steering}
+The steering of the quad bike was achieved through the use of a stepper motor. Upon power up, the position of the wheels would be the zero position and movement to the left or right dictated by the angle sent to the stepper motor. From the user manual for the quad bike the lock out angle for the steering was \textcolor{red}{24 degrees NEED TO CHECK}, a limit for the steering angle was placed at 23 degrees to ensure no hardware was damaged. 
+
+Initial tests found that when the quad bike was on the support stand with the wheels free, the steering behaved as expected. However, when a resistive load was applied in the direction of the steering angle, the stepper motor would stop and reset. This would result in a incomplete steering angle as well as a new off centre zero position being selected by the stepper motor.  It was found that the required power for the stepper motor to operate to the required torque was 440W whereas the power supply in the quad bike was only able to supply 44W. Replacement of the power supply with one of the correct power requirements resulted in steering angle control under operational loads.
+
+The accurate turning radius for the platform was required for the navigation software. The quad bike was allowed to travel forward from a marked position with the steering at full lock. Once a full circle was complete, the quad bike was turned off. The turn radius was measured to be 2.7m. This was within the turning circle range decided upon in the navigation software.
+
+\textcolor{red}{steering tests more?}
+
+\subsection{Throttle}
+The throttle is controlled via a rotational servo. Initial approximation of the throttle travel had the servo with zero throttle and maximum throttle at positions XX and XX respectively. With the engine warmed up, incremental increases resulted in an actual throttle response range to be calculated. Due to the circular sweep of the servo arm and some cable play. the minimum throttle position before a throttle response was found to be XX. a maximum throttle position of XX was chosen for the servo as the engine revved very easily and wide open throttle would never be required for the chosen operating scenario.  
+
+\subsection{Whole quad bike system test}
+
+
+\subsection{Testing navigation on the quad bike}
+The virtual platform tests the functionality of the developed software program using the state values derived from initial testing. The software program for navigation were then transferred to the quad bike for actual system testing. (\textcolor{red}{REFER TO APPENDIX??})
+
+\end{document}

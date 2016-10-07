@@ -108,11 +108,14 @@ The general concepts of the PID controller theory and fuzzy logic may be used to
 \subsection{Path Tracking of the Platform}
 \seclabel{pathTrackingLitReview}
 Path tracking uses location information from a GPS or some other positioning system to guide a vehicle along a pre-defined course. In theory the path can be defined as a continuous function but this is inefficient in practice. Instead, a path is discretised and defined by a series of points, called waypoints (shown in \Figref{pathDefining}). A path can either be described as lines connecting the waypoints or as a series of closely spaced waypoints. Due to the implementation of path tracking systems on digital devices the path description will be discretised at some point and so the definition has no impact on the application of the methods described below \parencite{Giesbrecht2005}.
-% Split into 3, subfig
-\begin{figure}[ht]
-\includegraphics[width=0.9\textwidth]{3-LiteratureReview/pathDefining.png}
+
+\begin{figure}[htbp]
 \centering
-\caption[Various ways to define a path]{Various ways to define a path \parencite{Giesbrecht2005}} \figlabel{pathDefining}
+\subfloat[Continuous path]{\includegraphics[width=0.28\textwidth]{3-LiteratureReview/pathContinuous.png}}\hspace{1em}%
+\subfloat[Piecewise linear path]{\includegraphics[width=0.28\textwidth]{3-LiteratureReview/pathPiecewise.png}}\hspace{1em}%
+\subfloat[Set of discrete path nodes]{\includegraphics[width=0.28\textwidth]{3-LiteratureReview/pathDiscrete.png}}
+\caption{Various ways to define a path \parencite{Giesbrecht2005}}
+\figlabel{pathDefining}
 \end{figure}
 
 \subsubsection{Geometric Path Tracking}
@@ -125,7 +128,7 @@ Pure Pursuit uses a path 'look-ahead' distance to measure the future error betwe
 \caption[Pure Pursuit geometry]{Pure Pursuit geometry \parencite{snider2009}} \figlabel{purePursuitGeom}
 \end{figure}
 
-The Stanley Model uses the lateral error between the centre of a wheels axle and the nearest path point  to determine steer angle (\Figref{stanleyGeom}). It is simply set to the heading error which is given as the difference between the vehicles heading and the instantaneous heading of the nearest point on the path, $\theta_e$. An extra term is used when the lateral error is non zero which amplifies the steer angle to a new value of $\delta$.  This gives an effect so that as the error increases, or as the vehicle strays further from the path, the wheels steering angle is amplified in an attempt to correct for this error. The Stanley Method is very well suited to higher speed tracking but can run into problems when curvature discontinuities are present in the path.
+The Stanley Model uses the lateral error between the centre of a wheels axle and the nearest path point (\Figref{stanleyGeom}). The desired effect is so that as the vehicle strays further from the path, the wheels steering angle is amplified in an attempt to correct for the error. The Stanley Method is very well suited to higher speed tracking but can run into problems when curvature discontinuities are present in the path. The model sets the steer angle to the heading error which is calculated as the difference between the vehicles heading and the instantaneous heading of the nearest point on the path, $\theta_e$. An extra term is used when the lateral error is non zero which amplifies the steer angle to a new value of $\delta$.
 \begin{figure}[ht]
 \includegraphics[width=0.5\textwidth]{3-LiteratureReview/stanleyMethod.png}
 \centering
@@ -135,18 +138,17 @@ The Stanley Model uses the lateral error between the centre of a wheels axle and
 Some limitations of geometric path tracking methods are related to the dynamics of a vehicle which are not present in the theory, namely the capabilities of a platform and its actuators. Due to this the method expects an instant response from elements such as the steering which is an issue when high path curvatures are present or when the curvature of the path suddenly changes. As a result the method cannot guarantee that the vehicle will follow a path as accurately as designed and at high speeds that vehicle may skid or tip \parencite{coulter1992}.
 
 \subsubsection{Kinematic Path Tracking}
-The kinematic model collapses a four wheeled vehicle into a two wheeled model, much like the geometric path tracking approach. The equations of motion for the simplified system are then used to relate the vehicle speed, change in heading error and change in lateral error to a user defined velocity and steer angle in path coordinates. In practice, the same trade off between performance and stability is apparent as in the geometric models, accurate tracking at low speeds but problems due to neglected dynamics at high speeds \parencite{snider2009}. This method is not as robust as Pure Pursuit and displays a similar behaviour to the Stanley Method when discontinuities in curvature are present.
+The kinematic model collapses a four wheeled vehicle into a two wheeled model, much like the geometric path tracking approach. The equations of motion for the simplified system are then used to relate the vehicle speed, change in heading error and change in lateral error to a user defined velocity and steer angle in path coordinates. In practice, the same trade off between performance and stability is apparent as in the geometric models, tracking accuracy declines at high speeds due to neglected dynamics \parencite{snider2009}. This method is not as robust as Pure Pursuit and displays a similar behaviour to the Stanley Method when discontinuities in curvature are present.
 \subsubsection{Dynamic Path Tracking}
-A dynamic model approximates the real dynamics of a vehicle which was one of the downfalls of the previous examples. Similar to the kinematic model, the vehicle speed, heading error and lateral error are related to a user defined velocity and steer angle in path coordinates. Even though the dynamics of the vehicle are included in this model, extreme path dynamics such as large changes in curvature can have as much of an effect on the efficiency of the path tracking as before \parencite{snider2009}. Discontinuities in the path still have a noticeable effect on accuracy and the steady state lateral error is still present. However, in a more realistic scenario a dynamic path tracking method does show overall improvement \parencite{snider2009}.
+A dynamic model approximates the real dynamics of a vehicle which was one of the downfalls of the previous examples. Similar to the kinematic model, the vehicle speed, heading error and lateral error are related to a user defined velocity and steer angle in path coordinates. Even though the dynamics of the vehicle are included in this model, extreme path properties such as large changes in curvature can have a very large effect on the accuracy and efficiency of the path tracking \parencite{snider2009}. Discontinuities in the path still have a noticeable effect on accuracy and the steady state lateral error is still present. However, in a more realistic scenario a dynamic path tracking method does show overall improvement \parencite{snider2009}.
 
 \subsection{Turning the Platform a Specified Angle}
+%maybe move this section to concept or detailed design AFTER we have established that our area subdivision is primarily linear. can then talk about it in more detail
 In a path similar to that described by the piecewise linear definition, a turn can be moderately controlled by introducing a variable called the radial tolerance \parencite{Giesbrecht2005}. The radial tolerance describes the distance from the waypoint at which the system considers that waypoint 'reached', ultimately changing the point at which the platform will begin the turn towards the proceeding waypoint. If the radial tolerance is set too large the platform will begin the turn early resulting in poor path tracking. If the radial tolerance is set too small the platform will overshoot the desired path due to unaccounted vehicle dynamics and/or restrictions in steering angle. \Figref{waypointTolerances} shows examples of a radial tolerance set slightly too low (1 metre) in blue and more realistically in grey (6 metres) for a vehicle following the path in red with a turn radius of 4 metres. It is easily visible that both methods are unable to follow the desired path with perfect precision due to real vehicle dynamics.
 \begin{figure}[ht]
 \includegraphics[width=\textwidth]{3-LiteratureReview/waypointTolerances.PNG}
 \centering
 \caption[Effect of waypoint tolerances on path tracking]{Effect of waypoint tolerances on path tracking \parencite{Giesbrecht2005}} \figlabel{waypointTolerances}
 \end{figure}
-
-Literature studies provided  state-of-the-art solutions to the challenges imposed by signal processing and, platform automation and navigation. These solutions provide ideas and concept designs to platform automation for landmine detection.  
 
 \end{document}

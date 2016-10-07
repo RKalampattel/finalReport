@@ -3,7 +3,7 @@
 % edits should be made to the main.tex file in the relevant folder.   %
 % =================================================================== %
 
-\documentclass[a4paper, 12pt,draft]{report} 	% Document class, paper and font size
+\documentclass[a4paper, 12pt]{report} 	% Document class, paper and font size
 %\usepackage[hidelinks]{hyperref} 		% See comment at end of preamble
 \renewcommand{\baselinestretch}{1.3} 	% 1.3 line spacing
 \renewcommand{\arraystretch}{1.1} 		% 1.1 spacing in tables
@@ -12,7 +12,7 @@
 \usepackage{subfiles}		% For multi-part documents 
 \usepackage[normalem]{ulem}	% Allows strikthrough using \sout{}
 \usepackage{setspace}		% To change line spacing for WBS
-
+\usepackage{gensymb}		%for symbols for HArry
 \usepackage{filecontents} 				% To include .bib file
 \usepackage[backend=biber,style=authoryear,dashed=false,maxbibnames=99]{biblatex} % Bibliography stuff, dashed=false allow repeats in bibliography
 \addbibresource{references.bib}			% File with references
@@ -63,20 +63,21 @@
 \usepackage{siunitx}	 % Makes it easy to put units in
 \usepackage{enumitem}	 % For multilevel numbered lists
 \usepackage{color}		 % To change text colour
+\usepackage[colorinlistoftodos]{todonotes}
 \usepackage{refstyle}	 % Smart figure/table referencing
-%\usepackage{hyperref}	 % Advanced cross referencing, COMMENT THIS LINE TO HIDE RED BOXES, uncomment line 7 to maintain functionality
-\hypersetup{final} 	 % COMMENT OUT WHEN NOT USING DRAFT MODE 
+\usepackage{hyperref}	 % Advanced cross referencing, COMMENT THIS LINE TO HIDE RED BOXES, uncomment line 7 to maintain functionality
 
 \begin{document}
 \subfile{0-Preamble/main.tex}		
 \subfile{1-Introduction/main.tex}	
 
-%%\subfile{2-Benchmarking/main.tex}	% Has been moved to appendix
-% Will remove this and rename files when structure of final report has been decided - RK
+% \subfile{2-Benchmarking/main.tex}	% Has been moved to appendix
+% Will move this and renumber all files when structure of final report has been decided on - RK
 
 \subfile{3-LiteratureReview/main.tex}
 \subfile{4-ConceptDesign/main.tex}		
-\subfile{5-DetailedDesign/main.tex}			
+\subfile{5-DetailedDesign/main.tex}		
+\subfile{Testing/main.tex}
 \subfile{6-ProjectManagement/main.tex}		
 \subfile{7-Conclusion/main.tex}		
 

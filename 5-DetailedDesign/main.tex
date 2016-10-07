@@ -3,6 +3,8 @@
 \begin{document}
 \chapter{Detailed Design}
 \chaplabel{detailedDesign}
+
+\textcolor{red}{NEED TO INCLUDE A CHAPTER ON WHY WE SWITCHED OUT THE DRAGONBOARD FOR AN ARDUINO - JONO OR RAC MAYBE?}
 The detailed design is a result of a more thorough design process, following the outcomes from the concept design, and will form the basis of the work programs for the project. This detail design will become the reference point for the construction and development during the build phase of the project, and has been selected as being a time effective and cost effective solution to delivering the project goals. The detailed design has been separated into subsystems which can be developed concurrently, maximising productivity of team members. These subsystems and their designs are detailed below.
 
 \section{Navigation}
@@ -43,8 +45,135 @@ R &= \frac{l_d}{2\sin(\alpha)},
 \end{align*}
 where $\alpha$ and thus $\delta$ will be functions of time (calculated in real time in practice).
 A separate algorithm is used for turning a specified angle due to real quad bike geometry where a minimum turn radius is introduced.
+
 \subsection{Turning the Platform a Specified Angle}
-It is evident from \Figref{wayPointGeneration} that many sudden and sharp turns will be encountered during the navigation process. If the quad bike is not to stray a great distance from the path, the pure pursuit method breaks down due to turn angle limitations on the quad bike.  In these situations an alternate method will need to be processed in the code to turn the quad bike the required angle while not leaving a scanned region (governed by the width of the detection array). One solution is to conduct an N-point turn within the swathe which is achieved through placing waypoints at each of the end turn points.
+It is evident from \Figref{wayPointGeneration} that many sudden and sharp turns will be encountered during the navigation process. If the quad bike is not to stray a great distance from the path, the pure pursuit method breaks down due to turn angle limitations on the quad bike.  In these situations one of two methods will be used to turn the angle, an N-point turn or a gradual turn \textcolor{red}{INSERT PICTURE HERE!}. If the turn angle is below a user-set threshold a gradual turn will be conducted else an N-point turn will be used.
+
+\subsection{Positioning System}
+The requirements for the positioning system were set primarily by the virtual platform. Two requirements were defined for the design, low drift and high accuracy. The drift is the speed at which the cartesian position moves relative to the real quad position and accuracy is the distance error of the positioning system from the real quad position. The maximum allowable drift for the system was defined as 0.2 m/s, speeds exceeding this resulted in irregular steering motor fluctuations either side of the desired steering angle. The minimum allowable accuracy was defined as 0.5 m as set in the project specifications \textcolor{red}{NEED TO ADD THIS TO THE PROJECT SPECIFICATIONS}.
+
+To satisfy these characteristics an Extended Kalman Filter (EKF) was employed to fuse the positional data from two positional sources, a GPS and IMU, and quad bike kinematic equations. The EKF is defined as follows:
+\begin{align*}
+\shortintertext{Prediction Equations:}
+&\bar{\mu_t} = g(u_t, \mu_{t-1}) + \delta_t\\
+&\bar{\Sigma_t} = G_t\Sigma_tG_t^T + R_t\\
+\shortintertext{Update Equations:}
+&z_t = h(\mu_t) + v_t\\
+&K_t = \bar{\Sigma_t}H_t^T(H_t\bar{\Sigma_t}H_t^T + Q_t)^{-1}\\
+&\mu_t = \bar{\mu_t} + K_t(z_t-h(\bar{\mu_t}))\\
+&\Sigma_t = (I - K_tH_t)\bar{\Sigma_t}
+\end{align*}
+Where the state vector, $\mu_t$, holds the positional information ($x, y, \theta$) in a 3x1 matrix. Quad bike kinematic equations are used for the prediction step and the GPS and IMU are used in the update equations. As we know the starting position and heading of the quad bike through user input, the predicted covariance estimate, $\Sigma$, will be initialised as a 3x3 zero matrix. The prediction step calculates the position of the quad bike given its previous position and three parameters, velocity, steer angle, and the time-step in seconds. A visual representation of the kinematic equations is shown in \figref{quadKinematics}, where:
+\begin{align*}
+&R = \frac{L}{tan\ \delta}\\
+&\phi = \frac{V\Delta t}{R}\\
+&y_q = Rsin\phi\\
+&x_q = R(1-cos\phi)
+\shortintertext{and in the global frame:}
+&x_G = y_qsin\theta + x_qcos\theta\\
+&y_G = y_qcos\theta + x_qsin\theta\\
+&\theta = \theta + \phi
+\end{align*}
+\begin{figure}[ht]
+\includegraphics[width=0.5\textwidth]{5-DetailedDesign/quadbikeKinematics.png}
+\centering
+\caption{quad bike Kinematics} \figlabel{quadKinematics}
+\end{figure} 
+so our prediction equation for $\bar{\mu_t},\ g(u_t,\ \mu_{t-1})$ becomes:
+\[
+g(u_t, \mu_{t-1}) =
+\begin{bmatrix}
+	x_G + y_qsin\theta + x_qcos\theta\\
+    y_G + y_qcos\theta + x_qsin\theta\\
+    \theta + \phi
+\end{bmatrix}
+\textrm{, } G = \frac{\partial g_i}{\partial x_j} =
+\begin{bmatrix}
+    1	&	0	&	y_qcos\theta - x_qsin\theta\\
+    0	&	1	&	-y_qsin\theta - x_qcos\theta\\
+    0	&	0	&	1
+\end{bmatrix}
+\]
+and needs to be recalculated at each prediction step. It's Jacobin, $G$, should also be updated at each prediction step. The process noise for the prediction, $\delta_t$, is represented by a Gaussian distribution with covariance $R$.
+\[
+R =
+\begin{bmatrix}
+    \sigma_x^2	&	0	&	0\\
+    0	&	\sigma_y^2	&	0\\
+    0	&	0	&	\sigma_\theta^2
+\end{bmatrix}
+=
+\begin{bmatrix}
+    (0.025 \times V\Delta t)^2	&	0	&	0\\
+    0	&	(0.025 \times V\Delta t)^2	&	0\\
+    0	&	0	&	(0.97 \times V\Delta t)^2
+\end{bmatrix}
+\]
+Where $\sigma_x, \sigma_y, \textrm{and } \sigma_\theta$ are based on the accuracy of readings given by the velocity and steer angle sensors on the quad bike. Testing (\textcolor{red}{INSERT SECTION}) showed the error in distance, ($\sigma_x, \sigma_y$), to consistently vary within 0.5 m for every 20 m travelled, or 0.025 m/m. Since the heading is calculated based on the distance travelled and the turn angle, its error also depends on these factors. The steering motor is accurate within 1 degree of the true value due to initialisation and at a maximum turn angle of 24 degrees the error is:
+\begin{align*}
+&\Delta\phi = \frac{V\Delta t}{\frac{L}{tan\ 24}} - \frac{V\Delta t}{\frac{L}{tan\ 23}} = \frac{V\Delta t}{2.87} - \frac{V\Delta t}{3.02} = 0.017V\Delta t = 0.97\ \degree/m
+\end{align*}
+Information from two sensors are observed, positional and angular data from the GPS and angular data from the IMU. In the case of the GPS, the EKF inputs are the observation matrix and its Jacobian:
+\[
+h(\mu_t) = \mu_t = 
+\begin{bmatrix}
+    x_{gps}\\
+    y_{gps}\\
+    \theta_{gps}
+\end{bmatrix}
+\textrm{, } H = \frac{\partial h_i}{\partial x_j} = 
+\begin{bmatrix}
+    1	&	0	&	0\\
+    0	&	1	&	0\\
+    0	&	0	&	1
+\end{bmatrix}
+\]
+And an observation error modeled by a Gaussian distribution with covariance matrix $Q$:
+\[
+Q = 
+\begin{bmatrix}
+    \sigma_x^2	&	0	&	0\\
+    0	&	\sigma_y^2	&	0\\
+    0	&	0	&	\sigma_\theta^2
+\end{bmatrix}
+=
+\begin{bmatrix}
+    0.4^2	&	0	&	0\\
+    0	&	0.4^2	&	0\\
+    0	&	0	&	20^2
+\end{bmatrix}
+\]
+As the GPS drifts when stationary, positional data from this sensor is only used when the platform is at cruising speed, or when travelling in a forwards direction at $\geqslant$ 1.0 m/s. Experimental data showed the GPS to be accurate within 0.4 m, and therefore the calculated heading accurate within ~20 degrees when measuring between subsequent points. 
+
+The IMU is also used to correct the heading and as only one element of the state vector is being updated the matrix math is set up slightly differently. Experimental data shows the IMU has an error of approximately 2 degrees per 360 degrees travelled. 
+\[
+h(\mu_t) = \mu_t = 
+\begin{bmatrix}
+    \theta + \Delta \theta_{imu}
+\end{bmatrix}
+\textrm{, } H = \frac{\partial h_i}{\partial x_j} = 
+\begin{bmatrix}
+    0	&	0	&	1
+\end{bmatrix}
+\]
+And an observation error modeled by a Gaussian distribution with covariance matrix $Q$:
+\[
+Q = 
+\begin{bmatrix}
+    \sigma_\theta^2
+\end{bmatrix}
+=
+\begin{bmatrix}
+    (\frac{2}{360}\Delta \theta_{imu})^2
+\end{bmatrix}
+\]
+With the inputs calculated a new estimate covariance and position estimate is outputted. 
+\Figref{kalmanError} shows the distance error from the true value for the Kalman filtered position and the position from kinematic equations alone. The simulation consisted of a low-angle right turn, low-angle left turn, and then a long straight from nine seconds. Due to the certain starting position of the quad bike the errors all begin at zero. We can see that when using the kinematic equations alone, the error grows due to the additive nature of the process. When corrected with the IMU and GPS the Kalman position stabilises and the error peaks at 0.4 meters, within the specifications.
+\begin{figure}[ht]
+\includegraphics[width=\textwidth]{5-DetailedDesign/KalmanErrorGraph.png}
+\centering
+\caption{Error of positional estimates from virtual platform simulation} \figlabel{kalmanError}
+\end{figure}
 
 \section{Sensor Mount}
 Both the GPR and metal detector are required to be mounted to the platform in a cantilever-like fashion in order to avoid contact with the ground where it would risk detonation of a landmine. Each of the sensor arrays is expected to weigh between 10 kg and 30 kg.
