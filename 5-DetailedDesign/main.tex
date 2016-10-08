@@ -50,9 +50,9 @@ A separate algorithm is used for turning a specified angle due to real quad bike
 It is evident from \Figref{wayPointGeneration} that many sudden and sharp turns will be encountered during the navigation process. If the quad bike is not to stray a great distance from the path, the pure pursuit method breaks down due to turn angle limitations on the quad bike.  In these situations one of two methods will be used to turn the angle, an N-point turn or a gradual turn \textcolor{red}{INSERT PICTURE HERE!}. If the turn angle is below a user-set threshold a gradual turn will be conducted else an N-point turn will be used.
 
 \subsection{Positioning System}
-The requirements for the positioning system were set primarily by the virtual platform. Two requirements were defined for the design, low drift and high accuracy. The drift is the speed at which the cartesian position moves relative to the real quad position and accuracy is the distance error of the positioning system from the real quad position. The maximum allowable drift for the system was defined as 0.2 m/s, speeds exceeding this resulted in irregular steering motor fluctuations either side of the desired steering angle. The minimum allowable accuracy was defined as 0.5 m as set in the project specifications \textcolor{red}{NEED TO ADD THIS TO THE PROJECT SPECIFICATIONS}.
+The requirements for the positioning system were set primarily by the virtual platform (see \textcolor{red}{SECTION NUMBER!!!}). Two requirements were defined for the design, low positional drift and high accuracy. The drift is the speed at which the cartesian position moves relative to the real quad bike position and accuracy is the distance error of the positioning system from the real quad position. The maximum allowable drift for the system was defined as 0.2 m/s, speeds exceeding this resulted in irregular steering motor fluctuations either side of the desired steering angle. The minimum allowable accuracy was defined as 0.5 m as set in the project specifications \textcolor{red}{NEED TO ADD THIS TO THE PROJECT SPECIFICATIONS}.
 
-To satisfy these characteristics an Extended Kalman Filter (EKF) was employed to fuse the positional data from two positional sources, a GPS and IMU, and quad bike kinematic equations. The EKF is defined as follows:
+To satisfy these characteristics an Extended Kalman Filter (EKF) was employed to fuse the data from two positional sources, a GPS and IMU, and quad bike kinematic equations. It is capable of taking in to account the noise and inaccuracies from multiple measurements to produce an output which is likely more accurate than each of the individual readings. The EKF is defined as follows:
 \begin{align*}
 \shortintertext{Prediction Equations:}
 &\bar{\mu_t} = g(u_t, \mu_{t-1}) + \delta_t\\
@@ -63,7 +63,9 @@ To satisfy these characteristics an Extended Kalman Filter (EKF) was employed to
 &\mu_t = \bar{\mu_t} + K_t(z_t-h(\bar{\mu_t}))\\
 &\Sigma_t = (I - K_tH_t)\bar{\Sigma_t}
 \end{align*}
-Where the state vector, $\mu_t$, holds the positional information ($x, y, \theta$) in a 3x1 matrix. Quad bike kinematic equations are used for the prediction step and the GPS and IMU are used in the update equations. As we know the starting position and heading of the quad bike through user input, the predicted covariance estimate, $\Sigma$, will be initialised as a 3x3 zero matrix. The prediction step calculates the position of the quad bike given its previous position and three parameters, velocity, steer angle, and the time-step in seconds. A visual representation of the kinematic equations is shown in \figref{quadKinematics}, where:
+Where the state vector, $\mu_t$, holds the positional information ($x, y, \theta$) in a 3x1 matrix. The EKF is calculated in two steps, a prediction step and an update step. The prediction step uses kinematic equations to update the position of the quad bike based on physical observations. In the case of the quad bike, readings of the velocity, steering angle and time-step are taken, then geometry is used to calculate where its updated position would be. The update step then uses information obtained through sensors to correct for any error that may be present in the prediction step. This is achieved by modelling positions as a Gaussian distribution and weighting them according to their reliability. Gaussian distributions are shown as covariance matrices, $R_t$ for the prediction step and $Q_t$ for the update step, and the weighting is the Kalman Gain, $K_t$. The predicted covariance matrix, $\Sigma_t$, can then be determined. As we know the starting position and heading of the quad bike through user input, $\Sigma_t$ is initialised as a 3x3 zero matrix.
+
+A visual representation of the kinematic equations used are shown in \figref{quadKinematics}, where:
 \begin{align*}
 &R = \frac{L}{tan\ \delta}\\
 &\phi = \frac{V\Delta t}{R}\\
@@ -79,7 +81,7 @@ Where the state vector, $\mu_t$, holds the positional information ($x, y, \theta
 \centering
 \caption{quad bike Kinematics} \figlabel{quadKinematics}
 \end{figure} 
-so our prediction equation for $\bar{\mu_t},\ g(u_t,\ \mu_{t-1})$ becomes:
+so the prediction equation for $\bar{\mu_t},\ g(u_t,\ \mu_{t-1})$ becomes:
 \[
 g(u_t, \mu_{t-1}) =
 \begin{bmatrix}
@@ -94,7 +96,7 @@ g(u_t, \mu_{t-1}) =
     0	&	0	&	1
 \end{bmatrix}
 \]
-and needs to be recalculated at each prediction step. It's Jacobin, $G$, should also be updated at each prediction step. The process noise for the prediction, $\delta_t$, is represented by a Gaussian distribution with covariance $R$.
+This needs to be recalculated at each prediction step as well as it's Jacobin, $G$. The process noise for the prediction, $\delta_t$, is represented by a Gaussian distribution with covariance $R$.
 \[
 R =
 \begin{bmatrix}
@@ -109,7 +111,7 @@ R =
     0	&	0	&	(0.97 \times V\Delta t)^2
 \end{bmatrix}
 \]
-Where $\sigma_x, \sigma_y, \textrm{and } \sigma_\theta$ are based on the accuracy of readings given by the velocity and steer angle sensors on the quad bike. Testing (\textcolor{red}{INSERT SECTION}) showed the error in distance, ($\sigma_x, \sigma_y$), to consistently vary within 0.5 m for every 20 m travelled, or 0.025 m/m. Since the heading is calculated based on the distance travelled and the turn angle, its error also depends on these factors. The steering motor is accurate within 1 degree of the true value due to initialisation and at a maximum turn angle of 24 degrees the error is:
+Where $\sigma_x, \sigma_y, \textrm{and } \sigma_\theta$ are based on the accuracy of readings given by the velocity and steer angle sensors on the quad bike. Testing (\textcolor{red}{INSERT SECTION}) showed the error in distance, ($\sigma_x, \sigma_y$), to consistently vary within 0.5 m for every 20 m travelled, or 0.025 m/m. Since the heading is calculated based on the distance travelled and the turn angle, the error is also dependent on these factors. The steering motor is accurate to 1 degree of the true value due to initialisation and the error is maximum when at full lock due to the trigonometric function present in the turn angle equation below. The difference in turn angle at full lock when a 1 degree error is present is then:
 \begin{align*}
 &\Delta\phi = \frac{V\Delta t}{\frac{L}{tan\ 24}} - \frac{V\Delta t}{\frac{L}{tan\ 23}} = \frac{V\Delta t}{2.87} - \frac{V\Delta t}{3.02} = 0.017V\Delta t = 0.97\ \degree/m
 \end{align*}
@@ -143,7 +145,7 @@ Q =
     0	&	0	&	20^2
 \end{bmatrix}
 \]
-As the GPS drifts when stationary, positional data from this sensor is only used when the platform is at cruising speed, or when travelling in a forwards direction at $\geqslant$ 1.0 m/s. Experimental data showed the GPS to be accurate within 0.4 m, and therefore the calculated heading accurate within ~20 degrees when measuring between subsequent points. 
+As the GPS drifts when stationary, positional data from this sensor is only used when the platform is at cruising speed, or when travelling in a forwards direction at 5 km/hr. Experimental data showed the GPS to be accurate within 0.4 m at this speed, and therefore the calculated heading accurate within ~20 degrees when measuring between subsequent points. 
 
 The IMU is also used to correct the heading and as only one element of the state vector is being updated the matrix math is set up slightly differently. Experimental data shows the IMU has an error of approximately 2 degrees per 360 degrees travelled. 
 \[
@@ -168,12 +170,12 @@ Q =
 \end{bmatrix}
 \]
 With the inputs calculated a new estimate covariance and position estimate is outputted. 
-\Figref{kalmanError} shows the distance error from the true value for the Kalman filtered position and the position from kinematic equations alone. The simulation consisted of a low-angle right turn, low-angle left turn, and then a long straight from nine seconds. Due to the certain starting position of the quad bike the errors all begin at zero. We can see that when using the kinematic equations alone, the error grows due to the additive nature of the process. When corrected with the IMU and GPS the Kalman position stabilises and the error peaks at 0.4 meters, within the specifications.
+\Figref{kalmanError} shows the x and y components of the distance error from the true value for the Kalman filtered position and the position from kinematic equations. The simulation consisted of a 25 degree right turn, 25 degree left turn, followed by a long straight beginning at the nine second mark. Due to the certain starting position of the quad bike the errors all begin at zero. We can see that when using the kinematic equations alone, the error grows due to the additive nature of the process. A diverging result occurs because the heading calculated through kinematics is not the true heading. When corrected with the IMU and GPS the Kalman position stabilises and the error peaks at 0.4 meters, within the specifications.
 \begin{figure}[ht]
 \includegraphics[width=\textwidth]{5-DetailedDesign/KalmanErrorGraph.png}
 \centering
 \caption{Error of positional estimates from virtual platform simulation} \figlabel{kalmanError}
-\end{figure}
+\end{figure} 
 
 \section{Sensor Mount}
 Both the GPR and metal detector are required to be mounted to the platform in a cantilever-like fashion in order to avoid contact with the ground where it would risk detonation of a landmine. Each of the sensor arrays is expected to weigh between 10 kg and 30 kg.
