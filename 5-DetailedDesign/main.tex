@@ -4,8 +4,27 @@
 \chapter{Detailed Design}
 \chaplabel{detailedDesign}
 
-\textcolor{red}{NEED TO INCLUDE A CHAPTER ON WHY WE SWITCHED OUT THE DRAGONBOARD FOR AN ARDUINO - JONO OR RAC MAYBE?}
-The detailed design is a result of a more thorough design process, following the outcomes from the concept design, and will form the basis of the work programs for the project. This detail design will become the reference point for the construction and development during the build phase of the project, and has been selected as being a time effective and cost effective solution to delivering the project goals. The detailed design has been separated into subsystems which can be developed concurrently, maximising productivity of team members. These subsystems and their designs are detailed below.
+The detailed design is a result of a more thorough design process, following the outcomes from the concept design, and will form the basis of the work programs for the project. This detailed design will become the reference point for the construction and development during the build phase of the project, and has been selected as being a time effective and cost effective solution to delivering the project goals. The detailed design has been separated into subsystems which can be developed concurrently, maximising productivity of team members. These subsystems and their designs are detailed below.
+
+\section{Automation}
+\seclabel{detailedautomate}
+
+As part of the platform requirements, full autonomy of the vehicle was required. For the quad bike this meant being able to operate each of the subsystems, steering, throttle, gears, and brakes, remotely without human interaction as well as knowing state information about the quad bike including the speed, position and heading. To achieve this the quad bike uses a series of actuators and motors to operate the subsystems in place of human interaction.
+
+\subsection{Platform Modifications}
+\seclabel{detailedmodifications}
+
+A visual inspection and individual tests of each of the subsystems revealed a number of hardware and/or software issues. Due to this substantial changes were made to the control, steering, braking, gearing and positioning systems while no changes were made to the throttle and wheel encoder systems.
+
+The original brake system incorporated a limit switch and strain gauge to determine if the brake was actuated. The limit switch limited the brake motion at the extreme limit and the strain gauge dictated the brake intensity and ensured the brake lever was not being over strained. Testing of this system revealed that the brake intensity fluctuated by \textcolor{red}{15 percent NEED TOP CHECK } which would have resulted in inconsistent stopping distances. This was tested by requesting certain braking intensities and measuring the travel distance of the actuator arm and by spinning the wheel. The tests lead to the redesign of the brake measurement for greater accuracy. Improved braking accuracy was achieved through the use of a linear transducer installed on the actuator. This transducer allowed for the travel of the actuator arm to be controlled and for the position to be known to the nearest millimetre. Knowing the position of the actuator arm allows for accurate and uniform brake intensities and thus, braking distances.
+
+As highlighted in the platform requirements, forwards and reverse motion is required for the desired mission profile. A linear actuator in conjunction with two hall effect sensors were used to move the gear selector lever. Hall effect sensors measured the forwards or backwards motion of the actuator and dictated the limits of the motion. Neutral was the position in the middle of the sensors while Drive and Reverse were to the left and right respectively. Selecting Drive or Reverse resulted in the actuator pushing the gear lever to a point until the hall effect sensor reached a certain value and the arduino ordered the actuator to stop.
+
+\subsection{Steering System}
+\seclabel{detailedsteering}
+
+\subsection{Automation Software}
+\seclabel{detailedautosoftware}
 
 \section{Navigation}
 \seclabel{detailednav}
@@ -170,7 +189,7 @@ Q =
 \end{bmatrix}
 \]
 With the inputs calculated a new estimate covariance and position estimate is outputted. 
-\Figref{kalmanError} shows the x and y components of the distance error from the true value for the Kalman filtered position and the position from kinematic equations. The simulation consisted of a 25 degree right turn, 25 degree left turn, followed by a long straight beginning at the nine second mark. Due to the certain starting position of the quad bike the errors all begin at zero. We can see that when using the kinematic equations alone, the error grows due to the additive nature of the process. A diverging result occurs because the heading calculated through kinematics is not the true heading. When corrected with the IMU and GPS the Kalman position stabilises and the error peaks at 0.4 meters, within the specifications.
+\Figref{kalmanError} shows the x and y components of the distance error from the true value for the Kalman filtered position and the position from kinematic equations. The simulation consisted of a 25 degree right turn, 25 degree left turn, followed by a long straight beginning at the nine second mark. Due to the certain starting position of the quad bike the errors all begin at zero. We can see that when using the kinematic equations alone, the error grows due to the additive nature of the process. A diverging result occurs because the heading calculated through kinematics is not the true heading. When corrected with the IMU and GPS the Kalman position stabilises and the error peaks at approximately 0.4 meters, which is within specifications.
 \begin{figure}[ht]
 \includegraphics[width=\textwidth]{5-DetailedDesign/KalmanErrorGraph.png}
 \centering
@@ -203,6 +222,23 @@ The sensor arrays will be mounted at the 'rear' of the quad bike which will be p
 \item Metal detector clear of metal in a 500 mm radius and 2000 mm vertically.
 \item GPR clear of obstructions in a 100 mm radius and 50 mm vertically.
 \end{itemize}
+
+\subsubsection{Final sensor mount design}
+For the final design for the sensor mount to adhere to all the sensory requirements, design tests were required to be conducted. These tests were necessary to test for variations in ground clearances and vibrational interference from the Quad bike during operation. Testing for these were carried out using the Finite Element Analysis (FEA) method and engine run tests on the quad bike. FEA was used to test vibrational harmonics and load carrying ability of the frame when subject to operational conditions while engine run tests were used to test the vibrational frequency of the operating quad bike. 
+
+\subsubsection{FEA}
+The sensor frame design was constructed in FEA. The FEA methods discretises a geometry into a finite number of elements connected together via nodes. Boundary conditions, loads and constraints as well as material properties are subject to the design and depending on the analysis type, a result can be interpreted that can be used to alter and fine tune the design.  To properly and accurately model the frame, 3D elements were chosen to represent the geometry and a basic load test was conducted. This load test was conducted to ensure that the deflection of the mount when subject to the weight of the sensor systems would not interfere with the sensor requirements, and to check if the design was strong enough to support the weight. 
+
+talk about load test, talk about hand calc verification
+
+then talk about vibrational test using harmonic analysis. discuss results. discuss vibration expected- vibration tests during engine tests, theoretical vibration tests for driving
+any alterations made to the design
+
+Picture of our final design in CAD and FEA and irl
+
+
+
+    
 
 \section{Signal Processing}
 \seclabel{signaldetailed}
