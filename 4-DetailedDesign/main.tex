@@ -39,7 +39,7 @@ The waypoints are generated from a zone of interest to facilitate the autonomous
 To allow for complex polygonal zones to be entered by the user, the original user-defined polygon boundary is split into a series of convex hulls, simplifying the line scanning algorithm. The split of the user polygon is shown in \Figref{wayPointGeneration}, where the user-defined polygon is outlined in bold blue and the series of generated convex search regions are shaded within. The black path shows the output of the linescan algorithm starting at the origin (marked by the red dot in the south-east corner), and ends at the second red dot at the far end of the path. The linescan algorithm searches for the nearest corner from the nearest convex polygon and begins plotting successive alternating scanlines through the polygon. After a convex polygon has been completely covered, the linescan algorithm connects to the next nearest corner of the next nearest polygon and the process continues. This system allows for multiple user defined regions to be connected and autonomously scanned in a single pass.
 
 \begin{figure}[ht]
-\includegraphics[width=0.5\textwidth]{5-DetailedDesign/lineScanAlgorithm.png}
+\includegraphics[width=0.5\textwidth]{4-DetailedDesign/lineScanAlgorithm.png}
 \centering
 \caption{Output of preliminary waypoint generation algorithm} \figlabel{wayPointGeneration}
 \end{figure}
@@ -53,7 +53,7 @@ For low curvature path following (such as a straight line connecting waypoints d
 \end{align*}
 Then the steer angle, $\delta$, can be determined from the geometry shown in \Figref{geometricBicycleModel} where
 \begin{figure}[ht]
-\includegraphics[width=0.7\textwidth]{5-DetailedDesign/Geometric_Bicycle_Model.png}
+\includegraphics[width=0.7\textwidth]{4-DetailedDesign/Geometric_Bicycle_Model.png}
 \centering
 \caption{Geometric bicycle model} \figlabel{geometricBicycleModel}
 \end{figure} 
@@ -96,7 +96,7 @@ A visual representation of the kinematic equations used are shown in \figref{qua
 &\theta = \theta + \phi
 \end{align*}
 \begin{figure}[ht]
-\includegraphics[width=0.5\textwidth]{5-DetailedDesign/quadbikeKinematics.png}
+\includegraphics[width=0.5\textwidth]{4-DetailedDesign/quadbikeKinematics.png}
 \centering
 \caption{quad bike Kinematics} \figlabel{quadKinematics}
 \end{figure} 
@@ -188,13 +188,7 @@ Q =
     (\frac{2}{360}\Delta \theta_{imu})^2
 \end{bmatrix}
 \]
-With the inputs calculated a new estimate covariance and position estimate is outputted. 
-\Figref{kalmanError} shows the x and y components of the distance error from the true value for the Kalman filtered position and the position from kinematic equations. The simulation consisted of a 25 degree right turn, 25 degree left turn, followed by a long straight beginning at the nine second mark. Due to the certain starting position of the quad bike the errors all begin at zero. We can see that when using the kinematic equations alone, the error grows due to the additive nature of the process. A diverging result occurs because the heading calculated through kinematics is not the true heading. When corrected with the IMU and GPS the Kalman position stabilises and the error peaks at approximately 0.4 meters, which is within specifications.
-\begin{figure}[ht]
-\includegraphics[width=\textwidth]{5-DetailedDesign/KalmanErrorGraph.png}
-\centering
-\caption{Error of positional estimates from virtual platform simulation} \figlabel{kalmanError}
-\end{figure} 
+With the inputs calculated a new estimate covariance, $\Sigma_t$, and position estimate, $\mu_t$, is outputted to be used in the next iteration of the algorithm. 
 
 \section{Sensor Mount}
 Both the GPR and metal detector are required to be mounted to the platform in a cantilever-like fashion in order to avoid contact with the ground where it would risk detonation of a landmine. Each of the sensor arrays is expected to weigh between 10 kg and 30 kg.
@@ -211,7 +205,7 @@ Initial simulations showed that front mounted sensors with rear-wheel steering i
 \end{itemize}
 % Split, subfig
 \begin{figure}[ht]
-\includegraphics[width=0.8\textwidth]{5-DetailedDesign/Detector_Coverage.png}
+\includegraphics[width=0.8\textwidth]{4-DetailedDesign/Detector_Coverage.png}
 \centering
 \caption{Mine detector coverage simulations} \figlabel{turnCoverage}
 \end{figure}
@@ -261,7 +255,7 @@ Using the agile development strategy, project development is planned to continue
 The tasks as they appear above may be modified during project development or postponed indefinitely, as is inline with the agile development strategy. As such the detailed design extends to the second item in the previous list, corresponding to the first stage at which the software will meet the deliverable requirements. Future design outlines will be completed at evaluation stages as the project progresses.
 
 \begin{figure}[ht]
-\includegraphics[width=\textwidth]{5-DetailedDesign/data-management.png}
+\includegraphics[width=\textwidth]{4-DetailedDesign/data-management.png}
 \centering
 \caption{Data collection strategy for the signal processing system}
 \figlabel{datamanagement}
@@ -271,7 +265,7 @@ The program flow design for the completion of the first detection algorithm is s
 Once the Feature Parabolas have been isolated from the received signal, criteria will be determined by a human operator which will be used to provide classification between mines and non-mine objects.
 
 \begin{figure}[ht]
-\includegraphics[width=0.8\textwidth]{5-DetailedDesign/agile-strategy.png}
+\includegraphics[width=0.8\textwidth]{4-DetailedDesign/agile-strategy.png}
 \centering
 \caption{Software program flow for initial development stage}
 \figlabel{agile}
@@ -287,35 +281,3 @@ The central processing hardware will be provided by a Windows based desktop comp
 The microcontroller selected is an Arduino Mega 2560 board, chosen for its cost, availability and fast development time. This board has considerable I/O capabilities that exceed the requirements for the project, but allow for future expansion of sensors and ensures that I/O limitations will not be a concern. The microcontroller will be connected to the desktop computer via the serial port as mentioned above.
 
 \end{document}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

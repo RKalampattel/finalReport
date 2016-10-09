@@ -23,7 +23,7 @@ The limitation of a single radar scanline has been overcome with the use of an a
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=0.8\textwidth]{3-LiteratureReview/3d-radar.png}
+\includegraphics[width=0.8\textwidth]{2-LiteratureReview/3d-radar.png}
 \caption[Example layout of transmitting and receiving elements of a 3D radar system]{Example layout of transmitting (bottom row) and receiving elements (top row) of a 3D radar system \parencite{3dradarDXG}}
 \figlabel{arraylayout}
 \end{figure}
@@ -35,7 +35,7 @@ Detection of landmine responses with GPR data is made difficult by the low signa
 
 The easiest way to detect an object is if the approximate response is previously known, such as from a model or training data set \parencite{Yarovoy2009}. Algorithms have been developed which identify pattern matches between a known expected response and the received response from the GPR. The most popular algorithm for this application is the inverse-matched filter, which is a mathematical convolution over the received signal to attempt to detect the presence of the expected response \parencite{Osumi1984}. More advanced algorithms are capable of producing results with greater accuracy when correlated with detection confidences from nearby samples. If a number of samples in a local area show high confidence in a detected object, the overall confidence that a detection has occurred increases when compared to an isolated positive detection. The hyperbola detection method attempts to identify the hyperbolic shape formed in a visual image when multiple samples are combined in this manner (as in \Figref{GPRsample}), through the use of computer vision techniques such as edge detection and the randomised Hough transform \parencite{Xu1990}.
 \begin{figure}[ht]
-\includegraphics[width=0.7\textwidth]{3-LiteratureReview/GPR-sample.png}
+\includegraphics[width=0.7\textwidth]{2-LiteratureReview/GPR-sample.png}
 \centering
 \caption[Sample GPR response over buried anti-tank mine]{Sample GPR response over buried anti-tank mine showing parabolic shape in received signal over object of interest, which can be detected using the randomised Hough transform method} \figlabel{GPRsample}
 \end{figure}
@@ -52,14 +52,14 @@ The signal response that allows the creation of the discriminated signal is the 
 A method more appropriate for mine detection, and particularly automatic mine detection, is the generation of signatures of mine objects from a sample of training data sets. A signature of an object can be generated from the phase loop representation of the sample signal in the complex plane, an advantageous strategy as the required signal to noise ratio for a quality signature is low \parencite{Kruger2006}. Example object signatures showing the variance between objects are shown in \Figref{signature}.
 % Cut into separate pictures, subfig
 \begin{figure}[ht]
-\includegraphics[width=0.8\textwidth]{3-LiteratureReview/signature.png}
+\includegraphics[width=0.8\textwidth]{2-LiteratureReview/signature.png}
 \centering
 \caption[Phase plot signatures of various potential subsurface objects]{Phase plot signatures of various potential subsurface objects - a landmine, bullet casing, soft drink can, steel ball (from left to right) \parencite{Kruger2006}} \figlabel{signature}
 \end{figure}
 
 This signature is capable of uniquely identifying an object type (to a certain degree) allowing comparison of detected samples against a limited set of known signatures, yielding an object classification. The low signal to noise ratio requirement also means that the strategy is reasonably robust against depth based attenuation, allowing consistent classification of objects irrespective of depth. This result is shown in \Figref{comp-signature}. \Figref{comp-signature} also highlights the requirement for ground signal compensation to allow for correct matching of signatures. The ground compensation process is similar to that described for GPR technology. Important to note is that the ground compensation algorithm used on the samples must be identical to the ground compensation algorithm used to generate the signatures from the training set to guarantee comparability \parencite{Kruger2006}.
 \begin{figure}[ht]
-\includegraphics[width=0.8\textwidth]{3-LiteratureReview/compensated-signature.png}
+\includegraphics[width=0.8\textwidth]{2-LiteratureReview/compensated-signature.png}
 \centering
 \caption[Phase plot signatures of a landmine at varying depths]{Phase plot signatures of a landmine at varying depths. The top row shows the raw data phase plot and the bottom row shows the ground compensated signal \parencite{Kruger2006}} \figlabel{comp-signature}
 \end{figure}
@@ -87,7 +87,7 @@ The main approach used for control of these parameters is the PID controller \pa
 The PID control uses a feedback system where the difference between the expected and actual outcome (error) can then used as an input parameter to the PID controller \parencite{johnson2005pid}. The output (result) is adjusted and looped back to the input as shown in \Figref{PIDblock}. 
 
 \begin{figure}[ht]
-\includegraphics[width=\textwidth]{3-LiteratureReview/PIDblock.PNG}
+\includegraphics[width=\textwidth]{2-LiteratureReview/PIDblock.PNG}
 \centering
 \caption[PID controller block diagram for platform automation]{PID controller block diagram for platform automation\parencite{johnson2005pid}} 
 \figlabel{PIDblock}
@@ -111,9 +111,9 @@ Path tracking uses location information from a GPS or some other positioning sys
 
 \begin{figure}[htbp]
 \centering
-\subfloat[Continuous path]{\includegraphics[width=0.28\textwidth]{3-LiteratureReview/pathContinuous.png}}\hspace{1em}%
-\subfloat[Piecewise linear path]{\includegraphics[width=0.28\textwidth]{3-LiteratureReview/pathPiecewise.png}}\hspace{1em}%
-\subfloat[Set of discrete path nodes]{\includegraphics[width=0.28\textwidth]{3-LiteratureReview/pathDiscrete.png}}
+\subfloat[Continuous path]{\includegraphics[width=0.28\textwidth]{2-LiteratureReview/pathContinuous.png}}\hspace{1em}%
+\subfloat[Piecewise linear path]{\includegraphics[width=0.28\textwidth]{2-LiteratureReview/pathPiecewise.png}}\hspace{1em}%
+\subfloat[Set of discrete path nodes]{\includegraphics[width=0.28\textwidth]{2-LiteratureReview/pathDiscrete.png}}
 \caption{Various ways to define a path \parencite{Giesbrecht2005}}
 \figlabel{pathDefining}
 \end{figure}
@@ -123,14 +123,14 @@ Geometric path tracking uses geometric relationships between a vehicle and a pat
 
 Pure Pursuit uses a path 'look-ahead' distance to measure the future error between the vehicle and the path in real time which can then be steered to and corrected for. \Figref{purePursuitGeom} shows the geometry associated with Pure Pursuit at one point in time. It shows a goal point $(g_x, g_y)$ on the desired path at a specified look-ahead distance $l_d$ in front of the vehicle. The steer angle is calculated based on an arc that would connect the centre of the non-steering axle to the goal point. The calculation of the goal point is effectively adding a waypoint to the path at that point. When high curvatures are present in a path the controller may begin to cut corners due to a look-ahead distance that would effectively skip this portion of the path. Lateral error on a path of constant curvature may also be experienced due to geometric controller characteristics which do not take into account the curvature of a path. However, Pure Pursuit provides a very robust tracking algorithm when discontinuous curvatures are present \parencite{snider2009}. In general, for more accurate tracking a short look-ahead distance should be used but will eventually result in oscillation, for smoother tracking a long look-ahead distance should be used but this will reduce precision \parencite{snider2009}.
 \begin{figure}[ht]
-\includegraphics[width=0.6\textwidth]{3-LiteratureReview/purePursuitGoal.png}
+\includegraphics[width=0.6\textwidth]{2-LiteratureReview/purePursuitGoal.png}
 \centering
 \caption[Pure Pursuit geometry]{Pure Pursuit geometry \parencite{snider2009}} \figlabel{purePursuitGeom}
 \end{figure}
 
 The Stanley Model uses the lateral error between the centre of a wheels axle and the nearest path point (\Figref{stanleyGeom}). The desired effect is so that as the vehicle strays further from the path, the wheels steering angle is amplified in an attempt to correct for the error. The Stanley Method is very well suited to higher speed tracking but can run into problems when curvature discontinuities are present in the path. The model sets the steer angle to the heading error which is calculated as the difference between the vehicles heading and the instantaneous heading of the nearest point on the path, $\theta_e$. An extra term is used when the lateral error is non zero which amplifies the steer angle to a new value of $\delta$.
 \begin{figure}[ht]
-\includegraphics[width=0.5\textwidth]{3-LiteratureReview/stanleyMethod.png}
+\includegraphics[width=0.5\textwidth]{2-LiteratureReview/stanleyMethod.png}
 \centering
 \caption[Stanley Method geometry]{Stanley Method geometry \parencite{snider2009}} \figlabel{stanleyGeom}
 \end{figure}
@@ -146,7 +146,7 @@ A dynamic model approximates the real dynamics of a vehicle which was one of the
 %maybe move this section to concept or detailed design AFTER we have established that our area subdivision is primarily linear. can then talk about it in more detail
 In a path similar to that described by the piecewise linear definition, a turn can be moderately controlled by introducing a variable called the radial tolerance \parencite{Giesbrecht2005}. The radial tolerance describes the distance from the waypoint at which the system considers that waypoint 'reached', ultimately changing the point at which the platform will begin the turn towards the proceeding waypoint. If the radial tolerance is set too large the platform will begin the turn early resulting in poor path tracking. If the radial tolerance is set too small the platform will overshoot the desired path due to unaccounted vehicle dynamics and/or restrictions in steering angle. \Figref{waypointTolerances} shows examples of a radial tolerance set slightly too low (1 metre) in blue and more realistically in grey (6 metres) for a vehicle following the path in red with a turn radius of 4 metres. It is easily visible that both methods are unable to follow the desired path with perfect precision due to real vehicle dynamics.
 \begin{figure}[ht]
-\includegraphics[width=\textwidth]{3-LiteratureReview/waypointTolerances.PNG}
+\includegraphics[width=\textwidth]{2-LiteratureReview/waypointTolerances.PNG}
 \centering
 \caption[Effect of waypoint tolerances on path tracking]{Effect of waypoint tolerances on path tracking \parencite{Giesbrecht2005}} \figlabel{waypointTolerances}
 \end{figure}
