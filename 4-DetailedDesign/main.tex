@@ -36,6 +36,10 @@ As highlighted in the platform requirements, forwards and reverse motion is requ
 \caption{Gear setup showing hall effect sensors in red in front of the gear actuator} \figlabel{gearSetup}
 \end{figure}
 
+\subsection{Wheel Encoder}
+\seclabel{modificationwheelencoder}
+The wheel encoder setup uses an encoder disk to measure the rotation of the back left wheel. 60 pulses per revolution of the wheel is detected which generates a frequency and is converted to a voltage which corresponds to a speed. Testing of the system showed the sensor to work exceptionally well during stationary lab tests as shown in \secref{testingwheelencoder}. With the engine running however, vibrations in the bracket of of the hall effect sensor caused unpredicted pulses to occur, giving a false reading. This can be seen in \figref{encoderEngine}. To rectify the issue a dampening bracket was introduced, the new bracket is shown in \figref{asdf}.
+
 \subsection{Positioning}
 \seclabel{modificationPositioning}
 No positioning system was initially present in the quad bike. For implementation of the designed Kalman Filter (see \secref{positioningSystem}) a GPS and IMU were required. The selected units are shown in \figref{gpsIMU}.
@@ -74,8 +78,13 @@ To allow for complex polygonal zones to be entered by the user, the original use
 \end{figure}
 
 \subsection{Low Curvature Path Following}
-For low curvature path following Pure Pursuit is used. Low curvature is defined as any path with a radius of curvature greater than that of the minimum turn radius of the quad bike, ie. a radius of curvature greater than 3.14 meters. For any path with a radius of curvature less than 3.14 meters the quad bike is unable to turn sharp enough to follow the path. Due to the way the preliminary region subdivision (\secref{detailedregionsubdivision}) takes place, the only radius of curvatures present are either zero, or infinite (straight line).
-is The tracker works through determining an arc that connects the non steering wheel axle to a goal point on the path (refer back to \Figref{purePursuitGeom}).  The goal point ($g_x, g_y$) acts as an intermediate waypoint and is determined from a look-ahead distance $l_d$. The angle, $\alpha$, can be related to the geometry using the law of sines,
+For low curvature path following Pure Pursuit is used. Low curvature is defined as any path with a radius of curvature greater than that of the minimum turn radius of the quad bike, ie. a radius of curvature greater than 3.14 meters. The quad bike's maximum steering angle of 24 degrees restricts it from making any turn sharper than this. Due to the way the preliminary region subdivision  takes place (\secref{detailedregionsubdivision}), the only radius of curvatures present are either zero (corner), or infinite (straight line) shown in \figref{curvatures}.
+\begin{figure}[ht]
+\includegraphics[width=0.6\textwidth]{4-DetailedDesign/radiusOfCurvatures.png}
+\centering
+\caption{Radii of curvatures present in region subdivision} \figlabel{curvatures}
+\end{figure}
+The low curvature path tracker works through determining an arc that connects the centre point of the non steering wheel axle to a goal point on the path (refer to \Figref{purePursuitGeom}).  The goal point ($g_x, g_y$) acts as an intermediate waypoint and is determined from a look-ahead distance $l_d$. The angle, $\alpha$, can be related to the geometry using the law of sines,
 \begin{align*}
 \frac{l_d}{\sin(2\alpha)} &= \frac{R}{\sin(^{\pi}/_2-\alpha)},\\
 \frac{l_d}{2\sin(\alpha)\cos(\alpha)} &= \frac{R}{\cos(\alpha)},\\
