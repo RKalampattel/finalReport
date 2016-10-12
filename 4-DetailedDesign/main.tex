@@ -1,14 +1,52 @@
 \documentclass[main.tex]{subfiles}
 
 \begin{document}
-\chapter{Detailed design}
+\chapter{Detailed Design}
 \chaplabel{detailedDesign}
 
 The detailed design is a result of a more thorough design process, following the outcomes from the concept design, and will form the basis of the work programs for the project. This detailed design will become the reference point for the construction and development during the build phase of the project, and has been selected as being a time effective and cost effective solution to delivering the project goals. The detailed design has been separated into subsystems which can be developed concurrently, maximising productivity of team members. These subsystems and their designs are detailed below.
+\section{Signal processing}
+\subsection{Metal detector algorithm}
+\subsection{GPR algorithm}
+As per the concept design, the signal processing subsystem will be based on a weighted evaluation of the sensor data to achieve the goal of reporting a confidence level for the existence of landmine.
+The weighted evaluation will be the combination of three detection algorithms utilising two sensors. Each independent algorithm will be capable of reporting some confidence in the existence of a landmine object, with the combination expected to improve the detection rate and reduce the number of false positives.
+
+The development process is expected to be highly experimental and involve a significant degree of manual tuning or collection of datasets to produce quality results. The time required to complete these tasks is unknown due to their experimental nature, as so an agile development strategy is proposed. Under the agile software development strategy, software is developed incrementally without explicit milestones being set prior to commencement. After each incremental stage of the software production is completed, a re-evaluation process is used to develop the next project milestone and the expectations for project completion are adjusted and documented. This strategy is expected to ensure the software deliverable has some baseline capabilities at project end, in the event that the full software goals are not met. This is in contrast to other development strategies which are highly structured and may result in completion of individual modules, but delivery of a non-functional combined product in the event that project timeframes are not met as expected.
+
+Using the agile development strategy, project development is planned to continue as follows, with each element being completed before progress commences on the next item:
+\begin{itemize}
+\item Initialisation of sensor devices and collection of information into suitable data structures. The proposed data collection arrangement is shown in \Figref{datamanagement}.
+\item Processing of data with a single algorithm (of the three selected) using arbitrary success criteria to indicate presence of a landmine.
+\item Training of the completed single algorithm system with actual sample data, either manually or using a computer learning method, depending on a progress evaluation at commencement of this task.
+\item Commencement of development and software training for additional algorithms
+\item Development and training of a machine learning algorithm to determine landmine probability from the outputs of the three independent algorithms.
+\end{itemize}
+
+The tasks as they appear above may be modified during project development or postponed indefinitely, as is inline with the agile development strategy. As such the detailed design extends to the second item in the previous list, corresponding to the first stage at which the software will meet the deliverable requirements. Future design outlines will be completed at evaluation stages as the project progresses.
+
+\begin{figure}[ht]
+\includegraphics[width=\textwidth]{4-DetailedDesign/data-management.png}
+\centering
+\caption{Data collection strategy for the signal processing system}
+\figlabel{datamanagement}
+\end{figure}
+
+The program flow design for the completion of the first detection algorithm is shown in \Figref{agile}. The first algorithm to be attempted is the identification of feature parabolas using the randomised Hough transform over the GPR B-scan, as this method produces a visual output which can easily be tested for correctness by an operator by visual comparison. It will also involve the development of the background signal isolation process, which will also be able to be visually inspected for correctness and will be required for the preprocessing steps of the other detection algorithms.
+Once the Feature Parabolas have been isolated from the received signal, criteria will be determined by a human operator which will be used to provide classification between landmine and non-landmine objects.
+
+\begin{figure}[ht]
+\includegraphics[width=0.8\textwidth]{4-DetailedDesign/agile-strategy.png}
+\centering
+\caption{Software program flow for initial development stage}
+\figlabel{agile}
+\end{figure}
+
+\section{Sensor fusion}
+
 \section{Platform modifications}
 \seclabel{detailedmodifications}
 A visual inspection and individual tests of each of the subsystems revealed a number of hardware and/or software issues. Due to this changes were made to the electronics and control, steering, braking, gearing and positioning systems. No changes were made to the throttle and wheel encoder systems as no issues were present.
-\subsection{Electronics and Control}
+\subsection{Electronics and control}
 \seclabel{modificationElec}
 
 \subsection{Steering}
@@ -55,9 +93,6 @@ No positioning system was initially present in the quad bike. For implementation
 
 As part of the platform requirements, full autonomy of the vehicle was required. For the quad bike this meant being able to operate each of the subsystems, steering, throttle, gears, and brakes, remotely without human interaction as well as knowing state information about the quad bike including the speed, position and heading. To achieve this the quad bike uses a series of actuators and motors to operate the subsystems in place of human interaction.
 
-\subsection{Steering system}
-\seclabel{detailedsteering}
-
 \subsection{Automation software}
 \seclabel{detailedautosoftware}
 
@@ -67,7 +102,7 @@ Platform navigation is primarily handled via waypoints. After a region is select
 
 \subsection{Region subdivision}
 \seclabel{detailedregionsubdivision}
-The waypoints are generated from a zone of interest to facilitate the autonomous surveying of areas that are suspected to contain mines. This zone must be capable of being user defined to match real world boundaries. The algorithm used to generate these waypoints is a modified linescan algorithm which will be tuned to output scanlines of the same width as the equipment's scan width, defined as 3 meters in the specifications.
+The waypoints are generated from a zone of interest to facilitate the autonomous surveying of areas that are suspected to contain landmines. This zone must be capable of being user defined to match real world boundaries. The algorithm used to generate these waypoints is a modified linescan algorithm which will be tuned to output scanlines of the same width as the equipment's scan width, defined as 3 meters in the specifications.
 
 To allow for complex polygonal zones to be entered by the user, the original user-defined polygon boundary is split into a series of convex hulls, simplifying the line scanning algorithm. The split of the user polygon is shown in \Figref{wayPointGeneration}, where the user-defined polygon is outlined in bold blue and the series of generated convex search regions are shaded within. The black path shows the output of the linescan algorithm starting at the origin (marked by the red dot in the south-east corner), and ends at the second red dot at the far end of the path. 
 \begin{figure}[ht]
@@ -104,7 +139,7 @@ R &= \frac{l_d}{2\sin(\alpha)},
 \end{align*}
 where $\alpha$ and thus $\delta$ will be functions of time and thus will be calculated in real time. The goal point is determined as a result of further path subdivision discussed in \secref{pathsubdivision}.
 
-\subsection{Turning the Platform a Specified Angle}
+\subsection{Turning the platform a specified angle}
 As a result of zero radius of curvature path points, turning procedures are incorporated into the path. If the quad bike is not to stray a great distance from the path, .  In these situations one of two methods will be used to turn the angle, an N-point turn or a gradual turn \textcolor{red}{INSERT PICTURE HERE!}. If the turn angle is below a user-set threshold a gradual turn will be conducted else an N-point turn will be used.
 
 \subsection{Path subdivision}
@@ -233,7 +268,18 @@ Q =
 \]
 With the inputs calculated a new estimate covariance, $\Sigma_t$, and position estimate, $\mu_t$, is outputted to be used in the next iteration of the algorithm. 
 
-\section{Sensor Mount}
+\section{Sensor mount}
+\subsection{Manufacturing}
+\subsection{Structural and vibrational analysis}
+The sensor frame design was constructed in FEA. The FEA methods discretises a geometry into a finite number of elements connected together via nodes. Boundary conditions, loads and constraints as well as material properties are subject to the design and depending on the analysis type, a result can be interpreted that can be used to alter and fine tune the design.  To properly and accurately model the frame, 3D elements were chosen to represent the geometry and a basic load test was conducted. This load test was conducted to ensure that the deflection of the mount when subject to the weight of the sensor systems would not interfere with the sensor requirements, and to check if the design was strong enough to support the weight. 
+
+talk about load test, talk about hand calc verification
+
+then talk about vibrational test using harmonic analysis. discuss results. discuss vibration expected- vibration tests during engine tests, theoretical vibration tests for driving
+any alterations made to the design
+
+Picture of our final design in CAD and FEA and irl
+\subsection{Steering focal point}
 Both the GPR and metal detector are required to be mounted to the platform in a cantilever-like fashion in order to avoid contact with the ground where it would risk detonation of a landmine. Each of the sensor arrays is expected to weigh between 10 kg and 30 kg.
 Mounting needs to be done in a configuration that will keep individual array sensors aligned so that corresponding ground information can be collated and analysed correctly. If the assumption of Ackermann steering holds for the quad bike we can use the simplified, 2-wheel model to assess the location of the sensors relative to the quad bike. The simplified model provides the following geometric relationship:
 $$
@@ -250,7 +296,7 @@ Initial simulations showed that front mounted sensors with rear-wheel steering i
 \begin{figure}[ht]
 \includegraphics[width=0.8\textwidth]{4-DetailedDesign/Detector_Coverage.png}
 \centering
-\caption{Mine detector coverage simulations} \figlabel{turnCoverage}
+\caption{Landmine detector coverage simulations} \figlabel{turnCoverage}
 \end{figure}
 This result is expected. Referring to \Figref{geometricBicycleModel}, the turning radius of the rear wheel is $R$ and the turning radius of the front wheel is the hypotenuse of the triangle formed – of length $\sqrt{R^2 + L^2}$, which is greater than $R$. If the sensing array was some distance $q$ in front of the front wheels, its turning radius would be $\sqrt{R^2 + [L+q]^2}$, greater yet again. However, if the sensing array was an equal distance $q$ behind the rear wheels (or front wheels if this was a rear-steering arrangement) then the turning radius of the sensors would be $\sqrt{R^2 + q^2}$. From this it can be seen that to minimise the effective turning radius then $q$ should be minimised.
 
@@ -263,73 +309,7 @@ The sensor arrays will be mounted at the 'rear' of the quad bike which will be p
 \subsubsection{Final sensor mount design}
 For the final design for the sensor mount to adhere to all the sensory requirements, design tests were required to be conducted. These tests were necessary to test for variations in ground clearances and vibrational interference from the Quad bike during operation. Testing for these were carried out using the Finite Element Analysis (FEA) method and engine run tests on the quad bike. FEA was used to test vibrational harmonics and load carrying ability of the frame when subject to operational conditions while engine run tests were used to test the vibrational frequency of the operating quad bike. 
 
-\subsubsection{FEA}
-The sensor frame design was constructed in FEA. The FEA methods discretises a geometry into a finite number of elements connected together via nodes. Boundary conditions, loads and constraints as well as material properties are subject to the design and depending on the analysis type, a result can be interpreted that can be used to alter and fine tune the design.  To properly and accurately model the frame, 3D elements were chosen to represent the geometry and a basic load test was conducted. This load test was conducted to ensure that the deflection of the mount when subject to the weight of the sensor systems would not interfere with the sensor requirements, and to check if the design was strong enough to support the weight. 
-
-talk about load test, talk about hand calc verification
-
-then talk about vibrational test using harmonic analysis. discuss results. discuss vibration expected- vibration tests during engine tests, theoretical vibration tests for driving
-any alterations made to the design
-
-Picture of our final design in CAD and FEA and irl
-
-
-
-    
-
-\section{Signal Processing}
-\seclabel{signaldetailed}
-
-
-As per the concept design, the signal processing subsystem will be based on a weighted evaluation of the sensor data to achieve the goal of reporting a confidence level for the existence of mines.
-The weighted evaluation will be the combination of three detection algorithms utilising two sensors. Each independent algorithm will be capable of reporting some confidence in the existence of a mine object, with the combination expected to improve the detection rate and reduce the number of false positives.
-
-The development process is expected to be highly experimental and involve a significant degree of manual tuning or collection of datasets to produce quality results. The time required to complete these tasks is unknown due to their experimental nature, as so an agile development strategy is proposed. Under the agile software development strategy, software is developed incrementally without explicit milestones being set prior to commencement. After each incremental stage of the software production is completed, a re-evaluation process is used to develop the next project milestone and the expectations for project completion are adjusted and documented. This strategy is expected to ensure the software deliverable has some baseline capabilities at project end, in the event that the full software goals are not met. This is in contrast to other development strategies which are highly structured and may result in completion of individual modules, but delivery of a non-functional combined product in the event that project timeframes are not met as expected.
-
-Using the agile development strategy, project development is planned to continue as follows, with each element being completed before progress commences on the next item:
-\begin{itemize}
-\item Initialisation of sensor devices and collection of information into suitable data structures. The proposed data collection arrangement is shown in \Figref{datamanagement}.
-\item Processing of data with a single algorithm (of the three selected) using arbitrary success criteria to indicate presence of a mine.
-\item Training of the completed single algorithm system with actual sample data, either manually or using a computer learning method, depending on a progress evaluation at commencement of this task.
-\item Commencement of development and software training for additional algorithms
-\item Development and training of a machine learning algorithm to determine mine probability from the outputs of the three independent algorithms.
-\end{itemize}
-
-The tasks as they appear above may be modified during project development or postponed indefinitely, as is inline with the agile development strategy. As such the detailed design extends to the second item in the previous list, corresponding to the first stage at which the software will meet the deliverable requirements. Future design outlines will be completed at evaluation stages as the project progresses.
-
-\begin{figure}[ht]
-\includegraphics[width=\textwidth]{4-DetailedDesign/data-management.png}
-\centering
-\caption{Data collection strategy for the signal processing system}
-\figlabel{datamanagement}
-\end{figure}
-
-The program flow design for the completion of the first detection algorithm is shown in \Figref{agile}. The first algorithm to be attempted is the identification of feature parabolas using the randomised Hough transform over the GPR B-scan, as this method produces a visual output which can easily be tested for correctness by an operator by visual comparison. It will also involve the development of the background signal isolation process, which will also be able to be visually inspected for correctness and will be required for the preprocessing steps of the other detection algorithms.
-Once the Feature Parabolas have been isolated from the received signal, criteria will be determined by a human operator which will be used to provide classification between mines and non-mine objects.
-
-\begin{figure}[ht]
-\includegraphics[width=0.8\textwidth]{4-DetailedDesign/agile-strategy.png}
-\centering
-\caption{Software program flow for initial development stage}
-\figlabel{agile}
-\end{figure}
-
-\section{Software}
-\seclabel{detailedSoftware}
-
-\subsection{Software Architecture}
-\seclabel{detailedSoftwareArchitecture}
-
-\subsection{Virtual Platform}
-\seclabel{detailedVP}
-
-\subsection{Tablet Application}
-\seclabel{detailedTabletApp}
-
-\subsection{Communications}
-\seclabel{detailedComms}
-
-\section{Electronics Hardware}
+\section{Electronics}
 The electronics hardware to be used for the project will fit in the categories as described in the Conceptual Design. The custom electronics work pre-existing on the quad bike supplied by the DSTG meets the requirements for the COTS bespoke electronics, providing digital interfaces to the actuators and sensors attached to the platform. The need for replacement or improvement of any of these electronics will be determined after testing has been completed on the supplied vehicle and their performance has been evaluated.
 
 As the electronics system does not have particularly strict requirements for part selection, and due to the COTS equipment being mostly interchangeable with little effect on appropriateness for the project, the electronics hardware has been chosen on a basis of what is most readily available to the project and most familiar to the project members. This choice reduces time spent in the design stage and allows for a rapid development process to commence as early as possible.
@@ -337,5 +317,21 @@ As the electronics system does not have particularly strict requirements for par
 The central processing hardware will be provided by a Windows based desktop computer supplied by the University of Adelaide. A Windows device has been chosen to be able to make use of the provided drivers for the GPR system which are only compatible with 32-bit Windows machines. The selected device has WiFi communications capabilities and dedicated serial communications ports, allowing easy communications to a microcontroller device providing low level I/O.
 
 The microcontroller selected is an Arduino Mega 2560 board, chosen for its cost, availability and fast development time. This board has considerable I/O capabilities that exceed the requirements for the project, but allow for future expansion of sensors and ensures that I/O limitations will not be a concern. The microcontroller will be connected to the desktop computer via the serial port as mentioned above.
+
+\section{Software}
+\seclabel{detailedSoftware}
+
+\subsection{Software architecture}
+\seclabel{detailedSoftwareArchitecture}
+
+\subsection{Virtual platform}
+\seclabel{detailedVP}
+
+\subsection{Tablet application}
+\seclabel{detailedTabletApp}
+
+\subsection{Communications}
+\seclabel{detailedComms}
+
 
 \end{document}
