@@ -7,7 +7,7 @@
 \chaplabel{benchmarking}
 Before commencing the design process, benchmarking was conducted in order to gauge the capabilities of existing platforms and sensor equipment used for landmine detection. This gave an indication of the minimum requirements to be set for the project, and helped to better understand what challenges would need to be overcome.
 
-\section{Remotely Controlled Platforms used for Landmine Detection}
+\section{Autonomous platforms for landmine detection}
 The use of a vehicle for landmine detection allows for larger areas to be scanned in a shorter period of time. Vehicles can also support greater loads than any human operator could, which means that more sensing equipment can be carried; this in turn increases sensing capability, and reduces the likelihood of false positives. If the vehicle can operate remotely or autonomously, the risk to human operators can be eliminated entirely. For these reasons, remotely controlled or autonomous platforms have become a popular tool for landmine detection. This section looks at several such platforms that are currently in operation or in development. 
 
 %\subsection{Landmine detection vehicles}
@@ -98,7 +98,7 @@ In military scenarios, the key priority is to clear a path as quickly as possibl
 
 % Need to talk about the usefulness of the GPR and landmine together. How they complement each other. 
 
-\section{Capabilities of Mine Detection Equipment}
+\section{Capabilities of landmine detection equipment}
 Current mine sweeping methods that employ handheld metal detectors achieve high rates of detection for subsurface metallic mines. The main limitations of the handheld metal detecting systems is the inability to detect mines constructed from non-metallic composite materials, and the shallow depth capabilities provided by the metal detector. These systems also have a high rate of false positives due to the inability for an operator to differentiate between mines and shrapnel fragment or other buried metal objects.
 
 Handheld mine detection devices currently used by the ADF for military purposes include the Minelab F3 series. This device is used to clear paths for vehicles by tracking the wheelbase and scanning for anti-vehicle mines. It has a sensing depth suitable to allow the detection of almost all anti-tank and anti-personnel mines that will pose a threat to an operator, though it has the expected high rate of false positives \parencite{minelabF3}. The process for determining which items are suspicious and require excavation, and which items are unremarkable shrapnel, is required to be undertaken by a skilled operator.
@@ -138,7 +138,7 @@ Current state-of-the-art GPR systems for mine detection, such as the DX and DXG 
 \figlabel{dxseries}
 \end{figure}
 
-\section{Multisensor Systems for Landmine Detection}
+\section{Multisensor systems for landmine detection}
 While traditional systems for landmine detection make use of a single sensor, the latest generation of systems attempt to combine multiple sensors. This allows for a broader range of threats to be detected, and at the same time increase detection accuracy.  
 
 % There is no benchmark here so no point talking about it
@@ -159,6 +159,30 @@ Another system is being developed to allow demining and reclamation of vast swat
 % Link to challenges in integration 
 
 %The current challenges with landmine detection, including further elaboration of each signal processing methods are \textcolor{red}{reference literature review section}. 
+
+\chapter{Platform Selection}
+\chaplabel{platformSelectionApp}
+
+\chapter{Sensor Mount Material Selection}
+\chaplabel{sensorMaterialsApp}
+
+\chapter{Positioning System Derivation}
+\chaplabel{positionDerivation}
+
+\chapter{Sensor Mount Vibrations Analysis}
+\chaplabel{sensorVibesApp}
+
+\chapter{Software Design Documents}
+\chaplabel{designDocs}
+
+\chapter{Testing Procedures}
+\chaplabel{testProcs}
+
+\chapter{Sensor Test Results}
+\chaplabel{sensorResults}
+
+\chapter{Gear Actuator Truth Table}
+\chaplabel{gearTable}
 
 \chapter{Work Breakdown Structure}
 \chaplabel{WBS}
@@ -278,7 +302,7 @@ The Gantt chart provides an overview of the timeline for the entire project. Maj
 \includepdf[pages={1-},landscape]{8-Appendices/oldGantt.pdf}
 \includepdf[pages={1-},landscape]{8-Appendices/newGantt.pdf}
 
-\chapter{Risk Assessment and SOP}
+\chapter{Safety Documents}
 \chaplabel{riskAss}
 As part of the formal risk management for the project, a risk assessment must be carried out using the RMSS system, and a safe operating  procedure (SOP) must be developed. Both of these items, as discussed in \secref{safety}, are attached on the following pages.
 \includepdf{8-Appendices/residualRiskMatrix.pdf}
