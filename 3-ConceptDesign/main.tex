@@ -136,9 +136,18 @@ As the platform will be primarily performing two tasks, following a low curvatur
 \end{figure}
 
 \subsection{Performing turning manoeuvres}
-At the end of a swathe the platform will be required to turn a specified angle within a small area defined by the width of the sensing arrays. Alternatively, if the scan history is available to the platform in the form of a map, a larger area may be available to conduct the turn. Due to little or no literature on the unique topic an adaptation of the simplified Ackermann model will be used in conjunction with the Stanley model (good for parking manoeuvres) to achieve the desired turn.
+At the end of a swathe the platform will be required to turn a specified angle within a small area defined by the width of the sensing arrays. Alternatively, if the scan history is available to the platform in the form of a map, a larger area may be available to conduct the turn. Due to little or no literature on the unique topic an adaptation of the simplified Ackermann model will be used in conjunction with the Stanley model which excels for parking manoeuvres \parencite{snider2009} to achieve the desired turn.
 
 \subsection{Positioning}
+The positioning system is used to determine the location of the quad bike for navigation and to send that data to the user tablet when a mine is detected. Real time positioning in remote locations and accurate to within 0.5 is required from the system. A number of options were looked at when designing the positioning system including Local Positioning Systems (LPS), Global Positioning Systems (GPS), and dead reckoning techniques.
+
+LPS's uses three or more signalling beacons of known location to determine position through triangulation. They can be highly accurate however require the signalling beacons to be stationed near the area of interest. Transporting and setting up at least three signalling beacons is a time consuming process and makes for inefficient travelling when numerous areas of interest are present.
+
+Similar to LPS, GPS's are very accurate, however due to the distance between receivers and a number of linked effects the positional data is very noisy, providing location reliably within only 4 meters. Better accuracy can be achieved by using correction techniques, such as Real Time Kinematics (RTK), where accuracy increases to sub-centimetre. Similar to LPS, correction methods like RTK require base locations within 15 kilometres of the GPS and can take many seconds to receive a fix, both working against a solution to real time positioning in remote areas.
+
+Dead reckoning techniques calculate the current position by advancing a previous position based on a known speed and heading over some time step. These techniques are highly prone to cumulative error known as drift. A widely used application of dead reckoning is in Inertial Measurement Units (IMU) where accelerometers and gyroscopes are used to determine linear and rotational accelerations and thus have information to update position. This method is able to provide positional data in real time however over longer time periods the accuracy becomes unreliable.
+
+To correct for drift from dead reckoning techniques, GPS aided Inertial Navigation Systems (INS) can be used. Accurate but noisy data from a GPS is constantly fed into an estimation algorithm alongside a smooth, but error accumulating position to correct for the drift. Kalman Filtering is one such technique which is used to combine information from various sensors to provide a much more reliable estimate of position.
 
 \section{Sensor mount}
 \seclabel{sensormount}

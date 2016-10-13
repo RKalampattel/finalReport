@@ -66,70 +66,47 @@ Egypt is listed as the country most contaminated by landmines, with an area of r
  \seclabel{Iran}
 Iran has an area of approximately 18,000 square kilometres of land contaminated with 12-16 million landmines left over from the 1980-1988 Iran-Iraq conflict \parencite{landmineMonitor2015}. The main areas of contamination are along the provinces of Khuzestan, which is mainly covered with sandy soils similar to those in Egypt. 
 
-\textcolor{red}{This paragraph and the one before it need more information about terrain, vegetation, soil type, moisture, mine type, \textbf{mine depths}, obstacles, gradient, whatever else can be found!}
+\textcolor{red}{This paragraph and the one before it need more information about terrain, vegetation, soil type, moisture, mine type, \textbf{mine depths}, obstacles, gradient, whatever else can be found! These should then lead provide the basis for the details presented at the start of the mission profile. Or maybe have an additional subsection, which describes the chosen operating environment... - RK}
 
 \subsection{Mission profile}
 \seclabel{MissionProfile}
 A typical demining operation requires personnel to clear a path or area, ensuring it is safe for ground troops and vehicles to pass over. The mission profile developed for the platform resembles such an operation, and will form the basis of many of the project's design requirements.
-\begin{quote}\textit{The mission takes place in a region with sandy soils and level, unobstructed terrain. A number of types of landmines, including high and low metal content anti-personnel and anti-tank mines, can be found buried at depths of up to 15 cm. The operator will use a handheld device to select waypoints that define a path or the boundaries of an area of interest. The platform will travel out to this region, then autonomously navigate it. Using the onboard sensor suite, the platform scans the area in real time at an operational speed of 5 km/h. Whenever a detection is made, the platform will stop, log the GPS coordinates of the location  and send sensor data and a confidence interval to the operator, giving the likelihood of the detected object being a landmine. Once the operator instructs the platform to resume, it continues to scan the area. Over time, a map of the scanned region showing all detected objects is developed using the sensor data. At any point the operator can abort the mission, or take manual control of the platform.}
+\begin{quote}\textit{The mission takes place in a region with dry, sandy soils and level terrain unobstructed by vegetation or obstacles, such as a road or open field. A number of types of landmines, including high and low metal content anti-personnel and anti-tank mines, can be found buried at depths of up to 15 cm. The operator will use a handheld device to select waypoints that define a path or the boundaries of an area of interest. The platform will travel out to this path or area, then autonomously navigate it. Using the onboard sensor suite, the platform scans the area in real time at an operational speed of 5 km/h. Whenever a detection is made, the platform will stop, log the GPS coordinates of the location  and send sensor data and a confidence interval to the operator, giving the likelihood of the detected object being a landmine. Once the operator instructs the platform to resume, it continues to scan the area. Over time, a map of the scanned region showing all detected objects is developed using the sensor data. At any point the operator can abort the mission, or take manual control of the platform.}
 \end{quote}
 
 \subsection{Performance specifications}
 \seclabel{performance}
-Knowing the basic operating environment and chosen scenario of operation, performance specifications can be defined. These specifications encompass the platform, environment and sensors.
+Knowing the basic operating environment and mission profile, performance specifications can be defined, encompassing the platform and sensor systems.
+
 \subsubsection{Platform}
 \seclabel{platform}
-The platform is required to be able to perform certain tasks to ensure that the objectives can be completed. In order to do this, it needs to satisfy some basic specifications and requirements: 
+In order to be able to autonomously navigate a region of interest and meet the objectives outlined earlier, the platform must meet the following requirements: 
 \begin{itemize}
-\item The platform must be able to travel forwards and maintain a certain speed while following a predefined course. Reverse, as well as left and right turning, will be required for navigation purposes.
- \item The platform should be able to carry a payload of 100 kg. The metal detector and GPR with their respective control boxes have an estimated gross weight of 80 kg. This allows 20 kg for the necessary control units and computers, as well as any unforeseen weight contributions. 
-\item The platform should be easily modified for controlling remotely, as well as for the attachment of sensors. Easy attachment of sensors would ensure that there are no unnecessary delays in the project due to design issues. A platform which has the ability to have off the shelf supports attached to it would be ideal, as minimal modifications would be required. This would result in more time for testing the system. 
-\item The platform should be easily transportable with minimum disassembly required, allowing for ease of transport from one location to another. Thus, it should be able to fit on the back of a ute or small truck.
-\item Operate at a speed of 5 km/h, as this is the current operational speed defined by the DSTG.
-\item Come to a complete stop from operational speed in 1 metre.
+ \item Carry a total payload of 100 kg. A pair of metal detector and GPR arrays with their respective control boxes have an estimated gross weight of 80 kg. This allows 20 kg for any mounting structures,  electronics and computers. 
+ \item Travel off-road in regions with dry sandy soils and level unobstructed terrain.
+\item Travel in a straight line, both forwards and reverse, and perform turns while maintaining an operational speed of 5 km/h.
+\item Be manoeuvrable enough to navigate the region of interest, yet controllable enough than in case of an emergency, it can come to a complete stop from its operational speed in 1 m.
 \end{itemize}
-\subsubsection{Environment}
-\seclabel{environment}
 
-The platform should be designed to operate under certain environmental conditions:
-\begin{itemize}
-\item Terrain: The platform should be able to operate over dry, loose sand or gravel with sparse vegetation. Ideal terrains will be roads, but testing on open fields with minimal obstacles and vegetation will also be conducted.
-\item Gradient: The platform should be able to operate over a maximum slope of 15 degrees
-\item Obstacles: The platform should be able to operate over sparse vegetation with some large obstacles such as a tree or wall.
-\item Moisture: The platform should be able to operate in low moisture environments with no rain or mud.
-\end{itemize}
 \subsubsection{Sensors}
-\seclabel{sensors} %needs to be reworked
-The sensor parameters for landmine detection that the project aims to comply to are listed below:
+\seclabel{sensors} 
+The requirements for the sensor system are as listed below:
 \begin{itemize}
-\item Detection depth: 300mm 
-\item Detection speed: Real time detection at operational speed
-\item Detection rate: Maximise detection rate while minimising false positives
-\item Detection halo: 1 metre
+\item Detect high and low metal content anti-personnel and anti-tank mines.
+\item Identify mines at depths of up to 15 cm at an operational speed of 5 km/h.
+\item Discriminate between landmines and other objects, aiming to minimise the number of false positives detected.
 \end{itemize}
-
-
 
 \section{Project scope}
 \seclabel{projectScope}
-%Justification: A brief statement regarding the business need your project addresses. (A more detailed discussion of the justification for the project appears in the project charter.)
-%Product scope description: The characteristics of the products, services, and/or results your project will produce.
+
 %Acceptance criteria: The conditions that must be met before project deliverables are accepted.
 %Deliverables: The products, services, and/or results your project will produce (also referred to as objectives).
 %Project Exclusions: Statements about what the project will not accomplish or produce.
 %Constraints: Restrictions that limit what you can achieve, how and when you can achieve it, and how much achieving it can cost.
 %Assumptions: Statements about how you will address uncertain information as you conceive, plan, and perform your project.
 
-The primary deliverable of this project is the automation and modification of an existing platform for landmine detection. %Included in the scope.......
+The aim of this project is to demonstrate the feasibility of a concept that incorporates an autonomous platform and a real time multisensor landmine detection system. It is not intended for the final design solution to be a commercially viable device that is ready to be deployed for the ADF. Rather, the challenges associated with the development of such a system, and the methods used to overcome these challenges, are perhaps the most valuable outcomes of the project. 
 
-The automation of an existing platform is to assist with unmanned operations for landmine detection. The platform will be completed with the necessary framework for autonomous operation through basic remote control and transmission to an operator device. Both navigation and control systems will be included, such as, GPS, relevant platform sensors, actuators and micro controllers. These will be implemented using relevant navigation and control algorithms for the platform to travel in a straight line and turning at specified angles. However, traversing autonomously within a specified area and to way-points will be outside of this scope. 
-
-An existing platform will be modified to accommodate for GPR and metal detector sensors through the design and manufacture of a sensor mount. The attachment will be designed according to platform and sensor dimensions, weight and operational limitations. The limitations to mount both the metal detector and GPR sensors include any interference that occurs between them and the material used for the sensor mount.
-
-Landmine detection will include the autonomous detection and classification of subsurface objects based on statistical probability. The object is identified with a percentage likelihood that it is a landmine. Various signal processing methods for landmine detection using both GPR and metal detector sensors will be considered, including background and image processing and statistical (fuzzy logic) algorithms. These algorithms will assume specific operating environments and subsurface electromagnetic properties. The operating environment for this project is limited to certain environmental conditions. Physical marking and automatic removal of the landmines are not included within the scope of the project.
-
-The platform operation conditions, landmine location coordinates and percentage probability will be transmitted to an operator device. This is implemented through software development in conjunction with the remote control of the platform. The software device will not include live video feed of the current operations and mission data, as this is outside of the project scope. A limitation of the software is that the development will be tailored for the specific devices chosen for this project and cross-platform compatibility will not be guaranteed.
-
-\textcolor{red}{New scope: It is not intended that this project will produce a commercially viable device that is ready to be deployed by the ADF. Rather, the aim to is to demonstrate the feasibility of a concept that incorporates an autonomous platform and a real time multisensor landmine detection system. The challenges associated with the development of such a system, and the methods used to overcome these challenges, are perhaps the most valuable outcomes of the project.}
- 
+\textcolor{red}{The scope from the hovercraft report is only this big, but I guess we can add a few more relevant details about things that are outside of the scope (can't specifically think of anything right now) - RK}
 \end{document}
