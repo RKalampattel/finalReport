@@ -112,22 +112,21 @@ The low curvature path tracker works through determining a steer angle that conn
 \frac{l_d}{\sin(2\alpha)} &= \frac{R}{\sin(^{\pi}/_2-\alpha)},\\
 \frac{l_d}{2\sin(\alpha)\cos(\alpha)} &= \frac{R}{\cos(\alpha)},\\
 \frac{l_d}{2\sin(\alpha)} &= R.
-\end{align*}
-Then the steer angle, $\delta$, can be determined from the geometry shown in \Figref{geometricBicycleModel} where
-\begin{figure}[ht]
-\includegraphics[width=0.7\textwidth]{4-DetailedDesign/Geometric_Bicycle_Model.png}
-\centering
-\caption{Geometric bicycle model \parencite{snider2009}} \figlabel{geometricBicycleModel}
-\end{figure} 
-\begin{align*}
+\shortintertext{Then the steer angle, $\delta$, can be determined from the geometry shown in \Figref{geometricBicycleModel} where}
 R &= \frac{l_d}{2\sin(\alpha)},
 \shortintertext{and the pure pursuit controller is given as}
 \delta &= \tan^{-1}\Bigg(\frac{2L\sin(\alpha)}{l_d}\Bigg)
 \end{align*}
 where $\alpha$ and thus $\delta$ will be functions of time and thus will be calculated in real time. The goal point is determined as a result of further path subdivision discussed in \secref{pathsubdivision}.
+\begin{figure}[ht]
+\includegraphics[width=0.7\textwidth]{4-DetailedDesign/Geometric_Bicycle_Model.png}
+\centering
+\caption{Geometric bicycle model \parencite{snider2009}} \figlabel{geometricBicycleModel}
+\end{figure} 
 
 \subsection{Turning the platform a specified angle}
-For the quad bike to not stray more than 0.5 meters from the path, as defined in the project requirements, turning procedures were incorporated at path points of zero radius of curvature. In these situations one of two methods (\figref{turnTypes}) was used to turn the angle, a simple turn, or an extended 3-point turn (N-point turn) to some number of required points. 
+For the quad bike to not stray more than 0.5 meters from the path, as defined in the project requirements, turning procedures were incorporated at path points of zero radius of curvature. In these situations one of two methods  was used to turn the angle, a simple turn, or an extended 3-point turn (N-point turn) to some number of required points, both shown in \figref{turnTypes}. 
+
 \begin{figure}[ht]
 \centerline{
 \begin{tabular}{ccc}
@@ -138,12 +137,32 @@ For the quad bike to not stray more than 0.5 meters from the path, as defined in
 \caption{Turning types}
 \figlabel{turnTypes}
 \end{figure}
+
 The turn type used at any point is determined by a user set threshold of angles. The angle values may be determined based on how quickly the quad bike should scan the area, as an N-point turn requires several changes of direction and thus more time, or how accurate to the path the quad bike should remain, as the simple turn will result in the quad bike deviating from the user path. To test both scenarios in the Virtual Platform and during live testing, the thresholds were defined as follows:
 \begin{itemize}
 \item $\alpha <$ 40\degree: Simple turn
 \item $\alpha \geqslant$ 40\degree: N-point turn
 \end{itemize}
-in the case of a turn angle, $\alpha$, of less than 15\degree, no turn is executed. If the turn angle is below a user-set threshold a gradual turn will be conducted else an N-point turn will be used.
+
+The geometry of the simple turn is shown in \figref{simpleTurnGeometry} where the solid bold line and dashed bold line represent the user defined path and the modified region of the path, respectively. We can visually see that to reduce the deviation from the user defined path, d should be kept to a minimum.
+\begin{figure}[ht]
+\includegraphics[width=0.4\textwidth]{4-DetailedDesign/simpleTurnGeometry.png}
+\centering
+\caption{Simple turn geometry} \figlabel{simpleTurnGeometry}
+\end{figure} 
+From \figref{simpleTurnGeometry} we get:
+\begin{align*}
+d = R \tan{\frac{\alpha}{2}}\\
+\end{align*}
+To minimise $d$, the turn radius, $R$, should be minimised. To minimise the turn radius the turn should be executed at maximum turn angle, or with $\delta$ equal to 24\degree. Mapping waypoints along the simple turn is covered further in \secref{pathsubdivision}.
+
+\begin{figure}[ht]
+\includegraphics[width=0.4\textwidth]{4-DetailedDesign/nPointTurnGeometry.png}
+\centering
+\caption{N-point turn geometry} \figlabel{nPointTurnGeometry}
+\end{figure} 
+
+
 \subsection{Path subdivision}
 \seclabel{pathsubdivision}
 \begin{figure}[ht]
@@ -158,9 +177,9 @@ in the case of a turn angle, $\alpha$, of less than 15\degree, no turn is execut
 
 \subsection{Positioning system}
 \seclabel{positioningSystem}
-The requirements for the positioning system were set primarily by the virtual platform (see \textcolor{red}{SECTION NUMBER!!!}). Two requirements were defined for the design, low positional drift and high accuracy. The drift is the speed at which the cartesian position moves relative to the real quad bike position and accuracy is the distance error of the positioning system from the real quad position. The maximum allowable drift for the system was defined as 0.2 m/s, speeds exceeding this resulted in irregular steering motor fluctuations either side of the desired steering angle. The minimum allowable accuracy was defined as 0.5 m as set in the project specifications \textcolor{red}{NEED TO ADD THIS TO THE PROJECT SPECIFICATIONS}.
+The requirements for the positioning system were set primarily by the virtual platform (see \secref{detailedVP}). Two requirements were defined for the design, low positional drift and high accuracy. The drift is the speed at which the cartesian position moves relative to the real quad bike position and accuracy is the distance error of the positioning system from the real quad position. The maximum allowable drift for the system was defined as 0.2 m/s, speeds exceeding this resulted in irregular steering motor fluctuations either side of the desired steering angle. The minimum allowable accuracy was defined as 0.5 m as set in the project specifications.
 
-To satisfy these characteristics an Extended Kalman Filter (EKF) was employed to fuse the data from two positional sources, a GPS and IMU, and quad bike kinematic equations. It is capable of taking in to account the noise and inaccuracies from multiple measurements to produce an output which is likely more accurate than each of the individual readings. The EKF is defined as follows:
+To satisfy these characteristics an Extended Kalman Filter (EKF) was employed to fuse the data from two positional sources, a GPS and IMU, and quad bike kinematic equations. It is capable of taking in to account the noise and inaccuracies from multiple measurements to produce an output which is likely to be more accurate than each of the individual readings. The EKF is defined as follows:
 \begin{align*}
 \shortintertext{Prediction Equations:}
 &\bar{\mu_t} = g(u_t, \mu_{t-1}) + \delta_t\\
