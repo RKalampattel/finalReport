@@ -54,7 +54,7 @@ A visual inspection and individual tests of each of the subsystems revealed a nu
 
 \subsection{Brakes}
 \seclabel{modificationBrakes}
-The original brake system (shown in \figref{brakemodifications} a) incorporated a limit switch and strain gauge to determine if the brake actuator was extended. The limit switch limited the brake motion at the extreme limit and the strain gauge dictated the brake intensity and ensured the brake lever was not being over strained. A high level testing set-up was carried out by requesting certain braking intensities and measuring two values: travel distance of the actuator arm and the retarding torque on the wheel provided by the brake. It was found that the brake intensity fluctuated by 15 percent which would result in inconsistent stopping distances and speeds. The tests lead to the redesign of the brake measurement for greater accuracy. Improved braking accuracy was achieved through the use of a linear transducer type PZ34-A-125 being installed alongside the actuator (shown in \figref{brakemodifications} b). This transducer allowed for the travel of the actuator arm to be controlled and for the position to be known with sub-millimetre accuracy. Knowing the position of the actuator arm allows for accurate and uniform brake intensities and thus, braking distances.
+The original brake system (shown in \figref{brakemodifications} a) incorporated a limit switch and strain gauge to determine if the brake actuator was extended. The limit switch limited the brake motion at the extreme limit and the strain gauge dictated the brake intensity and ensured the brake lever was not being over strained. A high level testing set-up was carried out by requesting certain braking intensities and measuring two values: travel distance of the actuator arm and the retarding torque on the wheel provided by the brake. It was found that the brake intensity fluctuated by 15 percent which would result in inconsistent stopping distances and speeds. The tests lead to the redesign of the brake measurement for greater accuracy. Improved braking accuracy was achieved through the use of a linear transducer type PZ34-A-125 being installed alongside the actuator (shown in \figref{brakemodifications} b). This transducer allowed for the position of the brake actuator to be known with sub-millimetre accuracy. Knowing the position of the actuator arm allows for accurate and uniform brake intensities and thus, braking distances.
 \begin{figure}[ht]
 \centerline{
 \begin{tabular}{cc}
@@ -67,34 +67,21 @@ The original brake system (shown in \figref{brakemodifications} a) incorporated 
 
 \subsection{Gears}
 \seclabel{modificationGears}
-As highlighted in the platform requirements, forwards and reverse motion is required for the desired mission profile. A linear actuator in conjunction with two hall effect sensors were used to move the gear selector lever. Hall effect sensors measured the forwards or backwards motion of the actuator and dictated the limits of the motion. Neutral was the position in the middle of the sensors while Drive and Reverse were to the left and right respectively. Selecting Drive or Reverse resulted in the actuator pushing the gear lever to a point until the hall effect sensor reached a certain value and the arduino ordered the actuator to stop. For correct operation of the system the hall effect sensors were replaced. It was also found that the tab which interacts with the hall effect sensors would slip out of place due to the springs which held it to the actuator. A larger tab was installed to make this an impossibility.
+As highlighted in the platform requirements, forwards and reverse motion is required for the desired mission profile. A linear actuator in conjunction with two linear potentiometers were used to move the gear selector lever. The linear potentiometers measured the forwards or backwards motion of the actuator and dictated the limits of the motion. Neutral was the position in the middle of the sensors while Drive and Reverse were to the left and right respectively. Selecting Drive or Reverse resulted in the actuator pushing the gear lever to a point until the hall effect sensor reached a certain value and the arduino ordered the actuator to stop. For correct operation of the system the potentiometers were replaced. It was also found that the tab which interacts with the hall effect sensors would slip out of place due to the springs which held it to the actuator. A larger tab was installed to make this an impossibility.
 \begin{figure}[ht]
 \includegraphics[width=0.6\textwidth]{4-DetailedDesign/gearSetup.JPG}
 \centering
 \caption{Gear setup showing hall effect sensors in red in front of the gear actuator} \figlabel{gearSetup}
 \end{figure}
-
-\subsection{Wheel encoder}
-\seclabel{modificationwheelencoder}
-The wheel encoder setup uses an encoder disk to measure the rotation of the back left wheel. 60 pulses per revolution of the wheel is detected which generates a frequency and is converted to a voltage which corresponds to a speed. Testing of the system showed the sensor to work exceptionally well during stationary lab tests as shown in \secref{testingwheelencoder}. With the engine running however, vibrations in the bracket of of the hall effect sensor caused unpredicted pulses to occur, giving a false reading. This can be seen in \figref{encoderEngine}. To rectify the issue a dampening bracket was introduced, the new bracket is shown in \figref{asdf}.
-
 \subsection{Positioning}
 \seclabel{modificationPositioning}
-No positioning system was initially present in the quad bike. For implementation of the designed Kalman Filter (see \secref{positioningSystem}) a GPS and IMU were required. The selected units are shown in \figref{gpsIMU}.
+No positioning system was initially present in the quad bike. For implementation of the designed Kalman Filter (see \secref{positioningSystem}) a uBlox NEO-6M GPS and GY-87 10-DOF IMU were installed into the system. The selected units are shown in \figref{gpsIMU}. The uBlox NEO-6M has an update rate of 1 Hz and a horizontal position accuracy of 2.5 meters \parencite{ublox2011}. The GY-87 chip includes an MPU-6050, HMC5883L, and a BMP180. The MPU-6050 combines a 3-axis gyroscope with sensitivity of +/- 2g, and 3-axis accelerometer with a sensitivity of 250 \degree/s \parencite{invensense2013}. The HMC5883L compass and BMP180 pressure sensor were not used as part of the positioning system.
 
 \begin{figure}[ht]
 \includegraphics[width=0.6\textwidth]{4-DetailedDesign/Positioning.jpg}
 \centering
 \caption{(Top) UBlox GPS and receiver and (bottom) GY-87 10DOF IMU} \figlabel{gpsIMU}
 \end{figure}
-
-\section{Automation}
-\seclabel{detailedautomate}
-
-As part of the platform requirements, full autonomy of the vehicle was required. For the quad bike this meant being able to operate each of the subsystems, steering, throttle, gears, and brakes, remotely without human interaction as well as knowing state information about the quad bike including the speed, position and heading. To achieve this the quad bike uses a series of actuators and motors to operate the subsystems in place of human interaction.
-
-\subsection{Automation software}
-\seclabel{detailedautosoftware}
 
 \section{Navigation}
 \seclabel{detailednav}
@@ -130,7 +117,7 @@ Then the steer angle, $\delta$, can be determined from the geometry shown in \Fi
 \begin{figure}[ht]
 \includegraphics[width=0.7\textwidth]{4-DetailedDesign/Geometric_Bicycle_Model.png}
 \centering
-\caption{Geometric bicycle model} \figlabel{geometricBicycleModel}
+\caption{Geometric bicycle model \parencite{snider2009}} \figlabel{geometricBicycleModel}
 \end{figure} 
 \begin{align*}
 R &= \frac{l_d}{2\sin(\alpha)},
@@ -140,10 +127,34 @@ R &= \frac{l_d}{2\sin(\alpha)},
 where $\alpha$ and thus $\delta$ will be functions of time and thus will be calculated in real time. The goal point is determined as a result of further path subdivision discussed in \secref{pathsubdivision}.
 
 \subsection{Turning the platform a specified angle}
-As a result of zero radius of curvature path points, turning procedures are incorporated into the path. If the quad bike is not to stray a great distance from the path, .  In these situations one of two methods will be used to turn the angle, an N-point turn or a gradual turn \textcolor{red}{INSERT PICTURE HERE!}. If the turn angle is below a user-set threshold a gradual turn will be conducted else an N-point turn will be used.
-
+For the quad bike to not stray more than 0.5 meters from the path, as defined in the project requirements, turning procedures were incorporated at path points of zero radius of curvature. In these situations one of two methods (\figref{turnTypes}) was used to turn the angle, a simple turn, or an extended 3-point turn (N-point turn) to some number of required points. 
+\begin{figure}[ht]
+\centerline{
+\begin{tabular}{ccc}
+\subfloat[User defined path]{\includegraphics[width=0.25\textwidth]{4-DetailedDesign/noturn.png}} 
+& \subfloat[Simple turn]{\includegraphics[width=0.25\textwidth]{4-DetailedDesign/simpleturn.png}}
+& \subfloat[N-point turn]{\includegraphics[width=0.25\textwidth]{4-DetailedDesign/npointturn.png}}\\
+\end{tabular}}
+\caption{Turning types}
+\figlabel{turnTypes}
+\end{figure}
+The turn type used at any point is determined by a user set threshold of angles. The angle values may be determined based on how quickly the quad bike should scan the area, as an N-point turn requires several changes of direction and thus more time, or how accurate to the path the quad bike should remain, as the simple turn will result in the quad bike deviating from the user path. To test both scenarios in the Virtual Platform and during live testing, the thresholds were defined as follows:
+\begin{itemize}
+\item $\alpha <$ 40\degree: Simple turn
+\item $\alpha \geqslant$ 40\degree: N-point turn
+\end{itemize}
+in the case of a turn angle, $\alpha$, of less than 15\degree, no turn is executed. If the turn angle is below a user-set threshold a gradual turn will be conducted else an N-point turn will be used.
 \subsection{Path subdivision}
 \seclabel{pathsubdivision}
+\begin{figure}[ht]
+\centerline{
+\begin{tabular}{cc}
+\subfloat[User defined path]{\includegraphics[width=0.3\textwidth]{4-DetailedDesign/rawpath.png}} 
+& \subfloat[Subdivided path with calculated turns]{\includegraphics[width=0.3\textwidth]{4-DetailedDesign/subdividedpath.png}}\\
+\end{tabular}}
+\caption{Path subdivision input (a) and output (b)}
+\figlabel{pathSubdivisionBeforeAfter}
+\end{figure}
 
 \subsection{Positioning system}
 \seclabel{positioningSystem}
@@ -267,6 +278,14 @@ Q =
 \end{bmatrix}
 \]
 With the inputs calculated a new estimate covariance, $\Sigma_t$, and position estimate, $\mu_t$, is outputted to be used in the next iteration of the algorithm. 
+
+\section{Automation}
+\seclabel{detailedautomate}
+
+As part of the platform requirements, full autonomy of the vehicle was required. For the quad bike this meant being able to operate each of the subsystems, steering, throttle, gears, and brakes, remotely without human interaction as well as knowing state information about the quad bike including the speed, position and heading. To achieve this the quad bike uses a series of actuators and motors to operate the subsystems in place of human interaction.
+
+\subsection{Automation software}
+\seclabel{detailedautosoftware}
 
 \section{Sensor mount}
 \subsection{Manufacturing}
