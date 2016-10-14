@@ -5,48 +5,124 @@
 \chapter{Concept Design}
 \chaplabel{conceptDesign}
 
-Various concept designs for each system are required to ensure that the optimal design can be developed for each system. This chapter will discuss the various designs and software configurations considered. Decision matrices were utilised to pick the most appropriate system.
+This chapter presents the design requirements and concept solutions for the various project subsystems, namely the sensor subsystem, including signal processing and sensor fusion, the platform subsystem, including automation and navigation, and the sensor mount subsystem.
 
 \section{Sensor selection}
+The selection of sensors for the project was based on the requirements from the scenario of operation. These are as follows:
+
+\begin{itemize}
+\item The sensor suite should be able to detect anti-personnel and anti-tank mines with high and low metal content 
+\item Real time detection at an operational speed of 5 km/h and depths of up to 15 cm
+\item The chosen sensors must be able to discriminate between landmines and other objects, with an aim to minimise false positives
+\end{itemize}
+
+As outlined in the benchmarking section, the primary sensors used for landmine detection operations are metal detectors and GPRs. When used in isolation, each sensor has several limitations. Metal detectors can only be used to detect metallic mines, they produce a large number of false positives, and their penetration depth is restricted. On the other hand, GPR systems produce data that is difficult to interpret, and is also very sensitive to environmental conditions such as soil type and moisture content. In both cases, signal processing of some form is required, either using software to identify detected objects, or with the involvement of a skilled operator.
+
+Multisensor systems allow a greater range of targets to be identified. In addition, having two sensors provides the ability to confirm the presence of metallic mines, which reduces false positives and thereby increases the efficiency of operations. While it is difficult to quantify this increase in efficiency, this result has been demonstrated in experimental work carried out by \textcite{Takahashi10}. As can be seen in \Figref{FAR}, the false alarm rate, defined as the number of false alarms per unit area, for a system that combines a metal detector and GPR is roughly half that of a metal detector alone. Thus, a multisensor system meets the necessary requirements outlined above, while addressing some limitations of individual sensor systems.
+
+\begin{figure}[ht]
+\includegraphics[width=0.6\textwidth]{3-ConceptDesign/FAR.PNG}
+\centering
+\caption[Reduction in false alarm rate observed as a result of using a multisensor system]{Reduction in false alarm rate observed as a result of using a multisensor system (ALIS-MD+GPR) as opposed to a metal detector alone \parencite{Takahashi10}} \figlabel{FAR}
+\end{figure}
+
+Initially, it was expected that the sensor suite would be comprised of a metal detector array and a GPR array provided by the DSTG, with a total payload weight of 80 kg. The use of the 3 m wide arrays would allow for larger areas to be scanned in a shorter period of time, leading to an increase in operational efficiency. Due to unforeseen circumstances, the arrays could not be made available for the project, and so smaller line scan sensors had to be used instead. Off-the-shelf sensors were then considered, however most were not able to produce any raw data output that could be processed to meet the project objectives. In the case of GPR systems, the high cost of systems was also a limiting factor. Eventually, a pair of sensors were borrowed from the DSTG, the specifications of which are presented below. Despite the fact that line scan sensors were used, it was assumed that the scanning arrays would be made available by the completion of the project, and so the size and weight specifications of the arrays were used in selecting the platform and designing the sensor suite. 
+
 \subsection{AMDS metal detector panel}
+The AMDS is a metal detector panel produced by Minelab (\Figref{AMDS}). The device has three sets of transmitting coils and a single receiving coil, allowing for three channels of data to be recorded at once. Each channel operates at four frequencies, 1.5 kHz, 4.5 kHz, 13.5 kHz and 40.5 kHz, which means that in total up to 12 sets of data can be recorded simultaneously. This recorded data contains the real and imaginary parts of the voltage signal measured due to changes in magnetic flux in the target. The data is transferred to a computer through USB, where it can be seen in real-time using a LabVIEW virtual instrument called Dataspleen, or saved in CSV format. The metal detector requires a 10 volt power supply at 0.5 amps.  
+
+\begin{figure}[ht]
+\includegraphics[width=0.5\textwidth]{3-ConceptDesign/AMDS.JPG}
+\centering
+\caption{AMDS metal detector panel with power supply and control unit} \figlabel{AMDS}
+\end{figure}
+
 \subsection{SIRO-PULSE II GPR unit}
+The SIRO-PULSE II is a handheld GPR unit developed by the CSIRO, originally intended for the inspection of buildings (\Figref{siro}). It is a pulsed radar that can operate in either bi-static or differential antenna configurations, producing three sets of data in total. The unit comes with three interchangeable antenna heads of frequencies 800 MHz, 1.4 GHz and 2 GHz, allowing the resolution and penetration characteristics of the radar to be varied. Data is transferred to a computer via USB, where it can be viewed in real-time with the accompanying SiroPuleII software program. The program produces outputs of the frequency waveform over time, which are collected together to produce a B-scan in real time. The unit is battery powered with a runtime of up to 10 hours. 
+
+\begin{figure}[ht]
+\includegraphics[width=0.5\textwidth]{3-ConceptDesign/SiroPulse.JPG}
+\centering
+\caption{SIRO-PULSE II GPR unit with control unit and antenna heads} \figlabel{siro}
+\end{figure}
 
 \section{Sensor fusion and signal processing}
+Regardless of the fact that the sensors suite met the outlined requirements, there were several key challenges to be addressed, namely sensor fusion and signal processing. The first of these relates to how the data from the separate sensors can be consolidated to provide a single meaningful result, while the second involves processing the output from the sensors to allow an operator to identify targets. 
+
 \subsection{Sensor fusion}
+As discussed in the literature review, there are three primary levels of sensor fusion, decision level, feature level and data level \parencite{Yarovoy2009}. Of these, decision level sensor fusion was selected as it offers the simplest and least computationally intensive solution, since the outputs from the sensors can be processed individually. This method also lends itself well to machine learning techniques, allowing a target to be identified based on correlations with a known dataset. The main disadvantage of this method is that it is not as robust as the other methods, however this was not expected to be an issue given the scope of the project. 
+
+To be able to implement decision level sensor fusion, a decision needs to be made with each sensor regarding whether or not the target is a mine. This decision, along with a confidence interval, can be passed onto the sensor fusion algorithm as shown in \Figref{fusion}, which assigns then makes the final decision based on a weighted evaluation of the data it has received. In order for each sensor to make a decision, metrics need to be identified which can be used to characterise targets. As a result, preliminary tests were carried with both sets of sensors to find such metrics.
+
+\begin{figure}[ht]
+\includegraphics[width=0.85\textwidth]{3-ConceptDesign/fusion.PNG}
+\centering
+\caption{Integration of signal processing and sensor fusion algorithms} \figlabel{fusion}
+\end{figure}
+
 \subsection{Metal detector output}
+Initial tests with the metal detector were performed indoors. In the first set of tests, horizontal sweeps were made over a number of small metal samples (\Figref{samples}) placed on the floor, with the distance to the metal detector being kept constant at 32 cm. 
+
+\begin{figure}[ht]
+\includegraphics[width=0.8\textwidth]{3-ConceptDesign/samples.jpg}
+\centering
+\caption{Metal samples used for evaluation of metal detector outputs} \figlabel{samples}
+\end{figure}
+
+\Figref{metals} shows the results obtained from the second channel plotted in Matlab. The four lines in each plot correspond to the four frequency signals, while the axes represent the real and imaginary components of the voltage signal. It can be seen that for different metals, the magnitude and phase angle of the signal vary, as discussed in the literature review. 
+
+\begin{figure}[ht]
+\includegraphics[width=0.65\textwidth]{3-ConceptDesign/metals.PNG}
+\centering
+\caption{Phase plots for several different metal samples at 32 cm depth} \figlabel{metals}
+\end{figure}
+
+In the second set of tests, a single brass sample was scanned, with the distance to the metal detector changed between scans. The results are shown in \Figref{phaseDepth}, and while the phase angle does not vary with depth, the signal magnitude does. Based on on these tests, it was concluded that the magnitude and phase angle of the signal would be suitable metrics for characterising objects; the phase angle can be used to identify the metal, while the magnitude provides information about the depth, size and material. Thus, the aim of the signal processing algorithm for the metal detector is to find these metrics given the metal detector input data. 
+
+\begin{figure}[ht]
+\includegraphics[width=0.65\textwidth]{3-ConceptDesign/phaseDepth.PNG}
+\centering
+\caption{Phase plots for a brass sample scanned at different depths} \figlabel{phaseDepth}
+\end{figure}
+
 \subsection{GPR output}
+Preliminary tests for the GPR could not be conducted at the same time as metal detector testing due to issues in operating the GPR. However, sample datasets were provided by the DSTG, and these were analysed in Matlab. \Figref{cans} shows the B-scans for an empty (background) scan, as well as a scan over two soft drink cans. 
 
-As noted in \secref{gpr}, the detection depth and resolution are generally fixed parameters of the transmitting and receiving antennas of the physical device. The signal processing software will be designed to operate effectively on the hardware available, which is the GPR unit supplied to the project courtesy of the DSTG. The model is a single GPR (non-array) unit with three interchangeable antennas which allow the selection of transmission and receiving frequency. The three heads supplied are:
-\begin{itemize}
-\item 800 MHz
-\item 1.4 GHz
-\item 2.0 GHz
-\end{itemize}
-During the course of the project a single antenna head will be used, determined by initial testing to be the frequency which generates the highest resolution data while providing depth of scanning as required by the project goals. A suitable metal detecting unit will be sourced from commercially available systems to match the detection range of the GPR unit supplied, to provide the greatest overlap of scanning capacity.
-The software and systems developed will be generated as a proof-of-concept using the initial available equipment, with considerations made to allow for simple expansion to array based detectors for the benefits discussed in \secref{gpr}. 
+Unlike with the phase plots obtained from the metal detector, it was not as clear what metrics could be identified from the GPR data. To further aid in visualising the signal, the background was subtracted (\Figref{cansNoBG}). This made it easier to identify features in the scan, the size and position of which could be found easily. Once the position of the feature is known, the A-scan corresponding to the feature can be extracted, and this can also be used to characterise the feature. Hence, the chosen metrics for the GPR are feature size, feature position and A-scan characteristics.
 
-In consideration of the project timeframe and expected capacity of group members, the proposed signal processing system will seek to employ a Decision-level Sensor Fusion strategy to improve the detection and false-positive error rates over that of the individual sensors. This is expected to be achieveable and will demonstrate the core abilities of the sensor fusion strategy to improve detector classification. \\
+\begin{figure}[ht]
+\centerline{
+\begin{tabular}{cc}
+\subfloat[]{\includegraphics[width=0.46\textwidth]{3-ConceptDesign/bg.PNG}}
+& \subfloat[]{\includegraphics[width=0.46\textwidth]{3-ConceptDesign/cans.PNG}}\\
+\end{tabular}}
+\caption{Background scan (a) and B-scan over two soft drink cans, circled in red (b)} 
+\figlabel{cans}
+\end{figure}
 
-The decision-level sensor fusion becomes more accurate with more decision metrics available about the object. To make the most of the sensors available to the platform, the following decisions metrics will be used as inputs to the sensor fusion stage:
-\begin{itemize}
-\item Inverse-matched filter from a single GPR sample (Ascan)
-\item Hyperbola detection from a collection of GPR samples (Bscan)
-\item Phase plot signature matching from a single metal detector sample
-\end{itemize}
-Each individual determination of likelihood that an object can be classified as a landmine will be based around an individual scan's similarity to a training data set, produced from testing data. The final determination of the likelihood that an object is a landmine will be based upon a linear weighting of the three metrics, offset by the relative confidence in each decision metric. Time permitting, the training data sets and the weighting coefficients will be generated from the output of an artificial intelligence machine learning algorithm based on decision trees, neural networks or fuzzy logic. Initially the trained data sets and weighting coefficients will be manually trained by inspection.
+\begin{figure}[!ht]
+\includegraphics[width=0.6\textwidth]{3-ConceptDesign/cansNoBG.PNG}
+\centering
+\caption{B-scan for soft drink cans with background removed} \figlabel{cansNoBG}
+\end{figure}
 
 \section{Platform selection}
 \seclabel{platformselect}
-A platform is used to mount the required detection equipment and to act as the foundation for a completely autonomous system.  Design and construction of the platform is not in the scope of the project and so the modification of an existing platform was the preferred approach. The platforms included in the decision process were based solely on their availability to the project, whether available as a commercial product or through the loan of equipment. Primary factors that were considered during the selection process were taken from the Project Specifications (see \secref{performance}) and the Project Scope (see \secref{projectScope}). The following list outlines the discussion points for each of the platform subsections:
+A detailed platform selection process was carried out, as outlined in \Chapref{platformSelectionApp}. 
+
+The platform is used to mount the required detection equipment and acts as the foundation for a completely autonomous system. The design and construction of a new platform was considered to be outside the scope of the project, and so the modification of an existing platform was the preferred approach. The requirements for the platform primarily come from the scenario of operation, but also include considerations such as budget and availability. as well as the budget
+
 \begin{itemize}
+ \item Carry a total payload of 100 kg. A pair of metal detector and GPR arrays with their respective control boxes have an estimated gross weight of 80 kg. This allows 20 kg for any mounting structures,  electronics and computers. 
+ \item Travel off-road in regions with dry sandy soils and level unobstructed terrain.
+\item Travel in a straight line, both forwards and reverse, and perform turns while maintaining an operational speed of 5 km/h.
+\item Be manoeuvrable enough to navigate the region of interest, yet controllable enough than in case of an emergency, it can come to a complete stop from its operational speed in 1 m.
+\item Availability to the project
 \item Cost: Based on a budget of \$16,500. A platform cost nearing \$5,000 indicated that the requirement had been met. A score of 10 indicates platform supplied in-kind and 1 indicates financially infeasible.
+\item Portability: Level of portability. A higher score indicates simpler transport with less disassembly required. The requirement had been satisfied if transport was possible in the back of a ute or trailer.
 \item Implementation of Auto-Control: How involved the process of implementing the direct hardware required for remote operation would be. A low score indicates a difficult process with many sub-systems, whereas a high score indicates little to no work necessary. Requirement was met if implementation of hardware was a feasible task.
 \item Control/Manoeuvrability: How appropriate the platform was expected to be regarding manoeuvrability assuming auto-control was implemented successfully. This included speed, acceleration, turn radius, and stopping distance.
 \item Implementation of detection equipment: Ease of installation of detection equipment and expected effectiveness of the platform and sensor combination from a landmine detection point of view.
-\item Payload: Platform's ability to support the required 100 kg payload.
-\item Terrain Traversing: How capable the platform is at traversing the required terrain. This includes dry and loose sand or gravel with minimum obstacles and a 15 degree gradient.
-\item Portability: Level of portability. A higher score indicates simpler transport with less disassembly required. The requirement had been satisfied if transport was possible in the back of a ute or trailer.
-\item Navigation: How direct and efficient the path of the platform for landmine-detecting purposes was expected to be. This involves aspects such as duration and tightness of turns and landmine avoidance techniques.
 \end{itemize}
 
 %\subsection{Utility Quad Bike}

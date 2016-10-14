@@ -41,7 +41,7 @@ This signature is capable of uniquely identifying an object type to a certain de
 \begin{figure}[ht]
 \includegraphics[width=0.8\textwidth]{2-LiteratureReview/compensated-signature.png}
 \centering
-\caption[Phase plot signatures of a landmine at varying depths]{Phase plot signatures of a landmine at varying depths. The top row shows the raw phase plots and the bottom row shows the phase plots after ground compensation \parencite{Kruger2006}} \figlabel{comp-signature}
+\caption[Phase plot signatures of a landmine at varying depths]{Phase plot signatures of a landmine at varying depths. The top row shows the raw phase plots and the bottom row shows the phase plots after ground compensation, and the two loops in each image correspond to different frequencies \parencite{Kruger2006}} \figlabel{comp-signature}
 \end{figure}
 
 A notable failure of the phase plot signature method is the effect of nearby metallic objects. A metallic non-landmine object situated immediately next to a landmine can interfere with the signature of the received sample, reducing the likelihood that a correct identification will be made. This is particularly problematic for large metallic objects, which can completely obscure the signature of smaller objects. As a result, this technique is limited to situations in which metallic contamination is sparse, or metallic objects are typically an order of magnitude smaller than the objects of interest \parencite{Kruger2006}.
@@ -61,7 +61,7 @@ The detection of subsurface objects is effectively limited to objects situated b
 \begin{figure}[ht]
 \centering
 \includegraphics[width=0.8\textwidth]{2-LiteratureReview/3d-radar.png}
-\caption[Example layout of transmitting and receiving antennas of a 3D radar system]{Example layout of transmitting (bottom row) and receiving antennas (top row) of a 3D radar system, with effective sensing locations shown as dots \parencite{3dradarDXG}}
+\caption[Layout of transmitting and receiving antennas of a GPR array]{Layout of transmitting (bottom row) and receiving antennas (top row) of a GPR array, with effective sensing locations shown as dots \parencite{3dradarDXG}}
 \figlabel{arraylayout}
 \end{figure}
 
@@ -115,7 +115,7 @@ Path tracking uses location information from a GPS or some other positioning sys
 \subfloat[Continuous path]{\includegraphics[width=0.28\textwidth]{2-LiteratureReview/pathContinuous.png}}\hspace{1em}%
 \subfloat[Piecewise linear path]{\includegraphics[width=0.28\textwidth]{2-LiteratureReview/pathPiecewise.png}}\hspace{1em}%
 \subfloat[Set of discrete path nodes]{\includegraphics[width=0.28\textwidth]{2-LiteratureReview/pathDiscrete.png}}
-\caption{Various ways to define a path \parencite{Giesbrecht2005}}
+\caption[Various ways to define a path]{Various ways to define a path \parencite{Giesbrecht2005}}
 \figlabel{pathDefining}
 \end{figure}
 
@@ -126,7 +126,7 @@ Pure-Pursuit uses a path ``look-ahead'' distance to measure the future error bet
 \begin{figure}[ht]
 \includegraphics[width=0.6\textwidth]{2-LiteratureReview/purePursuitGoal.png}
 \centering
-\caption[Pure Pursuit geometry]{Pure-Pursuit geometry \parencite{snider2009}} \figlabel{purePursuitGeom}
+\caption[Pure-Pursuit geometry]{Pure-Pursuit geometry \parencite{snider2009}} \figlabel{purePursuitGeom}
 \end{figure}
 
 \nomenclature[S]{$l_d$}{Pure-Pursuit model look ahead distance}%
@@ -136,7 +136,7 @@ Unlike Pure-Pursuit which is based on the future error, the Stanley method uses 
 \begin{figure}[ht]
 \includegraphics[width=0.5\textwidth]{2-LiteratureReview/stanleyMethod.png}
 \centering
-\caption[Stanley Method geometry]{Stanley method geometry \parencite{snider2009}} \figlabel{stanleyGeom}
+\caption[Stanley method geometry]{Stanley method geometry \parencite{snider2009}} \figlabel{stanleyGeom}
 \end{figure}
 
 \nomenclature[S]{$\theta_e$}{Stanley method heading error}%
