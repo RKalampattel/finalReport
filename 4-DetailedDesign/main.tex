@@ -1,4 +1,5 @@
 \documentclass[main.tex]{subfiles}
+% \nomenclature[A]{GPR}{Ground Penetrating Radar}%
 
 \begin{document}
 \chapter{Detailed Design}
@@ -125,7 +126,7 @@ where $\alpha$ and thus $\delta$ will be functions of time and thus will be calc
 \end{figure} 
 
 \subsection{Turning the platform a specified angle}
-For the quad bike to not stray more than 0.5 meters from the path, as defined in the project requirements, turning procedures were incorporated at path points of zero radius of curvature. In these situations one of two methods  was used to turn the angle, a simple turn, or an extended 3-point turn (N-point turn) to some number of required points, both shown in \figref{turnTypes}. 
+For the quad bike to not stray more than 0.5 meters from the path, as defined in the project requirements, turning procedures were incorporated at path points of zero radius of curvature. In these situations one of two methods were used to turn the angle, a simple turn, or an extended 3-point turn (N-point turn) to some number of required points, both shown in \figref{turnTypes}. 
 
 \begin{figure}[ht]
 \centerline{
@@ -156,15 +157,36 @@ d = R \tan{\frac{\alpha}{2}}\\
 \end{align*}
 To minimise $d$, the turn radius, $R$, should be minimised. To minimise the turn radius the turn should be executed at maximum turn angle, or with $\delta$ equal to 24\degree. Mapping waypoints along the simple turn is covered further in \secref{pathsubdivision}.
 
+Geometry for the N-point turn is very similar to that of the simple turn and is shown in \figref{nPointTurnGeometry}. Again, the solid bold line and dashed bold line represent the user defined path and the modified region of the path, respectively. The grey box is the quad bike position and the grey dashed lines are the scanned swathe from the sensor suite.
 \begin{figure}[ht]
 \includegraphics[width=0.4\textwidth]{4-DetailedDesign/nPointTurnGeometry.png}
 \centering
 \caption{N-point turn geometry} \figlabel{nPointTurnGeometry}
 \end{figure} 
-
+Throughout the N-point turn the quad bike must remain within the grey dashed lines else it would be traversing un-scanned terrain, risking the detonation of landmines. By analysing a 180 degree N-point turn in a 3 meter swathe, a template is constructed, and for any turn angles of less than 180 degrees the turn algorithm exits early, once the desired turn angle has been reached. The specific algorithms to achieve this are discussed further in \secref{pathsubdivision}. The template, shown in \tabref{npointTurnTemplate}, matches each point in the turn with an angle corresponding to the angle at which the quad bike touches the edge of the swathe. In \figref{nPointTurnGeometry}, the quad bike is at position (1, 26.7\degree). Accumulative error here is not an issue as this is the ideal path that the quad bike would follow, and any quad bike deviation error is corrected for by aiming for the ideal path point.
+\begin{table} [ht]
+\centering
+\caption{N-point turn template}
+\tablabel{npointTurnTemplate}
+\begin{tabular} {r | c c c c c c c c}
+Turn point & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\ \hline
+Heading (\degree) & 0 & 26.7 & 60.5 & 77.3 & 95.6 & 113.9 & 130.8 & 180 \\
+$\Delta h$ (m) & 0 & 1.46 & 0.09 & 0.44 & 0.37 & 0.11 & 0.62 & -1.18 \\
+\end{tabular}
+\end{table}
+At the completion of the turn, the quad bike is not guaranteed to line up with the next segment of the path. A distance, $\Delta h$ is added to the end of the previous line segment to correct for this. $\Delta h$ is also determined from ideal geometry, and in real time by interpolating from the template shown in \tabref{npointTurnTemplate}.
 
 \subsection{Path subdivision}
 \seclabel{pathsubdivision}
+The goal of the path subdivision step is to provide intermediate, or 'goal', waypoints for the quad bike to navigate towards. The subdivision is completed by cycling through the user defined path, constantly repeating a two step process: 
+\begin{enumerate}
+\item Subdivide the straight line segment
+\item If there is a next line segment, conduct a turn and align with it
+\end{enumerate}
+Straight line segments are subdivided through linear interpolation and adding intermediate waypoints at some user defined distance. In the Virtual Platform and for testing a distance of 0.2 meters is used.
+
+For a simple turn, the algorithm to deduce the locations of the modified path is a fast, vector based, process. First, the centre of the turning circle is found by removing points from the subdivided straight line
+
 \begin{figure}[ht]
 \centerline{
 \begin{tabular}{cc}
@@ -177,7 +199,7 @@ To minimise $d$, the turn radius, $R$, should be minimised. To minimise the turn
 
 \subsection{Positioning system}
 \seclabel{positioningSystem}
-The requirements for the positioning system were set primarily by the virtual platform (see \secref{detailedVP}). Two requirements were defined for the design, low positional drift and high accuracy. The drift is the speed at which the cartesian position moves relative to the real quad bike position and accuracy is the distance error of the positioning system from the real quad position. The maximum allowable drift for the system was defined as 0.2 m/s, speeds exceeding this resulted in irregular steering motor fluctuations either side of the desired steering angle. The minimum allowable accuracy was defined as 0.5 m as set in the project specifications.
+The requirements for the positioning system were set primarily by the virtual platform (see \secref{detailedVP}). Two requirements were defined for the design, low positional drift and high accuracy. The drift is the speed at which the cartesian position moves relative to the real quad bike position and accuracy is the distance error of the positioning system from the real quad position. The maximum allowable drift for the system was defined as 0.2 m/s, speeds exceeding this resulted in irregular steering motor fluctuations either side of the desired steering angle. The minimum allowable accuracy for the position was defined as 0.5 m as set in the project specifications.
 
 To satisfy these characteristics an Extended Kalman Filter (EKF) was employed to fuse the data from two positional sources, a GPS and IMU, and quad bike kinematic equations. It is capable of taking in to account the noise and inaccuracies from multiple measurements to produce an output which is likely to be more accurate than each of the individual readings. The EKF is defined as follows:
 \begin{align*}
@@ -192,13 +214,13 @@ To satisfy these characteristics an Extended Kalman Filter (EKF) was employed to
 \end{align*}
 Where the state vector, $\mu_t$, holds the positional information ($x, y, \theta$) in a 3x1 matrix. The EKF is calculated in two steps, a prediction step and an update step. The prediction step uses kinematic equations to update the position of the quad bike based on physical observations. In the case of the quad bike, readings of the velocity, steering angle and time-step are taken, then geometry is used to calculate where its updated position would be. The update step then uses information obtained through sensors to correct for any error that may be present in the prediction step. This is achieved by modelling positions as a Gaussian distribution and weighting them according to their reliability. Gaussian distributions are shown as covariance matrices, $R_t$ for the prediction step and $Q_t$ for the update step, and the weighting is the Kalman Gain, $K_t$. The predicted covariance matrix, $\Sigma_t$, can then be determined. As we know the starting position and heading of the quad bike through user input, $\Sigma_t$ is initialised as a 3x3 zero matrix.
 
-A visual representation of the kinematic equations used are shown in \figref{quadKinematics}, where:
+The geometry of the kinematic equations used are shown in \figref{quadKinematics}. From the geometry we get:
 \begin{align*}
 &R = \frac{L}{tan\ \delta}\\
 &\phi = \frac{V\Delta t}{R}\\
 &y_q = Rsin\phi\\
 &x_q = R(1-cos\phi)
-\shortintertext{and in the global frame:}
+\shortintertext{where $R$ is the turn radius, $L$ the wheelbase, $\delta$ the steer angle, $V$ the velocity, $\Delta t$ the time step, and ($x_q, y_q$) is the local change in position. Then in the global frame we have:}
 &x_G = y_qsin\theta + x_qcos\theta\\
 &y_G = y_qcos\theta + x_qsin\theta\\
 &\theta = \theta + \phi
@@ -238,11 +260,11 @@ R =
     0	&	0	&	(0.97 \times V\Delta t)^2
 \end{bmatrix}
 \]
-Where $\sigma_x, \sigma_y, \textrm{and } \sigma_\theta$ are based on the accuracy of readings given by the velocity and steer angle sensors on the quad bike. Testing (\textcolor{red}{INSERT SECTION}) showed the error in distance, ($\sigma_x, \sigma_y$), to consistently vary within 0.5 m for every 20 m travelled, or 0.025 m/m. Since the heading is calculated based on the distance travelled and the turn angle, the error is also dependent on these factors. The steering motor is accurate to 1 degree of the true value due to initialisation and the error is maximum when at full lock due to the trigonometric function present in the turn angle equation below. The difference in turn angle at full lock when a 1 degree error is present is then:
+Where $\sigma_x, \sigma_y, \textrm{and } \sigma_\theta$ are based on the accuracy of readings given by the velocity and steer angle sensors on the quad bike. Testing (see \secref{testingwheelencoder}) showed the error in distance, ($\sigma_x, \sigma_y$), to consistently vary within 0.5 m for every 20 m travelled, or 0.025 m/m. Since the heading is calculated based on the distance travelled and the turn angle, the error is also dependent on these factors. The steering motor is accurate to 1 degree of the true value due to initialisation and the error is maximum when at full lock due to the trigonometric function present in the turn angle equation below. The difference in turn angle at full lock when a 1 degree error is present is then:
 \begin{align*}
 &\Delta\phi = \frac{V\Delta t}{\frac{L}{tan\ 24}} - \frac{V\Delta t}{\frac{L}{tan\ 23}} = \frac{V\Delta t}{2.87} - \frac{V\Delta t}{3.02} = 0.017V\Delta t = 0.97\ \degree/m
 \end{align*}
-Information from two sensors are observed, positional and angular data from the GPS and angular data from the IMU. In the case of the GPS, the EKF inputs are the observation matrix and its Jacobian:
+Positional and angular data from the GPS and angular data from the IMU are observed. In the case of the GPS, the EKF inputs are the observation matrix and its Jacobian:
 \[
 h(\mu_t) = \mu_t = 
 \begin{bmatrix}
@@ -272,9 +294,9 @@ Q =
     0	&	0	&	20^2
 \end{bmatrix}
 \]
-As the GPS drifts when stationary, positional data from this sensor is only used when the platform is at cruising speed, or when travelling in a forwards direction at 5 km/hr. Experimental data showed the GPS to be accurate within 0.4 m at this speed, and therefore the calculated heading accurate within ~20 degrees when measuring between subsequent points. 
+As the GPS drifts when stationary, positional data from this sensor is only used when the platform is at cruising speed, or when travelling in a forwards direction at 5 km/hr. Experimental data showed the GPS to be accurate within 0.4 m at this speed, and therefore the calculated heading accurate within ~20 degrees when measuring between subsequent points. This on its own is not accurate enough as it exceeds the desired positional accuracy.  
 
-The IMU is also used to correct the heading and as only one element of the state vector is being updated the matrix math is set up slightly differently. Experimental data shows the IMU has an error of approximately 2 degrees per 360 degrees travelled. 
+Therefore, the IMU is also used to correct the heading. As only one element of the state vector is being updated the matrix math is set up slightly differently. Experimental data shows the IMU has an error of approximately 2 degrees per 360 degrees travelled.
 \[
 h(\mu_t) = \mu_t = 
 \begin{bmatrix}
@@ -306,10 +328,44 @@ As part of the platform requirements, full autonomy of the vehicle was required.
 \subsection{Automation software}
 \seclabel{detailedautosoftware}
 
+\subsection{Subdivided path following}
+\seclabel{automationpathfollowing}
+When the quad bike is within a specified look-ahead distance from a goal point, the the point is incremented along the path and the process continues. This is true for all cases except when there is no next point where the path navigation is complete, or during N-point turn manoeuvres where complex navigation is required.
+
 \section{Sensor mount}
-\subsection{Manufacturing}
+The sensor mount, as described previously, is required to carry the sensory systems and mount them to the platform in a fashion that does not limit their functionality. The design process of the mount consisted of hand calculations followed, computer aided design and verification. 
+
 \subsection{Structural and vibrational analysis}
-The sensor frame design was constructed in FEA. The FEA methods discretises a geometry into a finite number of elements connected together via nodes. Boundary conditions, loads and constraints as well as material properties are subject to the design and depending on the analysis type, a result can be interpreted that can be used to alter and fine tune the design.  To properly and accurately model the frame, 3D elements were chosen to represent the geometry and a basic load test was conducted. This load test was conducted to ensure that the deflection of the mount when subject to the weight of the sensor systems would not interfere with the sensor requirements, and to check if the design was strong enough to support the weight. 
+The sensor frame design was constructed in FEA. The FEA methods discretises a geometry into a finite number of elements connected together via nodes. Boundary conditions, loads and constraints as well as material properties are subject to the design and depending on the analysis type, a result can be interpreted that can be used to alter and fine tune the design.  To properly and accurately model the frame, 3D elements were chosen to represent the geometry and a basic load test was conducted. This load test was conducted to ensure that the deflection of the mount when subject to the weight of the sensor systems would not interfere with the sensor requirements, and to check if the design was strong enough to support the weight.
+
+The initial FEA analysis was used to determine the thickness of the required mount material as well as the support locations. It was found that using structural pine MGP10 a thickness of 70 x 35 mm provided adequate support and minimised deflection to less than 4 mm. The supports were chosen to be made from mild steel with square hollow sections with dimension 25 x 25 x 1.6 mm. The equivalent (von-Mises) stresses for both the frame and mild steel supports did not exceed their yield stresses of 10 MPa and 370 MPa respectively. \figref{topframe} and \figref{bottomframe} show the equivalent stresses experienced by the segmented parts. 
+
+\begin{figure}[ht]
+\includegraphics[width=0.4\textwidth]{4-DetailedDesign/top_frame.PNG}
+\centering
+\caption{Supports for sensor mount von-Mises stress} \figlabel{topframe}
+\end{figure}
+
+\begin{figure}[ht]
+\includegraphics[width=0.4\textwidth]{4-DetailedDesign/bottomframe.PNG}
+\centering
+\caption{Structural pine frame von-Mises stress} \figlabel{bottomframe}
+\end{figure}
+
+Hand calculations were used to verify the results from FEA. An axial force of 334 MPa was calculated for the rear frame section and this corresponded to a force of 333.99 MPa from FEA. 
+
+
+The final design can be seen in  \figref{finalSensorFrameDesign} 
+
+\begin{figure}[ht]
+\includegraphics[width=0.4\textwidth]{4-DetailedDesign/frame.PNG}
+\centering
+\caption{Sensor mount frame design} \figlabel{finalSensorFrameDesign}
+\end{figure} 
+
+
+
+
 
 talk about load test, talk about hand calc verification
 
@@ -317,6 +373,8 @@ then talk about vibrational test using harmonic analysis. discuss results. discu
 any alterations made to the design
 
 Picture of our final design in CAD and FEA and irl
+\subsection{Manufacturing}
+
 \subsection{Steering focal point}
 Both the GPR and metal detector are required to be mounted to the platform in a cantilever-like fashion in order to avoid contact with the ground where it would risk detonation of a landmine. Each of the sensor arrays is expected to weigh between 10 kg and 30 kg.
 Mounting needs to be done in a configuration that will keep individual array sensors aligned so that corresponding ground information can be collated and analysed correctly. If the assumption of Ackermann steering holds for the quad bike we can use the simplified, 2-wheel model to assess the location of the sensors relative to the quad bike. The simplified model provides the following geometric relationship:

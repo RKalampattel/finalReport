@@ -1,9 +1,10 @@
 \documentclass[main.tex]{subfiles}
+% \nomenclature[A]{GPR}{Ground Penetrating Radar}%
 
 \begin{document}
 \chapter{Concept Design}
 \chaplabel{conceptDesign}
-%i think we should just get rid of this sentence, why not go straight into platform selection?
+
 Various concept designs for each system are required to ensure that the optimal design can be developed for each system. This chapter will discuss the various designs and software configurations considered. Decision matrices were utilised to pick the most appropriate system.
 
 \section{Sensor selection}
@@ -108,7 +109,7 @@ The navigation and automation systems are responsible for communicating to the q
 
 \subsection{Platform automation}
 \seclabel{automationconcept}
-The automation of the quadbike selected from \secref{platformselect} may be modelled using the input parameters from the PID controller discussed in \secref{autocontrol}. The flow chart design for the quad bike control is shown in \Figref{autoflowchart} and enables transfer to various programming languages, such as, Matlab, C++ and Java. \Figref{autoflowchart} shows that the PID controller processes the four different input functions as described in \secref{autocontrol}. The result is transmitted back to the actuators, the output window and central hub. The window is used as a visual output of the current conditions of the quad bike. The central hub processes the overall integration of the system and links this autonomous control to the navigation, which is discussed further in \secref{conceptprojectdesign}. 
+. The flow chart design for the quad bike control is shown in \Figref{autoflowchart} and enables transfer to various programming languages, such as, Matlab, C++ and Java. \Figref{autoflowchart} shows that the PID controller processes the four different input functions. The result is transmitted back to the actuators, the output window and central hub. The window is used as a visual output of the current conditions of the quad bike. The central hub processes the overall integration of the system and links this autonomous control to the navigation, which is discussed further in \secref{conceptprojectdesign}. 
 
 \begin{figure}[ht]
 \includegraphics[width=0.6\textwidth]{3-ConceptDesign/autoflowchart.png}
@@ -117,7 +118,7 @@ The automation of the quadbike selected from \secref{platformselect} may be mode
 \figlabel{autoflowchart}
 \end{figure}
 
-The automation software includes the main input parameters from \secref{autocontrol}. \Figref{autocode} shows that the functions have different processes implemented under each one, with an additional function called emergency stop to be included for safety purposes. This emergency stop function will interrupt all processes if the operator deems it necessary. The specific process under each main function is the "get" and "set" processes. The "get" process is to read the current state of the actuator or servo motor, and the "set" process is to save that current state and expected values in order to calculate the relevant error. There will be further processes added to automate the platform and integrate the navigation path tracking and turning sections.
+ \Figref{autocode} shows that the functions have different processes implemented under each one, with an additional function called emergency stop to be included for safety purposes. This emergency stop function will interrupt all processes if the operator deems it necessary. The specific process under each main function is the "get" and "set" processes. The "get" process is to read the current state of the actuator or servo motor, and the "set" process is to save that current state and expected values in order to calculate the relevant error. There will be further processes added to automate the platform and integrate the navigation path tracking and turning sections.
 
 \begin{figure}[ht]
 \includegraphics[width=\textwidth]{3-ConceptDesign/autofunct.PNG}
@@ -139,11 +140,11 @@ As the platform will be primarily performing two tasks, following a low curvatur
 At the end of a swathe the platform will be required to turn a specified angle within a small area defined by the width of the sensing arrays. Alternatively, if the scan history is available to the platform in the form of a map, a larger area may be available to conduct the turn. Due to little or no literature on the unique topic an adaptation of the simplified Ackermann model will be used in conjunction with the Stanley model which excels for parking manoeuvres \parencite{snider2009} to achieve the desired turn.
 
 \subsection{Positioning}
-The positioning system is used to determine the location of the quad bike for navigation and to send that data to the user tablet when a mine is detected. Real time positioning in remote locations and accurate to within 0.5 is required from the system. A number of options were looked at when designing the positioning system including Local Positioning Systems (LPS), Global Positioning Systems (GPS), and dead reckoning techniques.
+The positioning system is used to determine the location of the quad bike for navigation and to send that data to the user tablet when a mine is detected. Real time positioning in remote locations and accurate to within 0.5m is required from the system. A number of options were looked at when designing the positioning system including Local Positioning Systems (LPS), Global Positioning Systems (GPS), and dead reckoning techniques.
 
-LPS's uses three or more signalling beacons of known location to determine position through triangulation. They can be highly accurate however require the signalling beacons to be stationed near the area of interest. Transporting and setting up at least three signalling beacons is a time consuming process and makes for inefficient travelling when numerous areas of interest are present.
+LPS use three or more signalling beacons of known location to determine position through triangulation. They can be highly accurate however, require the signalling beacons to be stationed near the area of interest. Transporting and setting up at least three signalling beacons is a time consuming process and makes for inefficient travelling when numerous areas of interest are present. This was not considered any further as it would require personnel to place beacons in danger zones. 
 
-Similar to LPS, GPS's are very accurate, however due to the distance between receivers and a number of linked effects the positional data is very noisy, providing location reliably within only 4 meters. Better accuracy can be achieved by using correction techniques, such as Real Time Kinematics (RTK), where accuracy increases to sub-centimetre. Similar to LPS, correction methods like RTK require base locations within 15 kilometres of the GPS and can take many seconds to receive a fix, both working against a solution to real time positioning in remote areas.
+Similar to LPS, GPS are very accurate. However, due to the distance between receivers and a number of linked effects the positional data is very noisy, providing location reliably within only 4 meters. Better accuracy can be achieved by using correction techniques, such as Real Time Kinematics (RTK), where accuracy increases to sub-centimetre. Similar to LPS, correction methods like RTK require base locations within 15 kilometres of the GPS and can take many seconds to receive a fix, both working against a solution to real time positioning in remote areas.
 
 Dead reckoning techniques calculate the current position by advancing a previous position based on a known speed and heading over some time step. These techniques are highly prone to cumulative error known as drift. A widely used application of dead reckoning is in Inertial Measurement Units (IMU) where accelerometers and gyroscopes are used to determine linear and rotational accelerations and thus have information to update position. This method is able to provide positional data in real time however over longer time periods the accuracy becomes unreliable.
 
@@ -232,7 +233,7 @@ A second major component of the project is the automation of the remote vehicle,
 \begin{itemize}
 \item \textbf{Bespoke Electronics}\\
 Bespoke electronic equipment has the capacity to allow incredibly fast access to I/O devices through the use of task-specific commercial off-the-shelf (COTS) chips. However, the time consumption and expense of planning an entirely hardware-driven control system for anything more than trivial data handling is inappropriate for this project. The inability to prototype as with software means that the ability to test and then revisit a solution is not possible, and a hardware/purely electronics driven system is not capable of general purpose processing. Therefore, this is not a realistic option for achieving the project aims.
-\nomenclature[A]{COTS}{Commercial Off-The-Shelf}% 
+\nomenclature[A]{COTS}{Commercial off-the-shelf}% 
 \item \textbf{Microcontrollers}\\
 Microcontrollers have become the de facto standard for small to medium software-based projects which require access to physical sensors and actuators, due to their readily available access to low level I/O. Microcontrollers supporting common languages such as C++ and Java allow easy development and rapid prototyping, though the inability to easily connect debugging equipment or generate test output slows the development process. Microcontrollers are inexpensive and provide high I/O availability but at the cost of limited processing power. The low-level nature of microcontrollers means that desirable features like hardware interrupts are exposed to and accessible by developers. 
 \item \textbf{Desktop computing equipment/Laptop} \\

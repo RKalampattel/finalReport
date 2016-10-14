@@ -1,4 +1,5 @@
 \documentclass[main.tex]{subfiles}
+% \nomenclature[A]{GPR}{Ground Penetrating Radar}%
 
 \begin{document}
 \chapter{Testing}
@@ -74,10 +75,7 @@ The relevant test cases were documented in separate files (\textcolor{red}{REFER
 The brakes were required to control the quad bike speed as well as to bring the platform to a complete stop when commanded or in the case of an emergency. This requires accurate knowledge of the brake position for the varying brake intensities. The maximum brake intensity was chosen as the point where the wheels were unable to be turned by hand. This was found through small 5 percent increments in the actuator extension until the wheels were unable to rotate. The time required for the brake actuator to go from nill brake to maximum was \textcolor{red}{MEASURED TO BE 3 SECONDS}. This coupled with a reduction in throttle would ensure that the quad bike is able to stop in the required distance of 60cm as specified in the constraints. \textcolor{red}{THIS LAST SENTENCE IS THE ACTUAL TEST THAT WE NEED TO DO - NOT COMPLETE YET}
 
 \subsection{Gear testing}
-The ability to control what gear the quad bike is in was essential to the control and navigation of the project. 36 testing cases were identified for the gear actuator setup. The actuator could lie in one of nine possible positions which were identified based on the system set-up and had three final positions, reverse, neutral and forwards as well as a null option for no actuator movement. \figref{gearTruthTable} shows the final truth table.
-
-\textcolor{red}{TABLE HERE}
-
+The ability to control what gear the quad bike is in was essential to the control and navigation of the project. 36 testing cases were identified for the gear actuator setup. The actuator could lie in one of nine possible positions which were identified based on the system set-up and had three final positions, reverse, neutral and forwards as well as a null option for no actuator movement. \Chapref{gearTable} shows the final truth table.
 The truth table indicates the gear selector code has full completion of the testing cases. The gear actuator should not move when the quad bike is in motion or when the throttle is engaged. This is to ensure that   A check in the software was implemented to achieve this. \textcolor{red}{DO WE NEED MORE ON THIS?}
 
 \subsection{Steering testing}
