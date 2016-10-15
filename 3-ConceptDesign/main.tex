@@ -11,9 +11,9 @@ This chapter presents the design requirements and concept solutions for the vari
 The selection of sensors for the project was based on the requirements from the scenario of operation. These are as follows:
 
 \begin{itemize}
-\item The sensor suite should be able to detect anti-personnel and anti-tank mines with high and low metal content 
-\item Real time detection at an operational speed of 5 km/h and depths of up to 15 cm
-\item The chosen sensors must be able to discriminate between landmines and other objects, with an aim to minimise false positives
+\item Detection of various target types: The sensor suite should be able to detect anti-personnel and anti-tank mines with high and low metal content 
+\item Detection speed and depth: The sensors must be capable of real time detection at an operational speed of 5 km/h and depths of up to 15 cm
+\item Accurate discrimination: The chosen sensors must be able to discriminate between landmines and other objects, with an aim to minimise false positives
 \end{itemize}
 
 As outlined in the benchmarking section, the primary sensors used for landmine detection operations are metal detectors and GPRs. When used in isolation, each sensor has several limitations. Metal detectors can only be used to detect metallic mines, they produce a large number of false positives, and their penetration depth is restricted. On the other hand, GPR systems produce data that is difficult to interpret, and is also very sensitive to environmental conditions such as soil type and moisture content. In both cases, signal processing of some form is required, either using software to identify detected objects, or with the involvement of a skilled operator.
@@ -93,8 +93,8 @@ Unlike with the phase plots obtained from the metal detector, it was not as clea
 \begin{figure}[ht]
 \centerline{
 \begin{tabular}{cc}
-\subfloat[]{\includegraphics[width=0.46\textwidth]{3-ConceptDesign/bg.PNG}}
-& \subfloat[]{\includegraphics[width=0.46\textwidth]{3-ConceptDesign/cans.PNG}}\\
+\subfloat[]{\includegraphics[width=0.47\textwidth]{3-ConceptDesign/bg.PNG}}
+& \subfloat[]{\includegraphics[width=0.47\textwidth]{3-ConceptDesign/cans.PNG}}\\
 \end{tabular}}
 \caption{Background scan (a) and B-scan over two soft drink cans, circled in red (b)} 
 \figlabel{cans}
@@ -108,100 +108,30 @@ Unlike with the phase plots obtained from the metal detector, it was not as clea
 
 \section{Platform selection}
 \seclabel{platformselect}
-A detailed platform selection process was carried out, as outlined in \Chapref{platformSelectionApp}. 
-
-The platform is used to mount the required detection equipment and acts as the foundation for a completely autonomous system. The design and construction of a new platform was considered to be outside the scope of the project, and so the modification of an existing platform was the preferred approach. The requirements for the platform primarily come from the scenario of operation, but also include considerations such as budget and availability. as well as the budget
+The platform is used to mount the required detection equipment and acts as the foundation for a completely autonomous system. The design and construction of a new platform was considered to be outside the scope of the project, and so the modification of an existing platform was the preferred approach. The requirements for the platform primarily come from the scenario of operation, but also include some other considerations: 
 
 \begin{itemize}
- \item Carry a total payload of 100 kg. A pair of metal detector and GPR arrays with their respective control boxes have an estimated gross weight of 80 kg. This allows 20 kg for any mounting structures,  electronics and computers. 
- \item Travel off-road in regions with dry sandy soils and level unobstructed terrain.
-\item Travel in a straight line, both forwards and reverse, and perform turns while maintaining an operational speed of 5 km/h.
-\item Be manoeuvrable enough to navigate the region of interest, yet controllable enough than in case of an emergency, it can come to a complete stop from its operational speed in 1 m.
-\item Availability to the project
-\item Cost: Based on a budget of \$16,500. A platform cost nearing \$5,000 indicated that the requirement had been met. A score of 10 indicates platform supplied in-kind and 1 indicates financially infeasible.
-\item Portability: Level of portability. A higher score indicates simpler transport with less disassembly required. The requirement had been satisfied if transport was possible in the back of a ute or trailer.
-\item Implementation of Auto-Control: How involved the process of implementing the direct hardware required for remote operation would be. A low score indicates a difficult process with many sub-systems, whereas a high score indicates little to no work necessary. Requirement was met if implementation of hardware was a feasible task.
-\item Control/Manoeuvrability: How appropriate the platform was expected to be regarding manoeuvrability assuming auto-control was implemented successfully. This included speed, acceleration, turn radius, and stopping distance.
-\item Implementation of detection equipment: Ease of installation of detection equipment and expected effectiveness of the platform and sensor combination from a landmine detection point of view.
+ \item Payload: The platform should be able to carry a total payload of 100 kg, and must allow for this payload to be mounted.
+ \item Terrain traversing: The platform should be able to travel off-road in regions with dry sandy soils and level unobstructed terrain.
+\item  Operational speed and acceleration: The platform should be able travel in a straight line, both forwards and reverse, and perform turns while maintaining an operational speed of 5 km/h.
+\item Manoeuvrability and controllability: The platform should be manoeuvrable enough to navigate a region of interest, with a smaller turning angle preferred, yet controllable enough that in case of an emergency, it can come to a complete stop from its operational speed in 1 m.
+\item Cost and availability: The platform should have a reasonable cost given the project budget of \$16,500, ans should be available for use as early as possible. 
+\item Ease of automation: The platform should be sufficiently simple to automate, with a preference given to platforms that have the framework for automation already implemented. 
+\item Ease of transportation: The platform should be sufficiently easy to transport from a workshop to a testing locations using a ute or trailer.
 \end{itemize}
 
-%\subsection{Utility Quad Bike}
-Quad bikes are designed as all terrain vehicles and are capable of traversing even the most demanding terrains. Utility quad bikes are intended to carry large loads as well as a human operator and so load limits are frequently larger than 100 kg. Due to the nature of the platform and through visual inspection, mounting points for sensor brackets and electronic systems are located in various positions.  Environmental conditions are of little concern to this platform which will be encountered and traversed with ease for ranges of over 100 km. Turning radius for quad bikes are typically in the range of 3-4 metres.
-The DSTG have offered the use of one of their autonomous quad bikes to be used as the platform. The DSTG quad bike is a Honda TRX450r and has a weight load capacity of 110 kg. The quad bike has been previously fitted with remote control capabilities and is in good working condition, however \textcite{scheiner2011} recommended that the brake actuator be replaced as well as some electronics. As the platform already has remote control capabilities, transport becomes a much easier task especially with a trailer or ute with a ramp.
+The detailed platform selection process is outlined in \Chapref{platformSelectionApp}. Several platforms were considered and evaluated against the above requirements, and the most appropriate platform was found to be an autonomous quad bike provided by the DSTG (\Figref{quadbike}). The quad bike is a Honda TRX450r, and was previously modified at the University of Adelaide on several occasions, most recently by \textcite{scheiner2011}. 
+
 \begin{figure}[ht]
-\includegraphics[width=0.4\textwidth]{3-ConceptDesign/2011quadbike.PNG}
+\includegraphics[width=0.6\textwidth]{3-ConceptDesign/bike.JPG}
 \centering
-\caption[DSTG autonomous quad bike]{DSTG autonomous quad bike \parencite{scheiner2011}} \figlabel{2011quadbike}
+\caption{DSTG autonomous quad bike} \figlabel{quadbike}
 \end{figure}
 
-%\subsection{Dune Buggy}
-A dune buggy is a vehicle designed for high speed operation on loose, sandy terrain. Design of dune buggies are commonly an open chassis housing a modified vehicle and thus it's performance characteristics are similar or better than that of a small car. They are commonly able to carry two persons resulting in a load capacity exceeding 160 kg. Dune buggies frequently have turn radii around 6 metres restricting path curvature for accurate tracking. Due to the nature of the platform equipment mounting is common practice and would not raise any issues however a bare mass of 230 kg and dimensions 2.3 by 1.5 metres would make the unit difficult to transport.
-\begin{figure}[ht]
-\includegraphics[width=0.4\textwidth]{3-ConceptDesign/kandidunebuggy.jpg}
-\centering
-\caption[Kandi-150 dune buggy]{Kandi-150 dune buggy \parencite{150GKM}} \figlabel{kandi150}
-\end{figure}
-
-%\subsection{Continuous Track Vehicle}
-Tracked vehicles are designed to distribute the weight of the vehicle over a large area enabling the traversing of soft and loose terrain without the concern of losing traction and becoming stuck. The platform shown in \Figref{grillon500} is one example of such a vehicle. The Grillon-500 is able to carry a payload of 1000 kg and operate at speeds up to 11 km/hr however a bare mass of 100 kg and dimensions of 1.5 m by 2.5 m could make the unit difficult to transport \parencite{cinamGrillon}. This model is designed to support the mounting of various equipment in the front bay (fork lift pictured). An advantage of the tracked vehicle over other platforms is its ability to turn on the spot eliminating the need for complicated turn algorithms. 
-\begin{figure}[ht]
-\includegraphics[width=0.4\textwidth]{3-ConceptDesign/Grillon-500.jpg}
-\centering
-\caption[Grillon-500 tracked vehicle]{Grillon-500 tracked vehicle \parencite{cinamGrillon}} \figlabel{grillon500}
-\end{figure}
-
-%\subsection{Hovercraft}
-Access was made available to an existing hovercraft from a 2009 University of Adelaide Honours Project. Analysis of the technical report \parencite{hovercraft2009} and practical and theoretical evaluations showed that the lift fan was able to support a payload of up to 22 kg and the thrust fans were only just capable of moving the craft on a flat, smooth surface. For complete automation only actuators for the lift motor would be required as remote operation for the thrust system had already been implemented. The stopping distance is lacking due to the time required to rotate fans for reverse thrust. The hovercraft has an advantage over other platforms through its ability to pass directly over a landmine without detonation occurring, however, this 'sliding' advantage introduces new problems when developing a path tracking algorithm due to the advanced dynamics of the platform. The purchasing of a recreational hovercraft more suited to the requirements would not have been financially feasible. Through verbal discussion with DSTG, it was revealed that vibrations produced through the lift and thrust systems on hovercraft platforms were detrimental to the effectiveness of the sensor equipment. Thus, the DSTG has advised against the use of a hovercraft as the platform for landmine-detecting purposes.
-\begin{figure}[ht]
-\includegraphics[width=0.4\textwidth]{3-ConceptDesign/HovercraftPic.png}
-\centering
-\caption[University of Adelaide 2009 Honours Project hovercraft]{University of Adelaide 2009 Honours Project hovercraft \parencite{hovercraft2009}} \figlabel{hovercraftPic}
-\end{figure}
-
-%\subsection{Platform Decision}
-\Tabref{platformDecision} summarises the strengths of each of the considered platforms. A score of 5 indicated that a requirement had been satisfied or that the criterion was only just feasible for that platform, with any difference being representative of a rise or fall in the platforms specified capability. Scores had a lower limit of 1 and an upper limit of 10. It was evident that the hovercraft did not meet majority of the requirements to be the supporting platform. Commercial quad bikes or dune buggies could have been used with some modifications to the structure, however a tracked vehicle or the quad bike offered by DSTG were clearly the two best options.
-
-The DSTG quad bike was selected over a tracked vehicle for a number of reasons. These included direct availability, financial restrictions, and the completed state of auto control hardware already on the quad bike.
-\begin{table}[ht]
-\centering
-\caption{Platform decision matrix}
-\tablabel{platformDecision}
-\begin{tabular}{r *6c}
-    \multicolumn{1}{r}{}  & \mcrot{1}{l}{45}{Hovercraft (2009)} & \mcrot{1}{l}{45}{Commercial Quad Bike} & \mcrot{1}{l}{45}{Dune Buggy} & \mcrot{1}{l}{45}{Tracked Vehicle} & \mcrot{1}{l}{45}{Quad Bike (DSTG)}\\ \toprule 
-    Unit Cost & 10 & 5 & 3 & 4 & 10\\ 
-    Implementation of Auto Control & 5 & 3 & 3 & 5 & 9\\ 
-    Control/Manoeuvrability & 3 & 7 & 5 & 9 & 7\\ 
-    Implementation of Detection Equipment & 1 & 6 & 6 & 5 & 6\\ 
-    Payload & 2 & 8 & 10 & 7 & 7\\ 
-    Terrain Traversibility & 3 & 9 & 7 & 10 & 9\\ 
-    Portability & 7 & 6 & 4 & 8 & 6\\ 
-    Navigation & 9 & 5 & 4 & 7 & 5\\ \midrule
-    \textbf{Total} & 48\% & 64\% & 57\% & 68\% & 76\%\\ \bottomrule
-\end{tabular}
-\end{table}
+The intended application for the quad bike was to autonomously drive through vineyards. In order to achieve this, a number of systems had to be modified, namely the steering, throttle, brake and gear change systems \parencite{scheiner2011}. The steering is controlled by an Animatics Smart Motor, connected to the steering column using a v-belt. A servo motor is to control the throttle, while a wheel speed encoder measures the vehicle's position. The linear actuator is used to control the brakes, with a strain gauge used to measure the braking intensity. Finally, two linear potentiometers are used to measure the position of a linear actuator in the gear system. A Dragon Board is used as the main controller, handling communications between all subsystems. 
 
 \section{Automation and navigation}
 The navigation and automation systems are responsible for communicating to the quad bike two primary functions, how to follow a path and what quad bike control elements need to do to allow this to happen. Platform navigation will be primarily handled via waypoints. After a region is selected by a user it is broken down into a series of waypoints which, once connected, will form a path for the quad bike. In the alternate use case, the navigation system will operate based directly on waypoints created from a user defined path.
-
-\subsection{Platform automation}
-\seclabel{automationconcept}
-. The flow chart design for the quad bike control is shown in \Figref{autoflowchart} and enables transfer to various programming languages, such as, Matlab, C++ and Java. \Figref{autoflowchart} shows that the PID controller processes the four different input functions. The result is transmitted back to the actuators, the output window and central hub. The window is used as a visual output of the current conditions of the quad bike. The central hub processes the overall integration of the system and links this autonomous control to the navigation, which is discussed further in \secref{conceptprojectdesign}. 
-
-\begin{figure}[ht]
-\includegraphics[width=0.6\textwidth]{3-ConceptDesign/autoflowchart.png}
-\centering
-\caption{Platform automation flow chart} 
-\figlabel{autoflowchart}
-\end{figure}
-
- \Figref{autocode} shows that the functions have different processes implemented under each one, with an additional function called emergency stop to be included for safety purposes. This emergency stop function will interrupt all processes if the operator deems it necessary. The specific process under each main function is the "get" and "set" processes. The "get" process is to read the current state of the actuator or servo motor, and the "set" process is to save that current state and expected values in order to calculate the relevant error. There will be further processes added to automate the platform and integrate the navigation path tracking and turning sections.
-
-\begin{figure}[ht]
-\includegraphics[width=\textwidth]{3-ConceptDesign/autofunct.PNG}
-\centering
-\caption{Automation code functions} 
-\figlabel{autocode}
-\end{figure}
 
 \subsection{Path tracking}
 \seclabel{pathconcept}

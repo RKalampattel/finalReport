@@ -126,6 +126,7 @@ where $\alpha$ and thus $\delta$ will be functions of time and thus will be calc
 \end{figure} 
 
 \subsection{Turning the platform a specified angle}
+\seclabel{turningspecifiedangle}
 For the quad bike to not stray more than 0.5 meters from the path, as defined in the project requirements, turning procedures were incorporated at path points of zero radius of curvature. In these situations one of two methods were used to turn the angle, a simple turn, or an extended 3-point turn (N-point turn) to some number of required points, both shown in \figref{turnTypes}. 
 
 \begin{figure}[ht]
@@ -159,11 +160,16 @@ To minimise $d$, the turn radius, $R$, should be minimised. To minimise the turn
 
 Geometry for the N-point turn is very similar to that of the simple turn and is shown in \figref{nPointTurnGeometry}. Again, the solid bold line and dashed bold line represent the user defined path and the modified region of the path, respectively. The grey box is the quad bike position and the grey dashed lines are the scanned swathe from the sensor suite.
 \begin{figure}[ht]
-\includegraphics[width=0.4\textwidth]{4-DetailedDesign/nPointTurnGeometry.png}
-\centering
-\caption{N-point turn geometry} \figlabel{nPointTurnGeometry}
-\end{figure} 
-Throughout the N-point turn the quad bike must remain within the grey dashed lines else it would be traversing un-scanned terrain, risking the detonation of landmines. By analysing a 180 degree N-point turn in a 3 meter swathe, a template is constructed, and for any turn angles of less than 180 degrees the turn algorithm exits early, once the desired turn angle has been reached. The specific algorithms to achieve this are discussed further in \secref{pathsubdivision}. The template, shown in \tabref{npointTurnTemplate}, matches each point in the turn with an angle corresponding to the angle at which the quad bike touches the edge of the swathe. In \figref{nPointTurnGeometry}, the quad bike is at position (1, 26.7\degree). Accumulative error here is not an issue as this is the ideal path that the quad bike would follow, and any quad bike deviation error is corrected for by aiming for the ideal path point.
+\centerline{
+\begin{tabular}{cc}
+\subfloat[Arc geometry]{\includegraphics[width=0.4\textwidth]{4-DetailedDesign/nPointTurnGeometry.png}} 
+& \subfloat[Turn points]{\includegraphics[width=0.4\textwidth]{4-DetailedDesign/nPointTurnNumbered.png}}\\
+\end{tabular}}
+\caption{N-point turn geometry}
+\figlabel{nPointTurnGeometry}
+\end{figure}
+
+Throughout the N-point turn the quad bike must remain within the grey dashed lines else it would be traversing un-scanned terrain, risking the detonation of landmines. By analysing a 180 degree N-point turn in a 3 meter swathe, a template is constructed, and for any turn angles of less than 180 degrees the turn algorithm exits early, once the desired turn angle has been reached. The specific algorithms to achieve this are discussed further in \secref{pathsubdivision}. The template, shown in \tabref{npointTurnTemplate}, matches each point in the turn with an angle corresponding to the angle at which the quad bike touches the edge of the swathe. In \figref{nPointTurnGeometry}a, the quad bike is touching the edge of the swathe at position 1, 26.7\degree. Accumulative error here is not an issue as this is the ideal path that the quad bike would follow, and any quad bike deviation error is corrected for by aiming for the ideal path point.
 \begin{table} [ht]
 \centering
 \caption{N-point turn template}
@@ -171,7 +177,7 @@ Throughout the N-point turn the quad bike must remain within the grey dashed lin
 \begin{tabular} {r | c c c c c c c c}
 Turn point & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\ \hline
 Heading (\degree) & 0 & 26.7 & 60.5 & 77.3 & 95.6 & 113.9 & 130.8 & 180 \\
-$\Delta h$ (m) & 0 & 1.46 & 0.09 & 0.44 & 0.37 & 0.11 & 0.62 & -1.18 \\
+$\Delta h$ required (m) & 0 & 1.46 & 0.09 & 0.44 & 0.37 & 0.11 & 0.62 & -1.18 \\
 \end{tabular}
 \end{table}
 At the completion of the turn, the quad bike is not guaranteed to line up with the next segment of the path. A distance, $\Delta h$ is added to the end of the previous line segment to correct for this. $\Delta h$ is also determined from ideal geometry, and in real time by interpolating from the template shown in \tabref{npointTurnTemplate}.
@@ -183,17 +189,16 @@ The goal of the path subdivision step is to provide intermediate, or 'goal', way
 \item Subdivide the straight line segment
 \item If there is a next line segment, conduct a turn and align with it
 \end{enumerate}
-Straight line segments are subdivided through linear interpolation and adding intermediate waypoints at some user defined distance. In the Virtual Platform and for testing a distance of 0.2 meters is used.
+Straight line segments are subdivided through linear interpolation and adding intermediate waypoints at some user defined distance. In the Virtual Platform, and for testing, a distance of 0.2 meters is used.
 
-For a simple turn, the algorithm to deduce the locations of the modified path is a fast, vector based, process. First, the centre of the turning circle is found by removing points from the subdivided straight line
-
+For each of the turns, the algorithm to deduce the locations of the modified path is a fast, vector based process. For more detail on the algorithms used to achieve this see \chapref{pathSubdivisionDetail}. The final result of the subdivision process is shown in \figref{pathSubdivisionBeforeAfter}.
 \begin{figure}[ht]
 \centerline{
 \begin{tabular}{cc}
-\subfloat[User defined path]{\includegraphics[width=0.3\textwidth]{4-DetailedDesign/rawpath.png}} 
-& \subfloat[Subdivided path with calculated turns]{\includegraphics[width=0.3\textwidth]{4-DetailedDesign/subdividedpath.png}}\\
+\subfloat[Input: user or region defined path]{\includegraphics[width=0.3\textwidth]{4-DetailedDesign/rawpath.png}} 
+& \subfloat[Output: subdivided path with calculated turns]{\includegraphics[width=0.3\textwidth]{4-DetailedDesign/subdividedpath.png}}\\
 \end{tabular}}
-\caption{Path subdivision input (a) and output (b)}
+\caption{Path subdivision input and output}
 \figlabel{pathSubdivisionBeforeAfter}
 \end{figure}
 
@@ -323,7 +328,7 @@ With the inputs calculated a new estimate covariance, $\Sigma_t$, and position e
 \section{Automation}
 \seclabel{detailedautomate}
 
-As part of the platform requirements, full autonomy of the vehicle was required. For the quad bike this meant being able to operate each of the subsystems, steering, throttle, gears, and brakes, remotely without human interaction as well as knowing state information about the quad bike including the speed, position and heading. To achieve this the quad bike uses a series of actuators and motors to operate the subsystems in place of human interaction.
+As part of the platform requirements, full autonomy of the vehicle was required. For the quad bike this meant being able to operate each of the subsystems, steering, throttle, gears, and brakes, remotely without human interaction as well as knowing state information about the quad bike including the speed, position and heading. To achieve this the quad bike uses a series of actuators and motors in conjunction with an Arduino control board to operate the subsystems in place of human interaction.
 
 \subsection{Automation software}
 \seclabel{detailedautosoftware}
