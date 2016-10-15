@@ -3,6 +3,7 @@
 
 \begin{document}
 \begin{appendices}
+\addtocontents{toc}{\protect\setcounter{tocdepth}{0}}
 
 \chapter{Benchmarking}
 \chaplabel{benchmarking}
@@ -25,9 +26,11 @@ In military scenarios, the key priority is to clear a path as quickly as possibl
 \figlabel{military}
 \end{figure}
  
-\paragraph{General Dynamics FORESIGHT RDV} FORESIGHT is a multi-sensor landmine detection system, mounted on a vehicle that can be controlled remotely. The vehicle usually travels with a protection vehicle, which clears the the path ahead of surface-based devices, as well as mines just below the surface \parencite{canada2004}. The sensor suite consists of four independent systems, the data from which is fused to accurately detect a range of threats. A minimum metal detector array which is 3 m wide is used for the detection of metallic parts, even when the metal content is low. The 3 m GPR array with ultra-wide band capabilities (1-3 GHz) can detect larger mines at up to 30 cm below the soil surface. An infra-red camera with 8-14 micrometre wavelength is used to detect changes in soil density which occur when mines are buried \parencite{canada2004}. Finally, a thermal neutron activation detector directly detect explosives through measurements of the soil nitrogen level; this provides an added level of target confirmation \parencite{general2009}. The sensor suite can operate at a forwards speed of 3-4 km/h, and in the event that a detection is made with a sufficient confidence level, the onboard marking system is used to physically mark the threat location \parencite{canada2004}.
+\subsubsection*{General Dynamics FORESIGHT RDV} 
+FORESIGHT is a multi-sensor landmine detection system, mounted on a vehicle that can be controlled remotely. The vehicle usually travels with a protection vehicle, which clears the the path ahead of surface-based devices, as well as mines just below the surface \parencite{canada2004}. The sensor suite consists of four independent systems, the data from which is fused to accurately detect a range of threats. A minimum metal detector array which is 3 m wide is used for the detection of metallic parts, even when the metal content is low. The 3 m GPR array with ultra-wide band capabilities (1-3 GHz) can detect larger mines at up to 30 cm below the soil surface. An infra-red camera with 8-14 micrometre wavelength is used to detect changes in soil density which occur when mines are buried \parencite{canada2004}. Finally, a thermal neutron activation detector directly detect explosives through measurements of the soil nitrogen level; this provides an added level of target confirmation \parencite{general2009}. The sensor suite can operate at a forwards speed of 3-4 km/h, and in the event that a detection is made with a sufficient confidence level, the onboard marking system is used to physically mark the threat location \parencite{canada2004}.
 
-\paragraph{NIITEK Minestalker} Developed by the US Department of Defense and NIITEK for humanitarian demining, the Minestalker system was built to detect anti-tank mines at depths greater than 5 to 10 cm \parencite{laudato2014}. The system utilises a high performance 3.2 m VISOR GPR array and optional 3 m See-Deep metal detector array \parencite{niitek2015}. The sensors are mounted on a tractor vehicle which can be controlled remotely; the accompanying software system ensures that there is a high detection probability and a low number of false alarms. The system is a "user in the loop system", in the sense that the vehicle stops when a target is detected and waits for further instructions \parencite{laudato2014}. Targets are marked both physically and with GPS, with a 1 metre resolution. The vehicle itself can advance and detect threats in real time at up to 15 km/h \parencite{niitek2015}.
+\subsubsection*{NIITEK Minestalker} 
+Developed by the US Department of Defense and NIITEK for humanitarian demining, the Minestalker system was built to detect anti-tank mines at depths greater than 5 to 10 cm \parencite{laudato2014}. The system utilises a high performance 3.2 m VISOR GPR array and optional 3 m See-Deep metal detector array \parencite{niitek2015}. The sensors are mounted on a tractor vehicle which can be controlled remotely; the accompanying software system ensures that there is a high detection probability and a low number of false alarms. The system is a "user in the loop system", in the sense that the vehicle stops when a target is detected and waits for further instructions \parencite{laudato2014}. Targets are marked both physically and with GPS, with a 1 metre resolution. The vehicle itself can advance and detect threats in real time at up to 15 km/h \parencite{niitek2015}.
 
 % \subsection{Research Vehicles}
 % While commercially available vehicles for landmine detection are often modelled on military vehicles, research vehicles are much more varied in their design (\Figref{research}). These vehicles have been developed by universities or other research organisations, and in most cases have not seen any operational use.
@@ -121,8 +124,8 @@ Commercial 2D GPR systems range from handheld devices which are intended to dete
 \begin{figure}[ht]
 \centerline{
 \begin{tabular}{cc}
-\subfloat[RadioDetection RD8000 \parencite{rd8000}]{\includegraphics[height=0.5\textwidth]{8-Appendices/rd8000.png}} 
-& \subfloat[US Radar Seeker 2000 HH \parencite{usradar}]{\includegraphics[height=0.5\textwidth]{8-Appendices/seeker2000.png}}\\
+\subfloat[RadioDetection RD8000 \parencite{rd8000}]{\includegraphics[height=0.4\textwidth]{8-Appendices/rd8000.png}} 
+& \subfloat[US Radar Seeker 2000 HH \parencite{usradar}]{\includegraphics[height=0.4\textwidth]{8-Appendices/seeker2000.png}}\\
 \end{tabular}}
 \caption{Commercially available GPR systems}
 \figlabel{cheapradar}
@@ -134,12 +137,12 @@ Current state-of-the-art GPR systems for mine detection, such as the DX and DXG 
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=0.8\textwidth]{8-Appendices/DX-Series-Antenna-Profile.jpg}
+\includegraphics[width=0.55\textwidth]{8-Appendices/DX-Series-Antenna-Profile.jpg}
 \caption[3D-RADAR DX series GPR antenna]{3D-RADAR DX series GPR antenna \parencite{3dradarDX}}
 \figlabel{dxseries}
 \end{figure}
 
-\section{Multisensor systems for landmine detection}
+\section*{Multisensor systems for landmine detection}
 While traditional systems for landmine detection make use of a single sensor, the latest generation of systems attempt to combine multiple sensors. This allows for a broader range of threats to be detected, and at the same time increase detection accuracy.  
 
 % There is no benchmark here so no point talking about it
@@ -161,14 +164,179 @@ Another system is being developed to allow demining and reclamation of vast swat
 
 %The current challenges with landmine detection, including further elaboration of each signal processing methods are \textcolor{red}{reference literature review section}. 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \chapter{Platform Selection}
 \chaplabel{platformSelectionApp}
+As stated in the concept design, the requirements for the platform are as follows: 
+
+\begin{itemize}
+ \item Payload: The platform should be able to carry a total payload of 100 kg, and must allow for this payload to be mounted.
+ \item Terrain traversing: The platform should be able to travel off-road in regions with dry sandy soils and level unobstructed terrain.
+\item  Operational speed and acceleration: The platform should be able travel in a straight line, both forwards and reverse, and perform turns while maintaining an operational speed of 5 km/h.
+\item Manoeuvrability and controllability: The platform should be manoeuvrable enough to navigate a region of interest, with a smaller turning angle preferred, yet controllable enough that in case of an emergency, it can come to a complete stop from its operational speed in 1 m.
+\item Cost and availability: The platform should have a reasonable cost given the project budget of \$16,500, ans should be available for use as early as possible. 
+\item Ease of automation: The platform should be sufficiently simple to automate, with a preference given to platforms that have the framework for automation already implemented. 
+\item Ease of transportation: The platform should be sufficiently easy to transport from a workshop to a testing locations using a ute or trailer.
+\end{itemize}
+The following selection process compares several platforms against these requirements, before selecting the most suitable one. 
+
+\section{Utility quad bike}
+Quad bikes are designed to operate off-road, and are capable of traversing a wide variety of terrains with very little difficulty. Since they are designed to carry large loads as well as a human operator, utility quad bikes frequently have load limits larger than 100 kg. The turning radius for a quad bike is typically in the range of 3-4 metres, and the braking distance is small, especially at low speeds. Commercial quad bikes can be purchased at a range of prices, however almost all fall comfortably within the budget. The DSTG also offered the use of an autonomous quad bike, which was previously developed at the University of Adelaide \parencite{scheiner2011}. This quad bike, as seen in \Figref{2011quadbike}, is a Honda TRX450r and has a payload capacity of 110 kg. The quad bike was previously fitted with remote control capabilities and is in good working condition, however \textcite{scheiner2011} recommended that some actuators and electronics should be replaced.
+\begin{figure}[ht]
+\includegraphics[width=0.5\textwidth]{8-Appendices/2011quadbike.PNG}
+\centering
+\caption[Autonomous quad bike offered by the DSTG]{Autonomous quad bike offered by the DSTG \parencite{scheiner2011}} \figlabel{2011quadbike}
+\end{figure}
+
+\section{Dune buggy}
+A dune buggy is a vehicle designed for high speed operation on loose, sandy terrain. Dune buggies are commonly designed with an open chassis housing a modified vehicle and thus its performance characteristics are similar to or better than that of a small car. An example is the Kandi-150 shown in \Figref{kandi150}, which is built to carry two people, allowing for a load capacity exceeding 160 kg. Due to the high speeds at which these vehicles are usually operated, they have turn radii around 6 metres \parencite{150GKM}, restricting path curvature for accurate tracking. Due to the nature of the platform, it would be more expensive than a quad bike and also more difficult to automate.
+\begin{figure}[ht]
+\includegraphics[width=0.5\textwidth]{8-Appendices/kandidunebuggy.jpg}
+\centering
+\caption[Kandi-150 dune buggy]{Kandi-150 dune buggy \parencite{150GKM}} \figlabel{kandi150}
+\end{figure}
+
+\section{Tracked vehicle}
+Tracked vehicles are designed to distribute the weight of a vehicle over a large area enabling the traversing of soft and loose terrain without the concern of losing traction and becoming stuck. The platform shown in \Figref{grillon500} is one example of such a vehicle. The Grillon-500 is able to carry a payload of 1000 kg and operate at speeds up to 11 km/h \parencite{cinamGrillon}. This model is designed to support the mounting of various equipment in the front bay (fork lift pictured). An advantage of the tracked vehicle over other platforms is its ability to turn on the spot, eliminating the need for complicated turn algorithms. 
+\begin{figure}[ht]
+\includegraphics[width=0.5\textwidth]{8-Appendices/Grillon-500.jpg}
+\centering
+\caption[Grillon-500 tracked vehicle]{Grillon-500 tracked vehicle \parencite{cinamGrillon}} \figlabel{grillon500}
+\end{figure}
+
+\section{Hovercraft}
+
+The final platform considered was an existing hovercraft from a University of Adelaide honours project in 2009. Analysis of the technical report \parencite{hovercraft2009} and experimental and theoretical evaluations showed that the lift fan was able to support a payload of up to 22 kg and the thrust fans were only just capable of moving the craft on a flat, smooth surface. Furthermore, it was expected that vibrations produced through the lift and thrust systems on hovercraft platforms would be detrimental to the effectiveness of the sensor equipment. For complete automation, only actuators for the lift motor would be required as remote operation for the thrust system had already been implemented. The stopping distance was lacking due to the time required to rotate fans for reverse thrust. The hovercraft had an advantage over other platforms through its ability to pass directly over a landmine without detonation occurring, however, this 'sliding' advantage introduces new problems when developing a path tracking algorithm due to the advanced dynamics of the platform. This 'sliding' is also a disadvantage is the hovercraft passes over a landmine without detecting it, since it place demining personnel at risk.
+\begin{figure}[ht]
+\includegraphics[width=0.65\textwidth]{8-Appendices/HovercraftPic.png}
+\centering
+\caption[University of Adelaide hovercraft from 2009]{University of Adelaide hovercraft from 2009 \parencite{hovercraft2009}} \figlabel{hovercraftPic}
+\end{figure}
+
+\section{Platform decision matrix}
+\Tabref{platformDecision} ranks the considered platforms against the platform requirements. The hovercraft was not included due to its inability to meet the minimum payload requirement and poor manoeuvrability. A score of 10 indicates that a certain requirement has been met completely, with lower scores indicating the platform only meets the requirement to a certain extent. 
+
+\begin{table}[ht]
+\centering
+\caption{Platform decision matrix}
+\tablabel{platformDecision}
+\begin{tabular}{r *5c}
+    \multicolumn{1}{r}{}  & \mcrot{1}{l}{45}{Commercial quad bike} & \mcrot{1}{l}{45}{Dune buggy} & \mcrot{1}{l}{45}{Tracked vehicle} & \mcrot{1}{l}{45}{DSTG quad bike}\\ \toprule 
+    Payload & 8 & 7 & 8 & 8\\ 
+    Terrain traversing & 9 & 9 & 9 & 9\\ 
+    Operational speed and acceleration & 8 & 7 & 10 & 8\\ 
+    Manoeuvrability and controllability & 7 & 6 & 9 & 7\\ 
+    Cost and availability & 6 & 5 & 4 & 10\\ 
+    Ease of automation & 4 & 4 & 5 & 8\\ 
+    Ease of transportation & 7 & 7 & 5 & 7\\ \midrule
+    \textbf{Total} & 70\% & 64\% & 71\% & 81\%\\ \bottomrule
+\end{tabular}
+\end{table}
+
+A commercial quad bike or dune buggy could have been used with some modifications to the structure, however a tracked vehicle or the quad bike offered by the DSTG were the two most suitable options. Of these, the tracked vehicle had superior performance specifications, however the DSTG quad bike had the advantage of direct availability at no cost, and an easier path to full automation. Hence, the DSTG quad bike was chosen as the platform for the project. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \chapter{Sensor Mount Material Selection}
 \chaplabel{sensorMaterialsApp}
+A formal material selection process is undertaken to find the most suitable material for the sensor mount frame, as outlined in \emph{Materials Selection in Mechanical Design} \parencite{Ashby11}. 
 
-\chapter{Positioning System Derivation}
-\chaplabel{positionDerivation}
+\section{Material index derivation}
+The first step is to define the problem and find the relevant material index.
+
+\begin{itemize}
+\item \textbf{Function}: The sensor mount frame must support loads with negligible deflection and vibration.
+\item \textbf{Non-negotiable constraints}: The material used must be non-metallic due to the requirements of the metal detector, and the  frame must have a minimum length $L$, to ensure the sensors are sufficiently far away from the platform.
+\item \textbf{Negotiable constraints}: The frame must have a minimum stiffness $E$ equivalent to that of a metal, i.e. stiffness greater than 10 GPa \parencite{Ashby11}, good damping properties, and a suitable appearance.
+\item \textbf{Objectives}: Minimise mass and vibrations.
+\item \textbf{Free variables}: Cost, cross sectional area $A$.
+\end{itemize}
+
+The mass $m$ of the frame, assuming a single cantilever beam, is given by $m=AL\rho$, where $\rho$ is the material density. 
+
+For an end loaded cantilever, the bending stiffness $k=\frac{3EI}{L^3}$, where $I$ is the moment of inertia. For a beam with a uniform square cross-section, $I=\frac{A^2}{12}$, which means that $k=\frac{3EA^2}{12L^3}$.
+
+Rearranging and substituting into the mass equation, 
+\begin{align}
+m=\sqrt{3k}L^{5/2}\big(\frac{\rho}{E^{1/2}}\big).	\eqlabel{mass}
+\end{align}
+
+From this equation we can see that to minimise the mass of the frame, we have to maximise $E^{1/2}/\rho$. This material index matches that prescribed by \textcite{Ashby11} for vibration limited designs with length and beam stiffness specified.  
+
+\section{Material selection charts}
+Using this material index, material selection charts can be used to identify suitable materials. \Figref{modulus} shows a modulus-density chart, with the dotted lines indicating the stiffness limit of 10 GPa and the minimum mass guideline corresponding to the $E^{1/2}/\rho$ material index. 
+\begin{figure}[ht]
+\includegraphics[width=0.9\textwidth]{8-Appendices/modulus.PNG}
+\centering
+\caption[Modulus-density material selection chart]{Modulus-density material selection chart \parencite{Ashby11}} \figlabel{modulus}
+\end{figure}
+
+By shifting the guideline upwards and to the left, the only materials left in the shaded region are some technical ceramics, composites, natural materials and a few metals.
+\begin{itemize}
+\item Metals: Magnesium and aluminium alloys lie within the region of interest, however they do not meet the non-metallic constraint.
+\item Ceramics:  Several ceramic materials such as Al$_2$O$_3$, SiC, and B$_4$C have good stiffness but are heavy and quite difficult to form on account of being brittle. They are also likely to have poor vibrational characteristics.
+\item Composites: Carbon and glass fibre reinforced polymers (CFRP and GFRP) have good overall properties, but are expensive and somewhat difficult to form.
+\item Natural materials: Bamboo and wood (parallel to grain) also has good properties, they are light but not as stiff as other materials.
+\end{itemize}
+The most suitable materials are therefore natural materials including wood and bamboo, and composites including CFRP and GFRP.
+
+\Figref{loss} shows a loss coefficient-modulus chart. Of the materials selected previously, bamboo has the highest loss coefficient, followed by wood, GFRP and CFRP, which means it has better stiffness and damping properties. 
+\begin{figure}[ht]
+\includegraphics[width=0.9\textwidth]{8-Appendices/loss.PNG}
+\centering
+\caption[Loss coefficient-modulus material selection chart]{Loss coefficient-modulus material selection chart \parencite{Ashby11}} \figlabel{loss}
+\end{figure}
+
+While bamboo is the best material to use for the sensor mount frame based on loss coefficient and stiffness alone, it is difficult to obtain in Australia in structural form. Wood is the next best option, and is very easy to work with and readily available. GFRP has a similar stiffness to wood but with worse damping properties and a higher density. On the other hand, CFRP has a much better stiffness however it sacrifices damping properties and density. The two composites are also more difficult to work with, and are more expensive. Hence, the selected material is wood.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{Path Subdivision Detail}
+\chaplabel{pathSubdivisionDetail}
+The path subdivision algorithm cycles through the user or region defined path completing two stages of subdivision at each point.
+\begin{enumerate}
+\item Subdivide the straight line segment up to the next point
+\item If there is a following line segment, conduct a turn and align with it
+\end{enumerate}
+For the point $P_1 = (x_1, y_1)$, we first subdivide the line segment to the next point $P_2 = (x_2, y_2)$, shown in step 2 of \figref{simpleTurnProgression}. This is done by doing a linear interpolation between the two points to find a series of intermediate waypoints $P_i = (x_i, y_i)$:
+\begin{align*}
+P_i = |P_2 - P_1| \times k \times j
+\end{align*}
+where $k$ is the distance between intermediate waypoints and j is incremented from 0 to completion of the line segment.
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.9\textwidth]{8-Appendices/simpleTurnProgression.png}
+\caption[Simple turn progression]{Simple turn progression}
+\figlabel{simpleTurnProgression}
+\end{figure}
+For a simple turn, a number of intermediate points from the first line subdivision are removed up to a distance $d$ from the turn point, $P_2$. Where
+\begin{align*}
+d = R \tan \frac{\phi}{2}
+\end{align*}
+from \secref{turningspecifiedangle}. The centre point of the turn circle can then be found based on the last intermediate waypoint, $P_i$, and a vector perpendicular to the current path segment with a length equal to the turn radius, 3.14m. The vector is then incrementally rotated around $P_c$ to give the correct distance between waypoints. The required change in rotation angle at each increment is given by the following formula:
+\begin{align*}
+\Delta angle = \frac{distance\ between\ turn\ waypoints}{turn\ radius} = \frac{0.2}{3.14} = 0.064\ rads
+\end{align*}
+Incrementing stops once the vector has been rotated by a total angle equal to $\phi$. The subdivision process then continues from stage 1, by linearly subdividing the path from $P_2$ to $P_3$.
+
+In the event of a large turn angle where an N-point turn is required, only stage 2 of the subdivision process is changed. Once the linear interpolation of waypoints is complete, some waypoints are either added or removed to the end of the line segment to aid in the alignment of the turn with the next line segment. 
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.9\textwidth]{8-Appendices/nPointTurnProgression.png}
+\caption[Simple turn progression]{N-point turn progression}
+\figlabel{nPointTurnProgression}
+\end{figure}
+The distance added or removed, $\Delta h$, is based on the turn angle and is found from the geometrically determined template, \tabref{npointTurnTemplate}, shown below.
+\begin{table} [ht]
+\centering
+\begin{tabular} {r | c c c c c c c c}
+Turn point & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\ \hline
+Heading (\degree) & 0 & 26.7 & 60.5 & 77.3 & 95.6 & 113.9 & 130.8 & 180 \\
+$\Delta h$ required (m) & 0 & 1.46 & 0.09 & 0.44 & 0.37 & 0.11 & 0.62 & -1.18 \\
+\end{tabular}
+\end{table}
+Similar to the simple turn, the centre point, $P_c$, of the turn arc is be found based on the turn radius, $R$, and is perpendicular to the current line segment. Arc points are added by incrementing the vector by the angle, $\Delta angle$. Incrementing stops once the vector has been rotated by a total angle equal to the difference between the current turn point and the next turn point, in the case of \figref{nPointTurnProgression} part 4, we are at the first turn point so the vector is rotated, $(26.7 - 0)\degree = 26.7\degree$, in total. If at this point the desired turn angle has not been reached, additional arcs are added to the path in the same fashion as just described. Stage 1 is then executed again for the next straight line segment.
 
 \chapter{Sensor Mount Vibrations Analysis}
 \chaplabel{sensorVibesApp}
