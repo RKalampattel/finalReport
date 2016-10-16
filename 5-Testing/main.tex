@@ -12,22 +12,40 @@ Tests were conducted to ensure that each subsystem was functioning correctly. Qu
 \subsection{Results}
 
 \section{Positioning systems testing}
+Individual positioning systems were tested and their errors analysed to be used in the Kalman Filter.
+
 \subsection{GPS}
+The primary function of the GPS in the positioning system was to correct for drift that may be present in the kinematic equations. For this purpose accuracy is very important however very small emphasis is placed on any error from noise, which is accounted for in the Kalman Filter. Testing of the GPS involved moving it around a known location over known distances. Two categories of testing were conducted, stationary tests and non-stationary tests. This was chosen as a result of the known differences in performance between the two.
+\begin{figure}[ht]
+\centerline{
+\begin{tabular}{cc}
+\subfloat[Non-stationary test]{\includegraphics[width=0.65\textwidth]{5-Testing/nonStationaryGpsTest.png}} 
+& \subfloat[Stationary test]{\includegraphics[width=0.35\textwidth]{5-Testing/stationaryGpsTest.png}}\\
+\end{tabular}}
+\caption{GPS tests}
+\figlabel{gpsTests}
+\end{figure}
+The non-stationary test in \figref{gpsTests}a involved traversing the outer edge of two tennis courts, and during the stationary test the receiver was left sitting on the bottom right corner for 120 seconds. The GPS data was overlayed onto satellite imagery using Google Maps for better visualisation.
+
+From the non-stationary test it is evident that when moving the GPS provides very accurate positional information, within 1 meters for the duration of the test. The stationary test revealed that the GPS suffers quite substantially from drift when sitting still, varying up to 6 meters from its actual position. For this reason, the GPS will only be to correct positional information in the Kalman Filter when the quad bike is at cruising speed, 5 km/hr.
+
 \subsection{IMU}
-Testing for the positioning system was primarily undertaken inside the Virtual Platform (see \secref{detailedVP}). This was to ensure satisfactory performance of the system before live tests were undertaken.\\
-Simulated hardware components; GPS, IMU, and wheel the encoder, were used inside the Virtual Platform. Noise for each of the sensors was hard-coded into the software based on the values obtained from their respective tests.\\
-\Figref{posError1} shows the x and y components of the distance error from the true value for the Kalman filtered position and the position from kinematic equations. The simulation consisted of a 25 degree right turn, 25 degree left turn, followed by a long straight beginning at the nine second mark. Due to the certain starting position of the quad bike the errors all begin at zero. When using the kinematic equations alone, the error grows due to the additive nature of the process. A diverging result occurs because the heading calculated through kinematics is not the true heading. When corrected with the IMU and GPS the Kalman position stabilises and the error peaks at approximately 0.4 meters, which is within specifications. \Figref{posError2} is a more realistic simulation, consisting of 2 x 90 degree right turns, a long straight, and 2 x 90 degree left turns to mimic a path that would be traversed throughout a set region. It is again apparent with the kinematic equations alone that error accumulates when a straight is encountered. When stabilised with the IMU and GPS units however, the resulting Kalman position remains accurate to within 0.2 meters, again within specifications.
+To determine error present in the IMU it was correctly set on the quad bike and the engine started and throttled. The test procedure allowed the IMU to calibrate for 35 seconds before starting the engine. The engine idled for 45 seconds, then was throttled for 40 seconds before being turned off. The results are shown in \figref{yawTest} and \figref{yawTestZoomed}.
 \begin{figure}[ht]
-\includegraphics[width=\textwidth]{5-Testing/position_error_test_1.png}
+\includegraphics[width=1\textwidth]{5-Testing/yawTest.png}
 \centering
-\caption{Test 1: 25 degree right turn, 25 degree left turn, followed by long straight (from 9 seconds)}
-\figlabel{posError1}
+\caption{Yaw test: calibration to 35 s, idle to 80 s, throttle to 120 s}
+\figlabel{yawTest}
 \end{figure}
 \begin{figure}[ht]
-\includegraphics[width=\textwidth]{5-Testing/position_error_test_2.png}
+\includegraphics[width=1\textwidth]{5-Testing/yawTestZoomed.png}
 \centering
-\caption{Test 2: 2 x 90 degree right, long straight, 2 x 90 degree left, long straight} \figlabel{posError2}
+\caption{Yaw test focused on angle from 32.4\degree to 33.6\degree}
+\figlabel{yawTestZoomed}
 \end{figure}
+The IMU takes some time to calibrate, we can see from \figref{yawTestZoomed} that calibration is complete at $t=20s$. Over the remaining 15 seconds before the engine is started, the IMU holds its position almost perfectly. Over the remaining 85 seconds of the testing period, the IMU heading steadily decreases by a total angle of 0.7 degrees, a rate of $\frac{0.7\degree}{85\ seconds} = 0.008 \degree/s$. The same slope between idling and throttling showed that the error of the IMU did not depend on the rate of throttle of the engine, just if the engine was running or not.
+
+Raw accuracy of the IMU was found by smoothly rotating the IMU 360\degree on a desk. Initial IMU readings were 87.3 degrees and the reading after the rotation was \~85.6 degrees, an error of $\frac{2\degree}{360\degree}$, or $0.056\degree/\degree$.
 
 \subsection{Wheel encoder}
 \seclabel{testingwheelencoder}
@@ -66,6 +84,19 @@ Calculated distance travelled (m): & 19.53  & 19.41  & 18.86  \\
 \end{figure}
 
 \subsection{Integrated positioning system}
+Testing for the positioning system was primarily undertaken inside the Virtual Platform (see \secref{detailedVP}). This was to ensure satisfactory performance of the system before live tests were undertaken. Simulated hardware components; GPS, IMU, and wheel the encoder, were used inside the Virtual Platform. Noise for each of the sensors was hard-coded into the software based on the values obtained from their respective tests.
+\Figref{posError1} shows the x and y components of the distance error from the true value for the Kalman filtered position and the position from kinematic equations. The simulation consisted of a 25 degree right turn, 25 degree left turn, followed by a long straight beginning at the nine second mark. Due to the certain starting position of the quad bike the errors all begin at zero. When using the kinematic equations alone, the error grows due to the additive nature of the process. A diverging result occurs because the heading calculated through kinematics is not the true heading. When corrected with the IMU and GPS the Kalman position stabilises and the error peaks at approximately 0.4 meters, which is within specifications. \Figref{posError2} is a more realistic simulation, consisting of 2 x 90 degree right turns, a long straight, and 2 x 90 degree left turns to mimic a path that would be traversed throughout a set region. It is again apparent with the kinematic equations alone that error accumulates when a straight is encountered. When stabilised with the IMU and GPS units however, the resulting Kalman position remains accurate to within 0.2 meters, again within specifications.
+\begin{figure}[ht]
+\includegraphics[width=\textwidth]{5-Testing/position_error_test_1.png}
+\centering
+\caption{Test 1: 25 degree right turn, 25 degree left turn, followed by long straight (from 9 seconds)}
+\figlabel{posError1}
+\end{figure}
+\begin{figure}[ht]
+\includegraphics[width=\textwidth]{5-Testing/position_error_test_2.png}
+\centering
+\caption{Test 2: 2 x 90 degree right, long straight, 2 x 90 degree left, long straight} \figlabel{posError2}
+\end{figure}
 
 \section{Quad bike systems testing}
 Preliminary testing of the quad bike subsystems were required to determine their working range, functionalities and integration. The systems tested were the brakes, steering, throttle, gear selector, wheel encoder, and positioning system. Additional safety systems were also tested to ensure they functioned as intended.
@@ -89,11 +120,6 @@ The accurate turning radius for the platform was required for the navigation sof
 
 \subsection{Throttle testing}
 The throttle is controlled via a rotational servo. Initial approximation of the throttle travel had the servo with zero throttle and maximum throttle at servo positions 75 and 150 respectively. With the engine warmed up, incremental increases resulted in an actual throttle response range to be calculated. Due to the circular sweep of the servo arm and some cable play, the minimum throttle position before a throttle response was found to be 97 and a maximum throttle position of 110 was chosen for the servo. This number was chosen due to the wheel speed in both forwards and reverse gears varying due to gearing and so the maximum servo position would be required for cruise speed in both directions of motion. A higher servo position than this would never be required for the chosen operating scenario.
-
-\section{Navigation testing}
-\subsection{Virtual platform navigation}
-\subsection{Live navigation}
-The virtual platform tests the functionality of the developed software program using the state values derived from initial testing. The software program for navigation were then transferred to the quad bike for actual system testing. (\textcolor{red}{REFER TO APPENDIX??})
 
 \section{Integrated system testing}
 
