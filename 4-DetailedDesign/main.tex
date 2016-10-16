@@ -5,44 +5,67 @@
 \chapter{Detailed Design}
 \chaplabel{detailedDesign}
 
-The detailed design is a result of a more thorough design process, following the outcomes from the concept design, and will form the basis of the work programs for the project. This detailed design will become the reference point for the construction and development during the build phase of the project, and has been selected as being a time effective and cost effective solution to delivering the project goals. The detailed design has been separated into subsystems which can be developed concurrently, maximising productivity of team members. These subsystems and their designs are detailed below.
+This chapter builds on the work introduced in the previous chapter, looking at the development and implementation of the sensors, platform, sensor mount and associated software and electronics in greater detail. 
+
 \section{Signal processing}
+To further develop the signal processing algorithms for the GPR and metal detector introduced in \secref{signalConcept}, test data for subsurface objects had to be obtained. This would allow for the suitability of the selected metrics to be determined, while helping to build a database of metrics for tested objects. Furthermore, the sensitivity of the signals to factors such as depth, target type, transmission frequency and soil type could be investigated.  The testing procedure in \secref{testProcedure} outlines the process undertaken to produce these datasets, while the test plan in \Chapref{testProcedureApp} provides more details of the tests. 
+
 \subsection{Metal detector algorithm}
+The metrics for the metal detector data are the magnitude and phase angle, as identified in the concept design. The flowchart (\Figref{MDflow}), identifies the main steps taken to process the metal detector signals. The background signal or offset is removed first in order to increase the signal to noise ratio of the raw magnetic flux signatures. The offset is calculated based on the mean (average) signal received by the metal detector and subtracted from all data points. 
+
+The result then produces distinguishable peaks from any objects detected. To select peaks belonging to targets, two criteria are used, a minimum prominence and a magnitude greater than some threshold value. Nearby peaks are paired, and are averaged to obtain the magnitude of the object’s signal. The phase angle is then calculated based on which quadrant the points lie in. These metrics can be compared to a database of metrics, and a decision can be made as to whether or not the object is a mine. 
+
+\begin{figure}[ht]
+\includegraphics[width=0.9\textwidth]{4-DetailedDesign/MDflow.PNG}
+\centering
+\caption{Algorithm to process the metal detector raw data}
+\figlabel{MDflow}
+\end{figure}
+
+\Figref{MDalg} shows the phase loop plot that identifies the peaks of the signals, as well as the magnitude plot used to identify these prominent peaks.
+
+\begin{figure}[ht]
+\includegraphics[width=0.6\textwidth]{4-DetailedDesign/phase.PNG}
+\centering
+\caption{Output of metal detector algorithm} 
+\figlabel{MDalg}
+\end{figure}
+
+After initial tests of the metal detector data, another set of preliminary testing of the metal detector was completed at two different outdoor sites in order to gather data sets for the algorithm to process and to determine the parameters the metal detector will use in further testing. Further details of these tests are referred to \Chapref{testProcedureApp}. 
+
+The data was processed by the algorithm above and the results found that the APM landmines were distinguishable from ten out of twelve clutter objects. The two that were similar to the APM were the steel beam and gutter section with average phase angles of -60 and -51 degrees and average magnitudes of 2.61E+05 and 3.92E+05, respectively. These values were within the phase angle range of the APM between -67 and -40 degrees, and magnitude between 6E+04 and 5E+05. The AT mines were able to be differentiated from all clutter objects. 
+
+It was decided from these tests that only the centre panel (channel 2) and the lowest frequency of 1.5 kHz are to be used in further tests as suggested by Minelab and supported by literature \parencite{bruschini02}. The results contributes to the development of a database to be able to determine the percentage confidence of an object being a mine. The output metric values, such as phase angle and magnitude are stored in this database, which is used as part of the sensor fusion algorithm. 
+
 \subsection{GPR algorithm}
-As per the concept design, the signal processing subsystem will be based on a weighted evaluation of the sensor data to achieve the goal of reporting a confidence level for the existence of landmine.
-The weighted evaluation will be the combination of three detection algorithms utilising two sensors. Each independent algorithm will be capable of reporting some confidence in the existence of a landmine object, with the combination expected to improve the detection rate and reduce the number of false positives.
-
-The development process is expected to be highly experimental and involve a significant degree of manual tuning or collection of datasets to produce quality results. The time required to complete these tasks is unknown due to their experimental nature, as so an agile development strategy is proposed. Under the agile software development strategy, software is developed incrementally without explicit milestones being set prior to commencement. After each incremental stage of the software production is completed, a re-evaluation process is used to develop the next project milestone and the expectations for project completion are adjusted and documented. This strategy is expected to ensure the software deliverable has some baseline capabilities at project end, in the event that the full software goals are not met. This is in contrast to other development strategies which are highly structured and may result in completion of individual modules, but delivery of a non-functional combined product in the event that project timeframes are not met as expected.
-
-Using the agile development strategy, project development is planned to continue as follows, with each element being completed before progress commences on the next item:
-\begin{itemize}
-\item Initialisation of sensor devices and collection of information into suitable data structures. The proposed data collection arrangement is shown in \Figref{datamanagement}.
-\item Processing of data with a single algorithm (of the three selected) using arbitrary success criteria to indicate presence of a landmine.
-\item Training of the completed single algorithm system with actual sample data, either manually or using a computer learning method, depending on a progress evaluation at commencement of this task.
-\item Commencement of development and software training for additional algorithms
-\item Development and training of a machine learning algorithm to determine landmine probability from the outputs of the three independent algorithms.
-\end{itemize}
-
-The tasks as they appear above may be modified during project development or postponed indefinitely, as is inline with the agile development strategy. As such the detailed design extends to the second item in the previous list, corresponding to the first stage at which the software will meet the deliverable requirements. Future design outlines will be completed at evaluation stages as the project progresses.
+The processing of the GPR data is completed using an algorithm similar to the metal detector algorithm, except the metrics of interest are the feature width, feature depth and A-scan characteristics. These steps are shown on the flowchart in \Figref{GPRflow}. One key difference is that there are two pre-processing stages, which is due to the lower signal to noise ratio required in identifying subsurface objects.  In the first, an average is taken over all the A-scans, and this offset is removed from the data set. This results in a smoothing of horizontal lines seen in the raw scan when compared to the processed image. The next step is to find the A-scan with the lowest magnitude and remove this reference signal from all the data. This results in smoothing of the signal in the vertical direction.
 
 \begin{figure}[ht]
-\includegraphics[width=\textwidth]{4-DetailedDesign/data-management.png}
+\includegraphics[width=0.9\textwidth]{4-DetailedDesign/GPRflow.PNG}
 \centering
-\caption{Data collection strategy for the signal processing system}
-\figlabel{datamanagement}
+\caption{Algorithm to process the GPR raw data}
+\figlabel{GPRflow}
 \end{figure}
 
-The program flow design for the completion of the first detection algorithm is shown in \Figref{agile}. The first algorithm to be attempted is the identification of feature parabolas using the randomised Hough transform over the GPR B-scan, as this method produces a visual output which can easily be tested for correctness by an operator by visual comparison. It will also involve the development of the background signal isolation process, which will also be able to be visually inspected for correctness and will be required for the preprocessing steps of the other detection algorithms.
-Once the Feature Parabolas have been isolated from the received signal, criteria will be determined by a human operator which will be used to provide classification between landmine and non-landmine objects.
+The signal peaks are then detected by comparing all the values within the object’s signature and identifying the minimum and maximum prominent peaks. These prominent peaks are grouped into their positions on the graph such that the width and depth can be identified. The width is calculated based on the values within the section of prominent peak range, and the depth is calculated from maximum prominent peak from signals at the top of the soil. \Figref{GPRalg} shows the features for three replica landmine signatures processed by the algorithm. The vertical black line references the centre for each landmine feature. The red circles show the feature width, and the feature depth is calculated from top of the soil to the horizontal black line, where the maximum magnitude signal of the feature occurs.
 
 \begin{figure}[ht]
-\includegraphics[width=0.8\textwidth]{4-DetailedDesign/agile-strategy.png}
+\includegraphics[width=0.7\textwidth]{4-DetailedDesign/GPRalg.PNG}
 \centering
-\caption{Software program flow for initial development stage}
-\figlabel{agile}
+\caption{GPR B-scan of three mine after processed by algorithm}
+\figlabel{GPRalg}
 \end{figure}
+
+The set of preliminary testing completed at the two outdoor test sites included GPR test scans in order to gather and compare this data with the metal detector data under similar conditions. These tests were also completed to confirm the frequency to be used for further GPR tests. The output metric values, such as feature width and depth are stored in the database similar to the metal detector used as part of the sensor fusion algorithm. 
+
+After these preliminary test results were processed, the Bscan images from the 800 MHz and the 2 GHz frequency had a low signal to noise ratio as it detected more clutter or background signals in comparison. The lower 800 MHz frequency detected more clutter at a deeper depth, and the 2 GHz frequency detected clutter surrounding the target objects. Therefore, it was decided that the 1.4 GHz frequency is used for further tests as this provided the balance between penetration depth and frequency signal resolution received by the GPR.
+
+The result from the data processed by the GPR algorithm found that there were three clutter objects that were similar to the APM and APC mines. These objects were the aluminium can, saucepan and gutter section with an average feature width of 11, 13 and 13, respectively. These values were within the feature width range of the APM and APC mines between 11 and 14. However, it was found that the feature depth of the landmines and clutter objects were distinguishable from each other. All of the AT mines were able to be differentiated from other objects. It is important to note that the other seven clutter objects were unable to be processed as there were insufficient data available from the preliminary tests due to inconsistencies in scanning. Regardless, the results from these output metrics, feature width and depth, will be used with the sensor fusion algorithm. 
 
 \section{Sensor fusion}
+The sensor fusion algorithm combines the results of the metal detector and GPR algorithms to produce a decision regarding the target, along with a confidence interval. This information is provided to the operator, who then decides how to proceed. Since the metal detector can only be used to detect metallic objects, it is anticipated that non-metallic objects are less likely to be detected, and will have a lower confidence interval. 
+
+The algorithm starts with the phase angle output metric and if there is a phase angle value produced from the metal detector, it then compares this to the landmine data from the existing database. The object is then confirmed with the magnitude value to provide a confidence interval. If the phase angle or magnitude is zero or indistinguishable from the current database, it can be determined that the object is not metallic, thus, the GPR will then be used to scan over the object to confirm the feature width and depth. This data is then compared with the current database values. After producing a confidence interval of the object, the data is then sent through to the operator device.  
 
 \section{Platform modifications}
 \seclabel{detailedmodifications}
@@ -52,7 +75,8 @@ A visual inspection and individual tests of each of the subsystems revealed a nu
 
 \subsection{Steering}
 \seclabel{modificationSteering}
-
+Initial testing of the steering system demonstrated that the existing arrangement was not adequate for providing the required torque to steer the quad bike. Under stationary tests with the quad bike on a raised stand, the steering motor performed as expected, however under loading the motor would quickly draw a greater current than the regulated 24 V power supply could deliver. This resulted in the motor enabling a brake mode, ceasing all motion and losing track of current encoder position making positional accuracy and repeatability impossible. To remedy this, a new 24 V regulated power supply was sourced which was capable of delivering the maximum current the steering motor could draw – 19 A, a significantly larger unit than the previous 2.5 A supply. The result of this replacement was the completion of all further testing without experiencing current supply issues. The steering motor is now capable of turning the wheels over the full range of motion while under the load from the entire weight of the quad bike, without losing positional accuracy.
+%%photo? of the power supplies?
 \subsection{Brakes}
 \seclabel{modificationBrakes}
 The original brake system (shown in \figref{brakemodifications} a) incorporated a limit switch and strain gauge to determine if the brake actuator was extended. The limit switch limited the brake motion at the extreme limit and the strain gauge dictated the brake intensity and ensured the brake lever was not being over strained. A high level testing set-up was carried out by requesting certain braking intensities and measuring two values: travel distance of the actuator arm and the retarding torque on the wheel provided by the brake. It was found that the brake intensity fluctuated by 15 percent which would result in inconsistent stopping distances and speeds. The tests lead to the redesign of the brake measurement for greater accuracy. Improved braking accuracy was achieved through the use of a linear transducer type PZ34-A-125 being installed alongside the actuator (shown in \figref{brakemodifications} b). This transducer allowed for the position of the brake actuator to be known with sub-millimetre accuracy. Knowing the position of the actuator arm allows for accurate and uniform brake intensities and thus, braking distances.
@@ -332,7 +356,7 @@ As part of the platform requirements, full autonomy of the vehicle was required.
 
 \subsection{Automation software}
 \seclabel{detailedautosoftware}
-Direct communication with the actuators is handled through an Arduino microcontroller. Any desired commands are sent from the desktop navigation software to the Arduino where final checks are in place to ensure incorrect operation does not take place. The code structure, shown in \chapref{arduinoCodeChart}, uses individual control loops which are executed once each loop for each of the actuators. The control loops serve three purposes:
+Direct communication with the actuators is handled through an Arduino microcontroller. Any desired commands are sent from the desktop navigation software to the Arduino where final checks are in place to ensure incorrect operation does not take place. The code structure, shown in \Chapref{arduinoCodeChart}, uses individual control loops which are executed once each loop for each of the actuators. The control loops serve three purposes:
 \begin{enumerate}
 \item Ensure the desired position is within the actuator bounds
 \item Ensure other actuators and/or sensors are in appropriate positions
@@ -376,7 +400,7 @@ The initial FEA analysis was used to determine the thickness of the required mou
 
 Hand calculations were used to verify the results from FEA. An axial force of 334 MPa was calculated for the rear frame section and this corresponded to a force of 333.99 MPa from the FEA analysis showing that the results from FEA mimicked the real world results closely. 
 
-The location of the sensors were dictated by each individual sensor requirements as discussed previously. The metal detector had to be in a 40 cm halo free of metallic objects while the GPR had to be as close to the ground as possible. \Figref{finalSensorFrameDesign} shows the final frame design and attachment of the sensors. The metal detector was placed 45 cm in-front of the metal supports and the GPR to reduce the interference. The GPR was mounted as close as allowable to the metal detector to minimise the separation between the sensors, so that the amount of miss-alignment experienced during turns would low.  
+The location of the sensors were dictated by each individual sensor requirements as discussed previously. The metal detector had to be in a 40 cm halo free of metallic objects while the GPR had to be as close to the ground as possible. \Figref{finalSensorFrameDesign} shows the final frame design and attachment of the sensors. The metal detector was placed 45 cm in-front of the metal supports and the GPR to reduce the interference. The GPR was mounted as close as allowable to the metal detector to minimise the separation between the sensors, so that the amount of miss-alignment experienced during turns would be low.  
 
 \begin{figure}[ht]
 \includegraphics[width=0.4\textwidth]{4-DetailedDesign/frame.PNG}
@@ -415,7 +439,7 @@ Cantilever (1.9kg self weight , 5kg end load) & 6.4427 & 6.8844 \\
 A cantilever beam of self weight was analysed in ANSYS. The transverse vertical fundamental frequency was found to be 27.707 HZ which lies between the frequency ranges found from using the Dunkerly and Rayleigh methods.the Modes fro the sensor mount were found to be 34.298 Hz which is very similar to the Rayleigh theoretical result for a self weighted cantilever beam. The addition of the cross member supports add stiffness to the frame resulting in the increased frequency over a standard cantilever beam. The vertical supports act to reduce the length of the cantilever beam further increasing the fundamental frequency. The deflections caused to the frame due to the fundamental frequency was 32.805 mm as can be seen in \figref{Finalframeansys}. 
 
 \begin{figure}[ht]
-\includegraphics[width=0.8\textwidth]{frameANSYS.PNG}
+\includegraphics[width=0.8\textwidth]{4-DetailedDesign/frameANSYS.PNG}
 \centering
 \caption{Sensor mount frame design vibrational analysis} \figlabel{Finalframeansys}
 \end{figure} 
@@ -446,6 +470,13 @@ The microcontroller selected is an Arduino Mega 2560 board, chosen for its cost,
 
 \subsection{Software architecture}
 \seclabel{detailedSoftwareArchitecture}
+Due to the experimental nature of much of this project, and with the short timeframe available, it was anticipated that moving goalposts would have a significant impact on the development of this project. As project complexities could not be fully understood in the design stage, an Agile software development strategy was adopted. Under this routine, strict determinations of the software design were not detailed at the outset of development. The agile practice involves delivering incremental improvements to a working software and constantly assessing progress to identify software features that do not perform as anticipated or are more difficult than planned to implement. The agile strategy welcomes changing software requirements even late in development to accommodate the outcomes of these evaluations.
+As such, the software design prior to the development phase included only the outline description of a completed system, with software subsystems partially detailed. Full detail of these subsystems or additional systems would be determined during the development phase after assessment of progress and performance. This initial outline is shown below in figure XXX.
+
+XXxXX figure XXXxXXxX
+
+To allow for the most rapid development, the primary focus for the initial portion of the development phase was to complete the Central object and the Window and Data Logging objects. These were chosen due to the anticipated low complexity for these systems, and the dependency other systems would have regarding these systems. The full Software Requirements Specification, and Software Design Document – which were completed as part of the iterative agile development process and reflect the design changes made during development – are presented in Appendix XXX.
+
 
 \subsection{Virtual platform}
 \seclabel{detailedVP}
@@ -465,9 +496,30 @@ The virtual platform is initialised as soon as any waypoints are sent which can 
 
 \subsection{Tablet application}
 \seclabel{detailedTabletApp}
+The tablet application was designed to meet to project goal of allowing easy usage of the entire mine detection system by an unskilled operator. To this end, the design of the UI is focussed towards providing the most user friendly interface possible, in preference to displaying the most informative data. The expectation is that an unskilled operator is unlikely to be able to form meaningful conclusions from an output displaying the unprocessed data, and as a result this information has been omitted from the design of the operator’s device. 
+
+Key components of the UI are the map display, and the controls pane. The map display is the primary method of displaying information about the system to the operator, and as a result is permanently shown in a prominent location. The emergency stop button is the only other UI item which is permanently available, which for safety reasons is always prominently displayed and readily accessible. The controls pane is split into three windows, which each correspond to a common control theme – manual controls, automation and navigation controls, and communications controls. These distinctions were made as it allows for the control buttons to be larger and more informative, and readily distinguishes clusters of controls which serve similar functions. 
+
+The map display shows the current locations of all of the paths and zones defined on the tablet, as well as an indicator showing the current geographical location of the remote device. Under autonomous conditions, the map display will show a trail indicating the path which has been covered by the platform during the scan. Upon detection of an object, this will be displayed on the map showing location, and confidence of the detected object being a mine. Above a certain confidence threshold, the remote platform will halt, and the operator will be prompted.
+
+The communications tab provides all of the required interfaces to establish, maintain and assert communications with the remote platform. This will be the primary view displayed to the operator, as it must be completed before control of the platform can be achieved. Under normal operations, once connected it will not be necessary for an operator to return to the communications tab.
+
+The automation and navigation tab provides all of the controls for defining routes and zones on the tablet device, including synchronising these paths with the remote platform. The controls for initiating and pausing autonomous motion, as well as determining the current state of the autonomous systems, are displayed here.
+
+The manual control tab provides a joystick with which an operator can control the remote platform without needing to define a path. It is anticipated that this will primarily be used for positioning the remote platform prior to commencing a scan, such as driving the platform off a trailer, or navigating a complex terrain. This tab also displays information about the current speed and heading of the remote platform. 
+
+
 
 \subsection{Communications}
 \seclabel{detailedComms}
+Communications between all aspects of the system will be controlled by a system of packets. Each packet has a custom structure created specifically for this project, and is consistent irrespective of communications protocol used. The use of this system means that packets created on the operator’s device can be transmitted to the Arduino via the PC and be interpreted correctly, without needing intermediate processing. The structure of each packet is as follows:
+\begin{itemize}
+\item Packet ID: A single byte identifying the purpose of this packet.
+\item Length: A single byte indicating the length (in bytes) of this transmission
+\item Data: A stream of bytes (in multiples of 4) corresponding to an array of IEEE 754 format floating point numbers
+\end{itemize}
+Using this system a technical limit of up to 63 floats can be transmitted in a single packet. The vast majority of packets will have either zero associated data or only a single data point, and in practical application it is unlikely that this amount of data will be required in a single transmission. The full detail of packet structure is provided in Appendix XXX. 
+
 
 
 \end{document}

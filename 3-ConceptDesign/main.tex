@@ -47,6 +47,7 @@ The SIRO-PULSE II is a handheld GPR unit developed by the CSIRO, originally inte
 \end{figure}
 
 \section{Sensor fusion and signal processing}
+\seclabel{signalConcept}
 Regardless of the fact that the sensors suite met the outlined requirements, there were several key challenges to be addressed, namely sensor fusion and signal processing. The first of these relates to how the data from the separate sensors can be consolidated to provide a single meaningful result, while the second involves processing the output from the sensors to allow an operator to identify targets. 
 
 \subsection{Sensor fusion}
@@ -163,7 +164,7 @@ To correct for drift from dead reckoning techniques, GPS aided Inertial Navigati
 
 \section{Sensor mount}
 \seclabel{sensormount}
-The sensor mount is required to support the weight of both the GPR and the metal detector, while being sturdy enough to isolate the sensors from vibrations caused by the platform. The following section describes the requirements imposed on the mount, the selection of appropriate materials and initial designs.  
+The sensor mount is required to support the weight of both the GPR and the metal detector, while being sturdy enough to isolate the sensors from vibrations caused by the platform. The following section describes the requirements imposed on the mount, the selection of appropriate materials and mounting location on the quad bike, as well as initial designs.  
 
 \subsection {Sensor requirements} 
 The design of the mount must satisfy two operating requirements for each sensor, the maximum operating height above the ground and the minimum proximity to other objects to prevent interference. 
@@ -175,81 +176,84 @@ Tests were also carried out with the SIRO-PULSE II GPR unit, resulting in neglig
 \subsection {Material selection}  
 The main requirement for the mount was that a non-metallic material was used, to meet the constraints of the metal detector. Other considerations included good stiffness and vibrational characteristics, minimal mass, a low cost and good availability and workability. After a detailed material selection process, described in \Chapref{sensorMaterialsApp}, wood, bamboo, carbon fibre reinforced polymers (CFRP) and glass fibre reinforced polymers (GFRP) were found to be the most appropriate materials. 
 
-While bamboo is the best material to use for the sensor mount frame based on it's vibrational characteristics and stiffness alone, it is difficult to obtain in Australia in structural form. Wood is the next best option, being very easy to work with and readily available. GFRP has a similar stiffness to wood but with worse damping properties and a higher density. On the other hand, CFRP has a much better stiffness however it sacrifices damping properties and density. The two composites are also more difficult to work with, and are more expensive. Hence, the best material to use for the sensor mount is wood. In order to meet the stiffness requirements, a structural 
+While bamboo is the best material to use for the sensor mount frame based on it's vibrational characteristics and stiffness alone, it is difficult to obtain in Australia in structural form. Wood is the next best option, being very easy to work with and readily available. GFRP has a similar stiffness to wood but with worse damping properties and a higher density. On the other hand, CFRP has a much better stiffness however it sacrifices damping properties and density. The two composites are also more difficult to work with, and are more expensive. Hence, the best material to use for the sensor mount is wood. In order to meet the stiffness requirements, structural grade timber will be used. 
  
 \nomenclature[A]{CFRP}{Carbon fibre reinforced polymer}%
 \nomenclature[A]{GFRP}{Glass fibre reinforced polymer}%
 
 \subsection{Steering focal point}
-Both the GPR and metal detector are required to be mounted to the platform in a cantilever-like fashion in order to avoid contact with the ground where it would risk detonation of a landmine. Each of the sensor arrays is expected to weigh between 10 kg and 30 kg.
-Mounting needs to be done in a configuration that will keep individual array sensors aligned so that corresponding ground information can be collated and analysed correctly. If the assumption of Ackermann steering holds for the quad bike we can use the simplified, 2-wheel model to assess the location of the sensors relative to the quad bike. The simplified model provides the following geometric relationship:
+The sensors need to be mounted in a configuration that will keep individual sensor elements aligned, so that corresponding ground information can be collated and analysed correctly. This becomes more important when using a sensor array instead of line scan sensors. Under the assumption that the quad bike uses the Ackermann steering geometry, i.e. each wheel has it's own pivot during turns, we can use the simplified, 2-wheel model to assess the location of the sensors relative to the quad bike. The simplified model provides the following geometric relationship:
 $$
-tan(\delta) = \frac{L}{R}
+\tan(\delta) = \frac{L}{R}
 $$
-Where $\delta$ is the steering angle, $L$ is the wheelbase and $R$ is the radius of the arc that the centre of the rear axle will follow. This simplification has been used to perform simulations on the steering effectiveness of the vehicle and will also be used to estimate turning capabilities as part of the route planning software.
-Initial simulations showed that front mounted sensors with rear-wheel steering is the best option for the application with far superior coverage results compared to front-wheel steering. Further results are shown in \Figref{turnCoverage}
-\begin{itemize}
-\item Trial 1, represented as the leftmost diagram in \Figref{turnCoverage}, shows the turning example for a case where the turning wheels are 1.5 metres in front of the focal point of the turn, or front wheel steering. The sensor array is 0.5 metres in front of the turning wheels, 2 metres from the focal point of the turn. Evident from the figure is how the coverage area does not form a tight loop and the coverage area does not include the path of the vehicle. This is critical as it will mean the quad bike will be passing over ground not scanned by the sensors.
-\item Trial 2, represented by the middle diagram in \Figref{turnCoverage}, shows the results for a case where the turning wheels are 1.5 metres behind the focal point of the turn, or rear wheel steering. The sensor array is placed 0.5 metres in front of the focal axle. This trial shows a much tighter scanning loop than the previous test and the path of the quad bike is entirely within the scanned area. This is ideal.
-\item The third trial, represented by the rightmost diagram in \Figref{turnCoverage}, is purely for comparison and shows the coverage area of a vehicle with turning wheels 1.5 metres in front of the focal axle, but with the sensing array only 0.5 metres in front of the focal axle. This would place the sensing array between the two axles of the vehicle. Under this arrangement an identical scanning path is achieved using a front-wheel steering setup. This is not useful for the application as the sensors must be in front of the vehicle to detect landmines.
-\end{itemize}
-% Split, subfig
-\begin{figure}[ht]
-\includegraphics[width=0.8\textwidth]{3-ConceptDesign/Detector_Coverage.png}
-\centering
-\caption{Landmine detector coverage simulations} \figlabel{turnCoverage}
-\end{figure}
-This result is expected. Referring to \Figref{geometricBicycleModel}, the turning radius of the rear wheel is $R$ and the turning radius of the front wheel is the hypotenuse of the triangle formed – of length $\sqrt{R^2 + L^2}$, which is greater than $R$. If the sensing array was some distance $q$ in front of the front wheels, its turning radius would be $\sqrt{R^2 + [L+q]^2}$, greater yet again. However, if the sensing array was an equal distance $q$ behind the rear wheels (or front wheels if this was a rear-steering arrangement) then the turning radius of the sensors would be $\sqrt{R^2 + q^2}$. From this it can be seen that to minimise the effective turning radius then $q$ should be minimised.
+Here, $\delta$ is the steering angle, $L$ is the wheelbase and $R$ is the radius of the arc that the centre of the rear axle will follow. This simplification has been used to perform simulations on the sensor coverage and sensor element misalignment.
+\nomenclature[S]{$L$}{Wheelbase}%
+\nomenclature[S]{$R$}{Radius of rear axle arc}%
+Three simulations were conducted, with the steering axle and sensor position changed in each. The results are shown in \Figref{turnCoverage}, and are discussed below.
 
-The sensor arrays will be mounted at the 'rear' of the quad bike which will be primarily driven in reverse to achieve the desired scan coverage. The mounting bracket for the arrays will be constructed on-the-fly with the assistance of the workshop and its technicians. The bracket should be constructed from PVC and meet the following specifications:
+\begin{figure}[ht]
+\centerline{
+\begin{tabular}{ccc}
+\subfloat[Trial 1]{\includegraphics[width=0.3\textwidth]{3-ConceptDesign/Detector_Coverage1.png}}
+& \subfloat[Trial 2]{\includegraphics[width=0.3\textwidth]{3-ConceptDesign/Detector_Coverage2.png}}
+& \subfloat[Trial 3]{\includegraphics[width=0.3\textwidth]{3-ConceptDesign/Detector_Coverage3.png}}\\
+\end{tabular}}
+\caption{Sensor coverage simulations} 
+\figlabel{turnCoverage}
+\end{figure}
+
 \begin{itemize}
-\item Metal detector clear of metal in a 500 mm radius and 2000 mm vertically.
-\item GPR clear of obstructions in a 100 mm radius and 50 mm vertically.
+\item \textbf{Trial 1}: In first trial, represented in \Figref{turnCoverage} (a), front wheel steering is used with the sensor mount in front of the platform. The turning wheels are 1.5 metres in front of the focal point of the turn, and the sensor array is 0.5 metres in front of the turning wheels. It is evident from the figure that the coverage area does not form a tight loop, and that this area does not include the path of the vehicle. This is critical as it will mean the quad bike will be passing over ground that has not been scanned by the sensors.
+\item \textbf{Trial 2}: In the second trial, represented in \Figref{turnCoverage}(b), rear wheel steering is used (i.e. the quad bike is using front wheel steering in reverse) with the sensor mount at the front of the platform relative to the direction of travel (i.e. to the rear relative to the actual quad bike geometry). The turning wheels are 1.5 metres behind the focal point of the turn, and the sensor array is placed 0.5 metres in front of the focal axle. This trial shows a much tighter scanning loop than the previous test, and the path of the quad bike is entirely within the scanned area, which is the ideal case.
+\item \textbf{Trial 3}: The third trial, represented in \Figref{turnCoverage} (c), shows front wheel steering with the sensor mount placed behind the front wheels. The turning wheels are 1.5 metres in front of the focal axle as in Trial 1, but the sensing array is 1.5 metres behind the turning wheels, or between the two axles of the vehicle. Under this arrangement, an identical scanning path to Trial 2 is achieved using front-wheel steering, however this is not very useful since the wheels will pass over the region to be scanned before sensors.
 \end{itemize}
+
+This result can be demonstrated theoretically by using the geometric bicycle model \parencite{snider2009}. Referring to \Figref{geometricBicycleModel}, the turning radius of the rear wheel is $R$ and the turning radius of the front wheel is $\sqrt{R^2 + L^2}$, which is greater than $R$. If the sensor array was some distance $q$ in front of the front wheels, its turning radius would be $\sqrt{R^2 + [L+q]^2}$, greater yet again. However, if the sensing array was an equal distance $q$ behind the rear wheels (or front wheels if this was a rear steering arrangement) then the turning radius of the sensors would be $\sqrt{R^2 + q^2}$. From this it can be seen that to minimise the effective turning radius then $q$ should be minimised, i.e. rear wheel steering should be used. To achieve this, the sensor arrays will be mounted at the rear of the quad bike, which will be driven in reverse. 
+\nomenclature[S]{$q$}{Sensor array distance from turning wheels}%
 
 \subsection{Initial designs}
-Basic design for the sensor mount can be realised with the sensor requirements. Using the DSTG Quad bike as the chosen platform, preliminary designs can be sketched. Considerations for both front and rear mounted sensor arrays were considered. Design 1, 2 and 3 trial different mounting techniques and frame designs.
+Knowing the basic sensor requirements, the selected material for the mount, and the mounting location on the quad bike, preliminary designs for sensor mount were developed. 
 
+There are three support points at the rear of the quad bike to which the mount can be attached, a tow hitch near the rear axle, and two metal brackets beneath the rear tray. The tow hitch has a level surface and is capable of supporting a vertical load of 14 kg, which means that a cantilever beam could be mounted on the tow hitch, but it's weight would be limited. To fix this, diagonal support braces can be used, attached to the two metal brackets. Based on this geometry, a basic design for the sensor mount is shown in \Figref{basic}
 
-
-\subsubsection{Design 1}
-Design one is represented in \Figref{design1} and is a rear mounted frame. This mount assumes that the quad bike will be more manoeuvrable when steered from the rear, requiring the direction of travel to be in reverse. Thus, the frame mounting on the back is necessary. 
- \begin{figure}[ht]
- \includegraphics[width=.5\textwidth]{3-ConceptDesign/Rear_Mount.png}
- \centering
- \caption{Rear frame mount concept design}
- \figlabel{design1}
- \end{figure}
-
-\subsubsection{Design 2}
-Design 2 represents a front mounted frame assuming that the quad bike is driven in a standard configuration as shown in \Figref{design2}. The GPR is placed in close proximity to the body with the metal detector attached further in front. This design appears to be the smallest and uses the least amount of material.
 \begin{figure}[ht]
-\includegraphics[width=0.5\textwidth]{3-ConceptDesign/front_frame_design_triangle.png}
+\includegraphics[width=.6\textwidth]{3-ConceptDesign/basic.PNG}
 \centering
-\caption{Front frame mount concept design}
-\figlabel{design2}
+\caption{Basic sensor mount with support points in blue}
+\figlabel{basic}
 \end{figure}
 
-\subsubsection{Design 3}
-Design 3 incorporates a staggered design with the metal detector and GPR placed further in front of the platform as shown in \Figref{design3}. This larger stand off distance would allow for less violent stops as the allowable stopping distance would be increased. However, the required material and weight would be greater potentially requiring greater reinforcements to mitigate flexing and warping. These reinforcements could be from the use of fibreglass coating over the PVC piping.
-\begin{figure}[ht]
-\includegraphics[width=0.5\textwidth]{3-ConceptDesign/front_mount_staggered.png}
-\centering
-\caption{Front frame mount concept design}
-\figlabel{design3}
-\end{figure}\\
+A multi-beam structure is used rather than a single cantilever in order to reduce mass and improve torsional rigidity. The main beam rests on the tow hitch, and is made of wood. The two diagonal supports could also be made of wood, however metal supports provides a more rigid frame. The total length of the frame is 1.5 m, which allows enough length for the metal detector and GPR to be mounted with the required minimum proximity. 
 
-The sensor mount will be made from a combination of PVC and fibreglass. The fibreglass will be supporting sections to prevent flexing and warping. As exact dimensions and platform performance characteristics are unknown, specific mounting orientation and size cannot be decided upon until the platform is delivered. Once the Platform has been delivered for the project, specific and more detailed designs can be created
+\textcolor{red}{Add details about the perspex case for the MD, different concepts for mounting the MD, design for GPR attachment}
+
+% \begin{figure}[ht]
+% \includegraphics[width=.5\textwidth]{3-ConceptDesign/MD.PNG}
+% \centering
+% \caption{Metal detector with Perspex covers}
+% \figlabel{MD}
+% \end{figure}
+
+% \begin{figure}[ht]
+% \centerline{
+% \begin{tabular}{cc}
+% \subfloat[]{\includegraphics[width=0.4\textwidth]{3-ConceptDesign/square.PNG}}
+% & \subfloat[]{\includegraphics[width=0.4\textwidth]{3-ConceptDesign/triangle.PNG}}\\
+% & \subfloat[]{\includegraphics[width=0.4\textwidth]{3-ConceptDesign/cantilever.png}}\\
+% \end{tabular}}
+% \caption{Concepts for attaching the metal detector the the sensor mount} 
+% \figlabel{MDdesigns}
+% \end{figure}
 
 \section{Subsystem integration}
 
 \seclabel{conceptprojectdesign}
 
 \subsection{Electronics}
-Requirements for the electronics subsystems can be inferred from the project aims. As a major component of the project would be attempting advanced signal processing methods in real time, significant processing capabilities will be required on the mobile platform. In addition to this, the signal processing must be capable of running simultaneously with a number of other platform software systems, such as vehicle control and telemetry. To achieve this without requiring multiple discrete hardware components (which would require communications input/output (I/O) interfaces to share data), a single hardware system capable of executing multiple threads simultaneously and asynchronously is required on the vehicle. The hardware system executing the signal processing software must also be capable of reading sensory input from USB devices, as this is the communications format available on the GPR units provided by the DTSG. 
+As a major component of the project is advanced signal processing in real time, significant computational capabilities will be required on the quad bike. In addition to signal processing, other platform software systems such as vehicle control and telemetry will also be running. To achieve this without requiring multiple discrete hardware components (which would require communications input/output (I/O) interfaces to share data), a single hardware system capable of executing multiple threads simultaneously and asynchronously is required on the vehicle. The hardware system executing the signal processing software must also be capable of reading sensory input from USB devices, as this is the communications format available on the SIRO-PULSE II GPR unit. 
 \nomenclature[A]{I/O}{Input/Output}% 
 
-A second major component of the project is the automation of the remote vehicle, requiring software control over a series of actuators and sensors. To provide the greatest fidelity of control over the vehicle the electronics hardware used to interface with the actuators and sensors must be capable of reading and writing to low-level I/O devices quickly and with minimal latency or overhead. To achieve this, the ability to create hardware interrupts are desirable, which would allow the software to process incoming sensory data as soon as it is received. The software for the parsing and decoding of raw input signals to generate usable information is not expected to be complicated, as so the hardware will not need to be particularly advanced or have capacity for high speed processing.
+A second major component of the project is the automation of the quad bike, requiring software control over a series of actuators and sensors. To provide the greatest fidelity of control over the vehicle, the electronics hardware used to interface with the actuators and sensors must be capable of reading and writing to low-level I/O devices quickly and with minimal latency or overhead. 
 
 \begin{itemize}
 \item \textbf{Bespoke Electronics}\\
@@ -279,20 +283,7 @@ Under this system, the project will use standard desktop computing equipment for
 \end{figure}
 
 \subsection{Software architecture}
-The autonomous quad bike will be used as the platform on which the sensor mount and software subsytems will operate. A concept is shown in \Figref{frontConcept} and \Figref{rearConcept}. To achieve the framework for overall automation of the platform the integration of the actuator electronics, navigation, sensors, signal processing and operator device is required. This framework is completed through the Central Hub as shown in \Figref{central} where dotted lines indicate implementations of the interfaces. The Central Hub will combine and read all the relevant processes and transmit the required information to the operator device. This enables all processes to be completed in parallel, satisfying the deliverables as defined in \secref{primary}.
-
-\begin{figure}[ht]
-\includegraphics[width = 0.8\textwidth]{3-ConceptDesign/ConceptFront.jpeg}
-\centering
-\caption{Front wheel drive platform concept design} \figlabel{frontConcept}
-\end{figure}
-\begin{figure}[ht]
-\includegraphics[width = 0.8\textwidth]{3-ConceptDesign/ConceptRear.jpeg}
-\centering
-\caption{Rear wheel drive platform concept design} \figlabel{rearConcept}
-\end{figure}
-
-The DSTG quad bike provides a basis to apply the completed concept designs and build upon them in order to have detailed designs for the automation and signal processing. 
+The autonomous quad bike will be used as the platform on which the sensor mount and software subsytems will operate. To achieve the framework for overall automation of the platform the integration of the actuator electronics, navigation, sensors, signal processing and operator device is required. This framework is completed through the Central Hub as shown in \Figref{central} where dotted lines indicate implementations of the interfaces. The Central Hub will combine and read all the relevant processes and transmit the required information to the operator device. This enables all processes to be completed in parallel, satisfying the deliverables as defined in \secref{primary}.
 
 \subsection{Communications}
 
