@@ -12,8 +12,8 @@
 \usepackage{fancyhdr}				% For adding chapter/section names in header
 \setlength{\headheight}{14.5pt}		% Make sure header is large enough
 \fancyhf{}							% Clear headers and footers
-\fancyhead[LO]{\leftmark}			% Chapter name on left of odd page headers
-\fancyhead[RE]{\rightmark}			% Section name on right of even page headers
+\fancyhead[LE]{\leftmark}			% Chapter name on left of odd page headers
+\fancyhead[RO]{\rightmark}			% Section name on right of even page headers
 \fancyfoot[C]{\thepage}				% Page number at centre of all page footers
 \renewcommand{\headrulewidth}{0pt}	% No header rule
 \renewcommand{\footrulewidth}{0pt}	% No footer rule
@@ -22,6 +22,7 @@
 \usepackage[normalem]{ulem}	% Allows strikethrough using \sout{}
 \usepackage{setspace}		% To change line spacing for WBS
 \usepackage{textcomp,gensymb}			% Symbols for Harry
+\usepackage{listings}					% source code listings
 \usepackage{filecontents} 				% To include .bib file
 \usepackage[backend=biber,style=authoryear,dashed=false,maxbibnames=99]{biblatex} % Bibliography stuff, dashed=false allow repeats in bibliography
 \addbibresource{references.bib}			% File with references

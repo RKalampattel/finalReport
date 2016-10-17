@@ -7,7 +7,7 @@
 
 \chapter{Benchmarking}
 \chaplabel{benchmarking}
-Before commencing the design process, benchmarking was conducted in order to gauge the capabilities of existing platforms and sensor equipment used for landmine detection. This gave an indication of the minimum requirements to be set for the project, and helped to better understand what challenges would need to be overcome.
+\textcolor{red}{If you have time, make this section broader (more benchmarking against platforms like the Husky, )} Before commencing the design process, benchmarking was conducted in order to gauge the capabilities of existing platforms and sensor equipment used for landmine detection. This gave an indication of the minimum requirements to be set for the project, and helped to better understand what challenges would need to be overcome.
 
 \section{Autonomous platforms for landmine detection}
 The use of a vehicle for landmine detection allows for larger areas to be scanned in a shorter period of time. Vehicles can also support greater loads than any human operator could, which means that more sensing equipment can be carried; this in turn increases sensing capability, and reduces the likelihood of false positives. If the vehicle can operate remotely or autonomously, the risk to human operators can be eliminated entirely. For these reasons, remotely controlled or autonomous platforms have become a popular tool for landmine detection. This section looks at several such platforms that are currently in operation or in development. 
@@ -142,7 +142,7 @@ Current state-of-the-art GPR systems for mine detection, such as the DX and DXG 
 \figlabel{dxseries}
 \end{figure}
 
-\section*{Multisensor systems for landmine detection}
+\section{Multisensor systems for landmine detection}
 While traditional systems for landmine detection make use of a single sensor, the latest generation of systems attempt to combine multiple sensors. This allows for a broader range of threats to be detected, and at the same time increase detection accuracy.  
 
 % There is no benchmark here so no point talking about it
@@ -248,7 +248,7 @@ The first step is to define the problem and find the relevant material index.
 \begin{itemize}
 \item \textbf{Function}: The sensor mount frame must support loads with negligible deflection and vibration.
 \item \textbf{Non-negotiable constraints}: The material used must be non-metallic due to the requirements of the metal detector, and the  frame must have a minimum length $L$, to ensure the sensors are sufficiently far away from the platform.
-\item \textbf{Negotiable constraints}: The frame must have a minimum stiffness $E$ equivalent to that of a metal, i.e. stiffness greater than 10 GPa \parencite{Ashby11}, good damping properties, and a suitable appearance.
+\item \textbf{Negotiable constraints}: The frame must have a minimum stiffness $E$ equivalent to that of a metal, i.e. stiffness greater than 10 GPa \parencite{Ashby11}, good damping properties, availability and workability, a suitable appearance.
 \item \textbf{Objectives}: Minimise mass and vibrations.
 \item \textbf{Free variables}: Cost, cross sectional area $A$.
 \end{itemize}
@@ -338,6 +338,13 @@ $\Delta h$ required (m) & 0 & 1.46 & 0.09 & 0.44 & 0.37 & 0.11 & 0.62 & -1.18 \\
 \end{table}
 Similar to the simple turn, the centre point, $P_c$, of the turn arc is be found based on the turn radius, $R$, and is perpendicular to the current line segment. Arc points are added by incrementing the vector by the angle, $\Delta angle$. Incrementing stops once the vector has been rotated by a total angle equal to the difference between the current turn point and the next turn point, in the case of \figref{nPointTurnProgression} part 4, we are at the first turn point so the vector is rotated, $(26.7 - 0)\degree = 26.7\degree$, in total. If at this point the desired turn angle has not been reached, additional arcs are added to the path in the same fashion as just described. Stage 1 is then executed again for the next straight line segment.
 
+\chapter{Arduino Code Chart}
+\chaplabel{arduinoCodeChart}
+\begin{figure}[ht]
+\centering
+\includegraphics[]{8-Appendices/arduinoDiagram.png}
+\end{figure}
+
 \chapter{Sensor Mount Vibrations Analysis}
 \chaplabel{sensorVibesApp}
 
@@ -345,13 +352,15 @@ Similar to the simple turn, the centre point, $P_c$, of the turn arc is be found
 \chaplabel{designDocs}
 
 \chapter{Testing Procedures}
-\chaplabel{testProcs}
+\chaplabel{testProcedureApp}
 
 \chapter{Sensor Test Results}
 \chaplabel{sensorResults}
 
 \chapter{Gear Actuator Truth Table}
+\textcolor{red}{Add description of the gear actuator truth table}
 \chaplabel{gearTable}
+\includepdf[pages={1-}]{8-Appendices/gearTruthTable.pdf}
 
 \chapter{Work Breakdown Structure}
 \chaplabel{WBS}

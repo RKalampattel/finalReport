@@ -102,6 +102,7 @@ A common distinction is made between potential levels of sensor fusion \parencit
 %Each progressive step down from decision-level fusion requires significantly greater computational processing, and greater knowledge of the sensor dynamics and the correlations of signal features to real-world object parameters \parencite{Yarovoy2009}. Higher level fusion strategies lend themselves well to machine learning techniques, which can be naive to the sensor mechanics and produce correlations based on learned sample data sets computationally cheaply. 
 Experimental trials suggest that all forms of sensor fusion are capable of producing significantly more accurate detection results with far fewer false-positive incidents than single sensor systems \parencite{Yarovoy2009}. 
 
+\textcolor{red}{Add more references, more details about achievements, sensor fusion results achieved by other people}
 \section{Automation and navigation}
 \seclabel{navigationandautomation}
 A major challenge associated with the automation of a platform is the development of software for control and navigation. Two aspects of this are how the platform tracks a path, and how it performs turning manoeuvres. 
@@ -140,7 +141,7 @@ Unlike Pure-Pursuit which is based on the future error, the Stanley method uses 
 \end{figure}
 
 \nomenclature[S]{$\theta_e$}{Stanley method heading error}%
-\nomenclature[S]{$\delta$}{Stanley method steering angle}%
+\nomenclature[S]{$\delta$}{Steering angle}%
 
 Some limitations of geometric path tracking methods are related to the dynamics of a vehicle which are not present in the theory, namely the capabilities of a platform and its actuators. Due to this, the method expects an instant response from elements such as the steering, which is an issue when high path curvatures are present or when the curvature of the path suddenly changes. As a result, the method cannot guarantee that the vehicle will follow a path as accurately as designed and at high speeds that vehicle may skid or tip \parencite{coulter1992}.
 
@@ -157,5 +158,7 @@ In a path similar to that described by the piecewise linear definition, a turn c
 \centering
 \caption[Effect of waypoint tolerances on path tracking]{Effect of waypoint tolerances on path tracking \parencite{Giesbrecht2005}} \figlabel{waypointTolerances}
 \end{figure}
+
+\textcolor{red}{This section (automation and navigation) needs more examples of what others have been able to achieve, rather than just listing advantages of various methods}
 
 \end{document}

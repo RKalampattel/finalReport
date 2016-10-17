@@ -5,54 +5,84 @@
 \chapter{Detailed Design}
 \chaplabel{detailedDesign}
 
-The detailed design is a result of a more thorough design process, following the outcomes from the concept design, and will form the basis of the work programs for the project. This detailed design will become the reference point for the construction and development during the build phase of the project, and has been selected as being a time effective and cost effective solution to delivering the project goals. The detailed design has been separated into subsystems which can be developed concurrently, maximising productivity of team members. These subsystems and their designs are detailed below.
+This chapter builds on the work introduced in the previous chapter, looking at the development and implementation of the sensors, platform, sensor mount and associated software and electronics in greater detail. 
+
 \section{Signal processing}
+To further develop the signal processing algorithms for the GPR and metal detector introduced in \secref{signalConcept}, test data for subsurface objects had to be obtained. This would allow for the suitability of the selected metrics to be determined, while helping to build a database of metrics for tested objects. Furthermore, the sensitivity of the signals to factors such as depth, target type, transmission frequency and soil type could be investigated.  The testing procedure in \secref{testProcedure} outlines the process undertaken to produce these datasets, while the test plan in \Chapref{testProcedureApp} provides more details of the tests. 
+
 \subsection{Metal detector algorithm}
+The metrics for the metal detector data are the magnitude and phase angle, as identified in the concept design. The flowchart (\Figref{MDflow}), identifies the main steps taken to process the metal detector signals. The background signal or offset is removed first in order to increase the signal to noise ratio of the raw magnetic flux signatures. The offset is calculated based on the mean (average) signal received by the metal detector and subtracted from all data points. 
+
+The result then produces distinguishable peaks from any objects detected. To select peaks belonging to targets, two criteria are used, a minimum prominence and a magnitude greater than some threshold value. Nearby peaks are paired, and are averaged to obtain the magnitude of the object’s signal. The phase angle is then calculated based on which quadrant the points lie in. These metrics can be compared to a database of metrics, and a decision can be made as to whether or not the object is a mine. 
+
+\begin{figure}[ht]
+\includegraphics[width=0.9\textwidth]{4-DetailedDesign/MDflow.PNG}
+\centering
+\caption{Algorithm to process the metal detector raw data}
+\figlabel{MDflow}
+\end{figure}
+
+\Figref{MDalg} shows the phase loop plot that identifies the peaks of the signals, as well as the magnitude plot used to identify these prominent peaks.
+
+\begin{figure}[ht]
+\includegraphics[width=0.6\textwidth]{4-DetailedDesign/phase.PNG}
+\centering
+\caption{Output of metal detector algorithm} 
+\figlabel{MDalg}
+\end{figure}
+
+After initial tests of the metal detector data, another set of preliminary testing of the metal detector was completed at two different outdoor sites in order to gather data sets for the algorithm to process and to determine the parameters the metal detector will use in further testing. Further details of these tests are referred to \Chapref{testProcedureApp}. 
+
+The data was processed by the algorithm above and the results found that the APM landmines were distinguishable from ten out of twelve clutter objects. The two that were similar to the APM were the steel beam and gutter section with average phase angles of -60 and -51 degrees and average magnitudes of 2.61E+05 and 3.92E+05, respectively. These values were within the phase angle range of the APM between -67 and -40 degrees, and magnitude between 6E+04 and 5E+05. The AT mines were able to be differentiated from all clutter objects. 
+
+It was decided from these tests that only the centre panel (channel 2) and the lowest frequency of 1.5 kHz are to be used in further tests as suggested by Minelab and supported by literature \parencite{bruschini02}. The results contributes to the development of a database to be able to determine the percentage confidence of an object being a mine. The output metric values, such as phase angle and magnitude are stored in this database, which is used as part of the sensor fusion algorithm. 
+
 \subsection{GPR algorithm}
-As per the concept design, the signal processing subsystem will be based on a weighted evaluation of the sensor data to achieve the goal of reporting a confidence level for the existence of landmine.
-The weighted evaluation will be the combination of three detection algorithms utilising two sensors. Each independent algorithm will be capable of reporting some confidence in the existence of a landmine object, with the combination expected to improve the detection rate and reduce the number of false positives.
-
-The development process is expected to be highly experimental and involve a significant degree of manual tuning or collection of datasets to produce quality results. The time required to complete these tasks is unknown due to their experimental nature, as so an agile development strategy is proposed. Under the agile software development strategy, software is developed incrementally without explicit milestones being set prior to commencement. After each incremental stage of the software production is completed, a re-evaluation process is used to develop the next project milestone and the expectations for project completion are adjusted and documented. This strategy is expected to ensure the software deliverable has some baseline capabilities at project end, in the event that the full software goals are not met. This is in contrast to other development strategies which are highly structured and may result in completion of individual modules, but delivery of a non-functional combined product in the event that project timeframes are not met as expected.
-
-Using the agile development strategy, project development is planned to continue as follows, with each element being completed before progress commences on the next item:
-\begin{itemize}
-\item Initialisation of sensor devices and collection of information into suitable data structures. The proposed data collection arrangement is shown in \Figref{datamanagement}.
-\item Processing of data with a single algorithm (of the three selected) using arbitrary success criteria to indicate presence of a landmine.
-\item Training of the completed single algorithm system with actual sample data, either manually or using a computer learning method, depending on a progress evaluation at commencement of this task.
-\item Commencement of development and software training for additional algorithms
-\item Development and training of a machine learning algorithm to determine landmine probability from the outputs of the three independent algorithms.
-\end{itemize}
-
-The tasks as they appear above may be modified during project development or postponed indefinitely, as is inline with the agile development strategy. As such the detailed design extends to the second item in the previous list, corresponding to the first stage at which the software will meet the deliverable requirements. Future design outlines will be completed at evaluation stages as the project progresses.
+The processing of the GPR data is completed using an algorithm similar to the metal detector algorithm, except the metrics of interest are the feature width, feature depth and A-scan characteristics. These steps are shown on the flowchart in \Figref{GPRflow}. One key difference is that there are two pre-processing stages, which is due to the lower signal to noise ratio required in identifying subsurface objects.  In the first, an average is taken over all the A-scans, and this offset is removed from the data set. This results in a smoothing of horizontal lines seen in the raw scan when compared to the processed image. The next step is to find the A-scan with the lowest magnitude and remove this reference signal from all the data. This results in smoothing of the signal in the vertical direction.
 
 \begin{figure}[ht]
-\includegraphics[width=\textwidth]{4-DetailedDesign/data-management.png}
+\includegraphics[width=0.9\textwidth]{4-DetailedDesign/GPRflow.PNG}
 \centering
-\caption{Data collection strategy for the signal processing system}
-\figlabel{datamanagement}
+\caption{Algorithm to process the GPR raw data}
+\figlabel{GPRflow}
 \end{figure}
 
-The program flow design for the completion of the first detection algorithm is shown in \Figref{agile}. The first algorithm to be attempted is the identification of feature parabolas using the randomised Hough transform over the GPR B-scan, as this method produces a visual output which can easily be tested for correctness by an operator by visual comparison. It will also involve the development of the background signal isolation process, which will also be able to be visually inspected for correctness and will be required for the preprocessing steps of the other detection algorithms.
-Once the Feature Parabolas have been isolated from the received signal, criteria will be determined by a human operator which will be used to provide classification between landmine and non-landmine objects.
+The signal peaks are then detected by comparing all the values within the object’s signature and identifying the minimum and maximum prominent peaks. These prominent peaks are grouped into their positions on the graph such that the width and depth can be identified. The width is calculated based on the values within the section of prominent peak range, and the depth is calculated from maximum prominent peak from signals at the top of the soil. \Figref{GPRalg} shows the features for three replica landmine signatures processed by the algorithm. The vertical black line references the centre for each landmine feature. The red circles show the feature width, and the feature depth is calculated from top of the soil to the horizontal black line, where the maximum magnitude signal of the feature occurs.
 
 \begin{figure}[ht]
-\includegraphics[width=0.8\textwidth]{4-DetailedDesign/agile-strategy.png}
+\includegraphics[width=0.7\textwidth]{4-DetailedDesign/GPRalg.PNG}
 \centering
-\caption{Software program flow for initial development stage}
-\figlabel{agile}
+\caption{GPR B-scan of three mine after processed by algorithm}
+\figlabel{GPRalg}
 \end{figure}
+
+The set of preliminary testing completed at the two outdoor test sites included GPR test scans in order to gather and compare this data with the metal detector data under similar conditions. These tests were also completed to confirm the frequency to be used for further GPR tests. The output metric values, such as feature width and depth are stored in the database similar to the metal detector used as part of the sensor fusion algorithm. 
+
+After these preliminary test results were processed, the Bscan images from the 800 MHz and the 2 GHz frequency had a low signal to noise ratio as it detected more clutter or background signals in comparison. The lower 800 MHz frequency detected more clutter at a deeper depth, and the 2 GHz frequency detected clutter surrounding the target objects. Therefore, it was decided that the 1.4 GHz frequency is used for further tests as this provided the balance between penetration depth and frequency signal resolution received by the GPR.
+
+The result from the data processed by the GPR algorithm found that there were three clutter objects that were similar to the APM and APC mines. These objects were the aluminium can, saucepan and gutter section with an average feature width of 11, 13 and 13, respectively. These values were within the feature width range of the APM and APC mines between 11 and 14. However, it was found that the feature depth of the landmines and clutter objects were distinguishable from each other. All of the AT mines were able to be differentiated from other objects. It is important to note that the other seven clutter objects were unable to be processed as there were insufficient data available from the preliminary tests due to inconsistencies in scanning. Regardless, the results from these output metrics, feature width and depth, will be used with the sensor fusion algorithm. 
 
 \section{Sensor fusion}
+The sensor fusion algorithm combines the results of the metal detector and GPR algorithms to produce a decision regarding the target, along with a confidence interval. This information is provided to the operator, who then decides how to proceed. Since the metal detector can only be used to detect metallic objects, it is anticipated that non-metallic objects are less likely to be detected, and will have a lower confidence interval. 
+
+The algorithm starts with the phase angle output metric and if there is a phase angle value produced from the metal detector, it then compares this to the landmine data from the existing database. The object is then confirmed with the magnitude value to provide a confidence interval. If the phase angle or magnitude is zero or indistinguishable from the current database, it can be determined that the object is not metallic, thus, the GPR will then be used to scan over the object to confirm the feature width and depth. This data is then compared with the current database values. After producing a confidence interval of the object, the data is then sent through to the operator device.  
+
+\textcolor{red}{More details about what info the operator receives, and what they should do with this info (link back to scenario of operation: detection is made, quad bike stops, operator decides if it's worth checking out, send in the demining team, clear the mine, proceed (?))}
 
 \section{Platform modifications}
 \seclabel{detailedmodifications}
 A visual inspection and individual tests of each of the subsystems revealed a number of hardware and/or software issues. Due to this changes were made to the electronics and control, steering, braking, gearing and positioning systems. No changes were made to the throttle and wheel encoder systems as no issues were present.
 \subsection{Electronics and control}
 \seclabel{modificationElec}
+In accordance with the scheme detailed in the Concept Design, the low level I/O for controlling the remote platforms sensors and actuators was to be deferred to a microcontroller. The existing electronics within the quad bike had a central microcontroller fulfilling this same purpose. The existing microcontroller, a Motorola DragonBoard was however deemed inappropriate for the continued development of the platform due to obsolescence. The selected replacement microcontroller was to be Arduino based, to make the most of the more modern microcontroller system and the wide community support provided for the open source platform. An Arduino Mega2560 was chosen over other models due to the increased number of serial communication ports available and the increased potential for I/O expansion. 
+
+The remainder of the existing electronics were purpose built for the quad bike either by the University of Adelaide electronics workshop or by previous students involved with the quad bike project. Following discussions with the workshop staff and a review of the schematics the workshop constructed items were deemed appropriate for reuse. The items constructed by previous students were largely made redundant by the introduction of the more modern Arduino controller and so they were discarded. Electronics items retained from the previous design were the regulated switched mode power supply, the relays and relay control board, the wheel encoder signal converter, the limit switch breakout board and the opto-isolator. 
+
 
 \subsection{Steering}
 \seclabel{modificationSteering}
-
+Initial testing of the steering system demonstrated that the existing arrangement was not adequate for providing the required torque to steer the quad bike. Under stationary tests with the quad bike on a raised stand, the steering motor performed as expected, however under loading the motor would quickly draw a greater current than the regulated 24 V power supply could deliver. This resulted in the motor enabling a brake mode, ceasing all motion and losing track of current encoder position making positional accuracy and repeatability impossible. To remedy this, a new 24 V regulated power supply was sourced which was capable of delivering the maximum current the steering motor could draw – 19 A, a significantly larger unit than the previous 2.5 A supply. The result of this replacement was the completion of all further testing without experiencing current supply issues. The steering motor is now capable of turning the wheels over the full range of motion while under the load from the entire weight of the quad bike, without losing positional accuracy.
+%%photo? of the power supplies?
 \subsection{Brakes}
 \seclabel{modificationBrakes}
 The original brake system (shown in \figref{brakemodifications} a) incorporated a limit switch and strain gauge to determine if the brake actuator was extended. The limit switch limited the brake motion at the extreme limit and the strain gauge dictated the brake intensity and ensured the brake lever was not being over strained. A high level testing set-up was carried out by requesting certain braking intensities and measuring two values: travel distance of the actuator arm and the retarding torque on the wheel provided by the brake. It was found that the brake intensity fluctuated by 15 percent which would result in inconsistent stopping distances and speeds. The tests lead to the redesign of the brake measurement for greater accuracy. Improved braking accuracy was achieved through the use of a linear transducer type PZ34-A-125 being installed alongside the actuator (shown in \figref{brakemodifications} b). This transducer allowed for the position of the brake actuator to be known with sub-millimetre accuracy. Knowing the position of the actuator arm allows for accurate and uniform brake intensities and thus, braking distances.
@@ -62,7 +92,7 @@ The original brake system (shown in \figref{brakemodifications} a) incorporated 
 \subfloat[Before]{\includegraphics[width=0.45\textwidth]{4-DetailedDesign/BrakesOldLabelled.png}} 
 & \subfloat[After]{\includegraphics[width=0.45\textwidth]{4-DetailedDesign/BrakesNewLabelled.png}}\\
 \end{tabular}}
-\caption{Before and after modification of the braking system. (1) Linear actuator (2) Brake lever (3) Limit switch (4) Strain gauge (5) Linear transducer}
+\caption[Braking system before and after modification]{Braking system before and after modification. (1) Linear actuator (2) Brake lever (3) Limit switch (4) Strain gauge (5) Linear transducer}
 \figlabel{brakemodifications}
 \end{figure}
 
@@ -108,7 +138,7 @@ For low curvature path following Pure Pursuit is used (\secref{lowcurvefollowing
 
 \subsection{Low curvature path following}
 \seclabel{lowcurvefollowing}
-The low curvature path tracker works through determining a steer angle that connects an arc from the centre point of the non steering wheel axle to a goal point on the path (refer to \Figref{purePursuitGeom}).  The goal point ($g_x, g_y$) acts as an intermediate waypoint and is determined from a look-ahead distance $l_d$. The angle, $\alpha$, can be related to the geometry using the law of sines,
+The low curvature path tracker works through determining a steer angle that connects an arc from the centre point of the non steering wheel axle to a goal point on the path (refer to \Figref{purePursuitGeom}).  The goal point ($g_x, g_y$) acts as an intermediate waypoint and is determined from a look-ahead distance $l_d$. The angle, $\alpha$, can be related to the geometry using the law of sines \textcolor{red}{label these equations},
 \begin{align*}
 \frac{l_d}{\sin(2\alpha)} &= \frac{R}{\sin(^{\pi}/_2-\alpha)},\\
 \frac{l_d}{2\sin(\alpha)\cos(\alpha)} &= \frac{R}{\cos(\alpha)},\\
@@ -122,7 +152,7 @@ where $\alpha$ and thus $\delta$ will be functions of time and thus will be calc
 \begin{figure}[ht]
 \includegraphics[width=0.7\textwidth]{4-DetailedDesign/Geometric_Bicycle_Model.png}
 \centering
-\caption{Geometric bicycle model \parencite{snider2009}} \figlabel{geometricBicycleModel}
+\caption[Geometric bicycle model]{Geometric bicycle model \parencite{snider2009}} \figlabel{geometricBicycleModel}
 \end{figure} 
 
 \subsection{Turning the platform a specified angle}
@@ -174,10 +204,11 @@ Throughout the N-point turn the quad bike must remain within the grey dashed lin
 \centering
 \caption{N-point turn template}
 \tablabel{npointTurnTemplate}
-\begin{tabular} {r | c c c c c c c c}
-Turn point & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\ \hline
+\begin{tabular} {r c c c c c c c c}
+\toprule
+Turn point & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\ \midrule
 Heading (\degree) & 0 & 26.7 & 60.5 & 77.3 & 95.6 & 113.9 & 130.8 & 180 \\
-$\Delta h$ required (m) & 0 & 1.46 & 0.09 & 0.44 & 0.37 & 0.11 & 0.62 & -1.18 \\
+$\Delta h$ required (m) & 0 & 1.46 & 0.09 & 0.44 & 0.37 & 0.11 & 0.62 & -1.18 \\ \bottomrule
 \end{tabular}
 \end{table}
 At the completion of the turn, the quad bike is not guaranteed to line up with the next segment of the path. A distance, $\Delta h$ is added to the end of the previous line segment to correct for this. $\Delta h$ is also determined from ideal geometry, and in real time by interpolating from the template shown in \tabref{npointTurnTemplate}.
@@ -217,7 +248,7 @@ To satisfy these characteristics an Extended Kalman Filter (EKF) was employed to
 &\mu_t = \bar{\mu_t} + K_t(z_t-h(\bar{\mu_t}))\\
 &\Sigma_t = (I - K_tH_t)\bar{\Sigma_t}
 \end{align*}
-Where the state vector, $\mu_t$, holds the positional information ($x, y, \theta$) in a 3x1 matrix. The EKF is calculated in two steps, a prediction step and an update step. The prediction step uses kinematic equations to update the position of the quad bike based on physical observations. In the case of the quad bike, readings of the velocity, steering angle and time-step are taken, then geometry is used to calculate where its updated position would be. The update step then uses information obtained through sensors to correct for any error that may be present in the prediction step. This is achieved by modelling positions as a Gaussian distribution and weighting them according to their reliability. Gaussian distributions are shown as covariance matrices, $R_t$ for the prediction step and $Q_t$ for the update step, and the weighting is the Kalman Gain, $K_t$. The predicted covariance matrix, $\Sigma_t$, can then be determined. As we know the starting position and heading of the quad bike through user input, $\Sigma_t$ is initialised as a 3x3 zero matrix.
+\textcolor{red}{\textbf{label equations}} Where the state vector, $\mu_t$, holds the positional information ($x, y, \theta$) in a 3x1 matrix. The EKF is calculated in two steps, a prediction step and an update step. The prediction step uses kinematic equations to update the position of the quad bike based on physical observations. In the case of the quad bike, readings of the velocity, steering angle and time-step are taken, then geometry is used to calculate where its updated position would be. The update step then uses information obtained through sensors to correct for any error that may be present in the prediction step. This is achieved by modelling positions as a Gaussian distribution and weighting them according to their reliability. Gaussian distributions are shown as covariance matrices, $R_t$ for the prediction step and $Q_t$ for the update step, and the weighting is the Kalman Gain, $K_t$. The predicted covariance matrix, $\Sigma_t$, can then be determined. As we know the starting position and heading of the quad bike through user input, $\Sigma_t$ is initialised as a 3x3 zero matrix.
 
 The geometry of the kinematic equations used are shown in \figref{quadKinematics}. From the geometry we get:
 \begin{align*}
@@ -299,7 +330,7 @@ Q =
     0	&	0	&	20^2
 \end{bmatrix}
 \]
-As the GPS drifts when stationary, positional data from this sensor is only used when the platform is at cruising speed, or when travelling in a forwards direction at 5 km/hr. Experimental data showed the GPS to be accurate within 0.4 m at this speed, and therefore the calculated heading accurate within ~20 degrees when measuring between subsequent points. This on its own is not accurate enough as it exceeds the desired positional accuracy.  
+\textcolor{red}{\textbf{label equations}} As the GPS drifts when stationary, positional data from this sensor is only used when the platform is at cruising speed, or when travelling in a forwards direction at 5 km/hr. Experimental data showed the GPS to be accurate within 0.4 m at this speed, and therefore the calculated heading accurate within ~20 degrees when measuring between subsequent points. This on its own is not accurate enough as it exceeds the desired positional accuracy.  
 
 Therefore, the IMU is also used to correct the heading. As only one element of the state vector is being updated the matrix math is set up slightly differently. Experimental data shows the IMU has an error of approximately 2 degrees per 360 degrees travelled.
 \[
@@ -332,15 +363,32 @@ As part of the platform requirements, full autonomy of the vehicle was required.
 
 \subsection{Automation software}
 \seclabel{detailedautosoftware}
+Direct communication with the actuators is handled through an Arduino microcontroller. Any desired commands are sent from the desktop navigation software to the Arduino where final checks are in place to ensure incorrect operation does not take place. The code structure, shown in \Chapref{arduinoCodeChart}, uses individual control loops which are executed once each loop for each of the actuators. The control loops serve three purposes:
+\begin{enumerate}
+\item Ensure the desired position is within the actuator bounds
+\item Ensure other actuators and/or sensors are in appropriate positions
+\item Move the actuator to the desired position
+\end{enumerate}
+Some dependencies are present from one actuator to another. These include the gear actuator with the brake and throttle actuator, the brake actuator with the throttle actuator, and the throttle actuator with the brake actuator.
+
+The gear actuator should only move if three conditions are satisfied. Firstly, the quad bike's velocity should be zero else unknown circumstances between gear changes may arise. Secondly, throttle percentage should be zero else uncontrolled accelerations may arise and lastly, the brakes should be applied to provide control of the quad bike during gear changes.
+
+The brake actuator should not be applied unless the throttle percentage is zero. If the brakes are applied when throttle exists, the throttle is set to zero and the brakes are applied. Conversely, the throttle should not increase if the brakes have been engaged. Braking takes precedence over throttle and so the requested throttle change is ignored.
 
 \subsection{Subdivided path following}
 \seclabel{automationpathfollowing}
-When the quad bike is within a specified look-ahead distance from a goal point, the the point is incremented along the path and the process continues. This is true for all cases except when there is no next point where the path navigation is complete, or during N-point turn manoeuvres where complex navigation is required.
+As discussed in \secref{pathconcept} and \secref{detailednav}, Pure Pursuit is used as the path following algorithm to turn towards the next goal point in the path. When the quad bike is within a specified look-ahead distance from the goal point, the point is incremented along the path and the process continues. This is true for all cases except when there is no next point and the path navigation is complete, or during N-point turn manoeuvres where complex navigation is required.
+
+Due to the mixture of navigation complexities three navigation states were employed, NAV\_STOP, NAV\_CRUISE, and NAV\_TURNINBOUND. The quad bike performs different functions depending on the navigation state. If the current state is NAV\_STOP, the quad bike applies the brakes and stops. This would be used in the case of an emergency or landmine detection. NAV\_CRUISE is the basic Pure Pursuit algorithm; steer to the goal point and when within the given look-ahead distance, increment the path point.
+
+The navigation software is able to detect an inbound turn via the distances between the current and next path points. If the distance to the next path point is less than the distance to the current path point, we know a point in the N-point turn is approaching and the navigation state is changed to NAV\_TURNINBOUND. When this is the case, the path point is not incremented until one of two possibilities occur; 1. the quad bike comes within a user specified radial tolerance of the point or 2. the quad bike is no longer converging on the point. For testing and in the virtual platform, a radial tolerance of 0.2 m was used. When one of the two possibilities returns true, the navigation state is reset to NAV\_CRUISE. The process starts again and if more points are present in the N-point turn, the navigation state will be set to NAV\_TURNINBOUND once again. The direction of travel is determined based on the location of the goal point relative to the quad bike. If the goal point lies in front of the quad bike, the forwards gear is selected, and if the goal point is behind the quad bike, the reverse gear is selected.
 
 \section{Sensor mount}
-The sensor mount, as described previously, is required to carry the sensory systems and mount them to the platform in a fashion that does not limit their functionality. The design process of the mount consisted of hand calculations followed, computer aided design and verification. 
+%\subsubsection{Final sensor mount design}
+For the final design for the sensor mount to adhere to all the sensory requirements, design tests were required to be conducted. These tests were necessary to test for variations in ground clearances and vibrational interference from the Quad bike during operation. Testing for these were carried out using the Finite Element Analysis (FEA) method and engine run tests on the quad bike. FEA was used to test vibrational harmonics and load carrying ability of the frame when subject to operational conditions while engine run tests were used to test the vibrational frequency of the operating quad bike. 
+%The sensor mount, as described previously, is required to carry the sensory systems and mount them to the platform in a fashion that does not limit their functionality. The design process of the mount consisted of hand calculations followed, computer aided design and verification. 
 
-\subsection{Structural and vibrational analysis}
+\subsection{Structural analysis}
 The sensor frame design was constructed in FEA. The FEA methods discretises a geometry into a finite number of elements connected together via nodes. Boundary conditions, loads and constraints as well as material properties are subject to the design and depending on the analysis type, a result can be interpreted that can be used to alter and fine tune the design.  To properly and accurately model the frame, 3D elements were chosen to represent the geometry and a basic load test was conducted. This load test was conducted to ensure that the deflection of the mount when subject to the weight of the sensor systems would not interfere with the sensor requirements, and to check if the design was strong enough to support the weight.
 
 The initial FEA analysis was used to determine the thickness of the required mount material as well as the support locations. It was found that using structural pine MGP10 a thickness of 70 x 35 mm provided adequate support and minimised deflection to less than 4 mm. The supports were chosen to be made from mild steel with square hollow sections with dimension 25 x 25 x 1.6 mm. The equivalent (von-Mises) stresses for both the frame and mild steel supports did not exceed their yield stresses of 10 MPa and 370 MPa respectively. \figref{topframe} and \figref{bottomframe} show the equivalent stresses experienced by the segmented parts. 
@@ -357,10 +405,9 @@ The initial FEA analysis was used to determine the thickness of the required mou
 \caption{Structural pine frame von-Mises stress} \figlabel{bottomframe}
 \end{figure}
 
-Hand calculations were used to verify the results from FEA. An axial force of 334 MPa was calculated for the rear frame section and this corresponded to a force of 333.99 MPa from FEA. 
+Hand calculations were used to verify the results from FEA. An axial force of 334 MPa was calculated for the rear frame section and this corresponded to a force of 333.99 MPa from the FEA analysis showing that the results from FEA mimicked the real world results closely. 
 
-
-The final design can be seen in  \figref{finalSensorFrameDesign} 
+The location of the sensors were dictated by each individual sensor requirements as discussed previously. The metal detector had to be in a 40 cm halo free of metallic objects while the GPR had to be as close to the ground as possible. \Figref{finalSensorFrameDesign} shows the final frame design and attachment of the sensors. The metal detector was placed 45 cm in-front of the metal supports and the GPR to reduce the interference. The GPR was mounted as close as allowable to the metal detector to minimise the separation between the sensors, so that the amount of miss-alignment experienced during turns would be low.  
 
 \begin{figure}[ht]
 \includegraphics[width=0.4\textwidth]{4-DetailedDesign/frame.PNG}
@@ -368,47 +415,54 @@ The final design can be seen in  \figref{finalSensorFrameDesign}
 \caption{Sensor mount frame design} \figlabel{finalSensorFrameDesign}
 \end{figure} 
 
+%A vibrational analysis was conducted to ensure that no frequency disturbances would be experienced by the sensors from the quad bike engine during operation. The analysis was also used to find the frame vibrations to ensure that the operational frequencies did not result in harmonics that could lead to unacceptable deflections.
+\subsection{Vibrational analysis}
+In order to determine the vibrational characteristics of the sensor mount while attached to the quad bike frame, a detailed analysis was undertaken. Initially, hand calculations for a simplified system were performed based on known theory. These results were then used to verify the results of simple FEA simulations. More complex FEA simulations were then performed, in order to more closely model the actual sensor mount. The next step will be to take experimental measurements, which should agree with FEA results within some margin of error. 
+ \textcolor{red}{include some details about rough surface characterisation (from the back of the seminar slides) }
+\subsubsection{Theoretical results}
+While it is difficult to model the vibrational modes of a beam exactly, approximate analytical solutions for lower order modes may be obtained using classical methods. Two such methods are the Rayleigh and Dunkerly methods. The Rayleigh method considers the energy balance at the location of each beam mass element. A solution for the modes can be obtained based on knowledge of the static deflection. In general, the Rayleigh method provides an upper limit for the fundamental frequency. The Dunkerly method considers a force balance along the beam, which leads to the result that the overall modes are a superposition of the modes of the individual elements. The Dunkerly method generally provides a lower limit for the fundamental frequency.
+\textcolor{red}{some references?}
+Both methods were used to find the vibrational modes for three different configurations. The first configuration is a simple cantilever with self weight, the second is a massless cantilever with an end-loading, while the third is a cantilever with self-weight and an end loading.  \Tabref{theoreticalvibestable} shows the results for each of the different configurations and methods.
 
+%\[
+%Cross section: 35 x 70 mm    	Length: 1.5 m
+%Density: 515 \frac{kg}{$m^3}   	Modulus of elasticity: 10.06 GPa 
+%End load mass: 5 kg 			Beam mass = 1.8926 kg (calculated)
 
+%\]
 
-
-talk about load test, talk about hand calc verification
-
-then talk about vibrational test using harmonic analysis. discuss results. discuss vibration expected- vibration tests during engine tests, theoretical vibration tests for driving
-any alterations made to the design
-
-Picture of our final design in CAD and FEA and irl
-\subsection{Manufacturing}
-
-\subsection{Steering focal point}
-Both the GPR and metal detector are required to be mounted to the platform in a cantilever-like fashion in order to avoid contact with the ground where it would risk detonation of a landmine. Each of the sensor arrays is expected to weigh between 10 kg and 30 kg.
-Mounting needs to be done in a configuration that will keep individual array sensors aligned so that corresponding ground information can be collated and analysed correctly. If the assumption of Ackermann steering holds for the quad bike we can use the simplified, 2-wheel model to assess the location of the sensors relative to the quad bike. The simplified model provides the following geometric relationship:
-$$
-tan(\delta) = \frac{L}{R}
-$$
-Where $\delta$ is the steering angle, $L$ is the wheelbase and $R$ is the radius of the arc that the centre of the rear axle will follow. This simplification has been used to perform simulations on the steering effectiveness of the vehicle and will also be used to estimate turning capabilities as part of the route planning software.
-Initial simulations showed that front mounted sensors with rear-wheel steering is the best option for the application with far superior coverage results compared to front-wheel steering. Further results are shown in \Figref{turnCoverage}
-\begin{itemize}
-\item Trial 1, represented as the leftmost diagram in \Figref{turnCoverage}, shows the turning example for a case where the turning wheels are 1.5 metres in front of the focal point of the turn, or front wheel steering. The sensor array is 0.5 metres in front of the turning wheels, 2 metres from the focal point of the turn. Evident from the figure is how the coverage area does not form a tight loop and the coverage area does not include the path of the vehicle. This is critical as it will mean the quad bike will be passing over ground not scanned by the sensors.
-\item Trial 2, represented by the middle diagram in \Figref{turnCoverage}, shows the results for a case where the turning wheels are 1.5 metres behind the focal point of the turn, or rear wheel steering. The sensor array is placed 0.5 metres in front of the focal axle. This trial shows a much tighter scanning loop than the previous test and the path of the quad bike is entirely within the scanned area. This is ideal.
-\item The third trial, represented by the rightmost diagram in \Figref{turnCoverage}, is purely for comparison and shows the coverage area of a vehicle with turning wheels 1.5 metres in front of the focal axle, but with the sensing array only 0.5 metres in front of the focal axle. This would place the sensing array between the two axles of the vehicle. Under this arrangement an identical scanning path is achieved using a front-wheel steering setup. This is not useful for the application as the sensors must be in front of the vehicle to detect landmines.
-\end{itemize}
-% Split, subfig
-\begin{figure}[ht]
-\includegraphics[width=0.8\textwidth]{4-DetailedDesign/Detector_Coverage.png}
+\begin{table} [ht]
 \centering
-\caption{Landmine detector coverage simulations} \figlabel{turnCoverage}
-\end{figure}
-This result is expected. Referring to \Figref{geometricBicycleModel}, the turning radius of the rear wheel is $R$ and the turning radius of the front wheel is the hypotenuse of the triangle formed – of length $\sqrt{R^2 + L^2}$, which is greater than $R$. If the sensing array was some distance $q$ in front of the front wheels, its turning radius would be $\sqrt{R^2 + [L+q]^2}$, greater yet again. However, if the sensing array was an equal distance $q$ behind the rear wheels (or front wheels if this was a rear-steering arrangement) then the turning radius of the sensors would be $\sqrt{R^2 + q^2}$. From this it can be seen that to minimise the effective turning radius then $q$ should be minimised.
+\caption[Theoretical vibration results using Rayleigh and Dunkerly methods]{Theoretical vibration results using Rayleigh and Dunkerly methods for a 35 x 70 x 1500 mm beam in different configurations }
+\tablabel{theoreticalvibestable}
+\begin{tabular} {r c c}
+\toprule
+Configuration & f Dunkerly (Hz) & f Rayleigh (Hz)  \\ \midrule
+Cantilever (1.9kg self weight) & 22.2097 & 34.0655  \\
+Cantilever (massless, 5kg end load) & 6.7321 & 6.7321 \\
+Cantilever (1.9kg self weight , 5kg end load) & 6.4427 & 6.8844 \\ \bottomrule
+\end{tabular}
+\end{table}
 
-The sensor arrays will be mounted at the 'rear' of the quad bike which will be primarily driven in reverse to achieve the desired scan coverage. The mounting bracket for the arrays will be constructed on-the-fly with the assistance of the workshop and its technicians. The bracket should be constructed from PVC and meet the following specifications:
-\begin{itemize}
-\item Metal detector clear of metal in a 500 mm radius and 2000 mm vertically.
-\item GPR clear of obstructions in a 100 mm radius and 50 mm vertically.
-\end{itemize}
+A cantilever beam of self weight was analysed in ANSYS. The transverse vertical fundamental frequency was found to be 27.707 HZ which lies between the frequency ranges found from using the Dunkerly and Rayleigh methods.the Modes fro the sensor mount were found to be 34.298 Hz which is very similar to the Rayleigh theoretical result for a self weighted cantilever beam. The addition of the cross member supports add stiffness to the frame resulting in the increased frequency over a standard cantilever beam. The vertical supports act to reduce the length of the cantilever beam further increasing the fundamental frequency. The deflections caused to the frame due to the fundamental frequency was 32.805 mm as can be seen in \figref{Finalframeansys}. 
 
-\subsubsection{Final sensor mount design}
-For the final design for the sensor mount to adhere to all the sensory requirements, design tests were required to be conducted. These tests were necessary to test for variations in ground clearances and vibrational interference from the Quad bike during operation. Testing for these were carried out using the Finite Element Analysis (FEA) method and engine run tests on the quad bike. FEA was used to test vibrational harmonics and load carrying ability of the frame when subject to operational conditions while engine run tests were used to test the vibrational frequency of the operating quad bike. 
+\begin{figure}[ht]
+\includegraphics[width=0.8\textwidth]{4-DetailedDesign/frameANSYS.PNG}
+\centering
+\caption{Sensor mount frame design vibrational analysis} \figlabel{Finalframeansys}
+\end{figure} 
+
+The addition of the metal detector to the frame resulted in fundamental frequencies of 13.647, 14.573 and 31.913 Hz with a maximum deflection of 9.9417 mm. The addition of the weight of the metal detector acts to dampen the fundamental frequency as expected. This same damping can be seen from the theoretical results for the cantilever beam with the added end weight.
+
+Variations in sensor systems tat could be installed could result in different fundamental frequencies due to the changing damping effects. this can be accounted for by increasing of decreasing the length of the frame to change the fundamental frequency to one that is desired. The frame design can be tuned to a specific fundamental frequency through the alteration of its design and end weight. 
+
+\textcolor{red}{bike vibrations}  
+
+\subsection{Manufacturing}
+The processes required in the construction the sensor mount consisted of wood work and metal work. Wooden dowels were used to join the sections together near the metal detector as no metallic objects were allowed near it. Supports for the metal detector were made out of four nylon rods that connect to horizontal wooden supports. two acrylic boards were made to encase the metal detector to act as both a safety protector and a mounting device for the nylon rods. As the sensor was a loaned piece of equipment, no modifications or damages were allowed to happen to it resulting in the need for the acrylic case. The requirement for variation in the height of the sensor was satisfied by the use of the nylon rods, the length and subsequently the height of the sensor off the ground could be altered by varying the length of the rods and supports. Another benefit to using the nylon rods is that in the case that the quad bike were to hit something, the metal detector would not break, instead the nylon rods would shear resulting in no damage to the sensor.
+GPR install...
+
+\textcolor{red}{final picture of it all installed }  
 
 \section{Electronics}
 The electronics hardware to be used for the project will fit in the categories as described in the Conceptual Design. The custom electronics work pre-existing on the quad bike supplied by the DSTG meets the requirements for the COTS bespoke electronics, providing digital interfaces to the actuators and sensors attached to the platform. The need for replacement or improvement of any of these electronics will be determined after testing has been completed on the supplied vehicle and their performance has been evaluated.
@@ -420,19 +474,61 @@ The central processing hardware will be provided by a Windows based desktop comp
 The microcontroller selected is an Arduino Mega 2560 board, chosen for its cost, availability and fast development time. This board has considerable I/O capabilities that exceed the requirements for the project, but allow for future expansion of sensors and ensures that I/O limitations will not be a concern. The microcontroller will be connected to the desktop computer via the serial port as mentioned above.
 
 \section{Software}
+\textcolor{red}{Intro for this section}
 \seclabel{detailedSoftware}
 
 \subsection{Software architecture}
 \seclabel{detailedSoftwareArchitecture}
+Due to the experimental nature of much of this project, and with the short timeframe available, it was anticipated that moving goalposts would have a significant impact on the development of this project. As project complexities could not be fully understood in the design stage, an Agile software development strategy was adopted. Under this routine, strict determinations of the software design were not detailed at the outset of development. The agile practice involves delivering incremental improvements to a working software and constantly assessing progress to identify software features that do not perform as anticipated or are more difficult than planned to implement. The agile strategy welcomes changing software requirements even late in development to accommodate the outcomes of these evaluations.
+As such, the software design prior to the development phase included only the outline description of a completed system, with software subsystems partially detailed. Full detail of these subsystems or additional systems would be determined during the development phase after assessment of progress and performance. This initial outline is shown below in figure XXX.
+
+XXxXX figure XXXxXXxX
+
+To allow for the most rapid development, the primary focus for the initial portion of the development phase was to complete the Central object and the Window and Data Logging objects. These were chosen due to the anticipated low complexity for these systems, and the dependency other systems would have regarding these systems. The full Software Requirements Specification, and Software Design Document – which were completed as part of the iterative agile development process and reflect the design changes made during development – are presented in Appendix XXX.
+
 
 \subsection{Virtual platform}
 \seclabel{detailedVP}
+The virtual platform was designed to test software implementations for communications, automation, and navigation software. As shown in \figref{virtualPlatformPic}, the virtual platform displays a graphical representation of the quad bike as it traverses a given path, graphs showing the actuator states of the wheel encoder, steering, gear, and throttle subsystems, ground penetrating radar output, and the metal detector output.
+\begin{figure}[ht]
+\includegraphics[width=\textwidth]{4-DetailedDesign/virtualPlatform.jpg}
+\centering
+\caption[Virtual platform display window]{Virtual platform: graphical representation (top left), actuator states (top right), GPR output (bottom left), MD output (bottom right)} \figlabel{virtualPlatformPic}
+\end{figure}
+The user also has the option to display, on the graphical representation, the positional sensor data as seen in \figref{virtualPlatformDataPic}. Note that the IMU heading is in the incorrect direction as the initialised heading is unknown.
+\begin{figure}[ht]
+\includegraphics[]{4-DetailedDesign/dataVisibleVirtualPlatform.PNG}
+\centering
+\caption[Virtual platform graphical representation]{Virtual platform graphical representation showing sensor data, GPS (blue), kinematic equations (red), Kalman Filtered (green), and IMU (pink). Purple is the goal waypoint.} \figlabel{virtualPlatformDataPic}
+\end{figure}
+The virtual platform is initialised as soon as any waypoints are sent which can be navigated. It takes user waypoints which are passed to the virtual platform, are subdivided and sent to the automation code to begin navigation.
 
 \subsection{Tablet application}
 \seclabel{detailedTabletApp}
+The tablet application was designed to meet to project goal of allowing easy usage of the entire mine detection system by an unskilled operator. To this end, the design of the UI is focussed towards providing the most user friendly interface possible, in preference to displaying the most informative data. The expectation is that an unskilled operator is unlikely to be able to form meaningful conclusions from an output displaying the unprocessed data, and as a result this information has been omitted from the design of the operator’s device. 
+
+Key components of the UI are the map display, and the controls pane. The map display is the primary method of displaying information about the system to the operator, and as a result is permanently shown in a prominent location. The emergency stop button is the only other UI item which is permanently available, which for safety reasons is always prominently displayed and readily accessible. The controls pane is split into three windows, which each correspond to a common control theme – manual controls, automation and navigation controls, and communications controls. These distinctions were made as it allows for the control buttons to be larger and more informative, and readily distinguishes clusters of controls which serve similar functions. 
+
+The map display shows the current locations of all of the paths and zones defined on the tablet, as well as an indicator showing the current geographical location of the remote device. Under autonomous conditions, the map display will show a trail indicating the path which has been covered by the platform during the scan. Upon detection of an object, this will be displayed on the map showing location, and confidence of the detected object being a mine. Above a certain confidence threshold, the remote platform will halt, and the operator will be prompted.
+
+The communications tab provides all of the required interfaces to establish, maintain and assert communications with the remote platform. This will be the primary view displayed to the operator, as it must be completed before control of the platform can be achieved. Under normal operations, once connected it will not be necessary for an operator to return to the communications tab.
+
+The automation and navigation tab provides all of the controls for defining routes and zones on the tablet device, including synchronising these paths with the remote platform. The controls for initiating and pausing autonomous motion, as well as determining the current state of the autonomous systems, are displayed here.
+
+The manual control tab provides a joystick with which an operator can control the remote platform without needing to define a path. It is anticipated that this will primarily be used for positioning the remote platform prior to commencing a scan, such as driving the platform off a trailer, or navigating a complex terrain. This tab also displays information about the current speed and heading of the remote platform. 
+
+
 
 \subsection{Communications}
 \seclabel{detailedComms}
+Communications between all aspects of the system will be controlled by a system of packets. Each packet has a custom structure created specifically for this project, and is consistent irrespective of communications protocol used. The use of this system means that packets created on the operator’s device can be transmitted to the Arduino via the PC and be interpreted correctly, without needing intermediate processing. The structure of each packet is as follows:
+\begin{itemize}
+\item Packet ID: A single byte identifying the purpose of this packet.
+\item Length: A single byte indicating the length (in bytes) of this transmission
+\item Data: A stream of bytes (in multiples of 4) corresponding to an array of IEEE 754 format floating point numbers
+\end{itemize}
+Using this system a technical limit of up to 63 floats can be transmitted in a single packet. The vast majority of packets will have either zero associated data or only a single data point, and in practical application it is unlikely that this amount of data will be required in a single transmission. The full detail of packet structure is provided in Appendix XXX. 
+
 
 
 \end{document}
