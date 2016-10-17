@@ -67,11 +67,17 @@ The sensor fusion algorithm combines the results of the metal detector and GPR a
 
 The algorithm starts with the phase angle output metric and if there is a phase angle value produced from the metal detector, it then compares this to the landmine data from the existing database. The object is then confirmed with the magnitude value to provide a confidence interval. If the phase angle or magnitude is zero or indistinguishable from the current database, it can be determined that the object is not metallic, thus, the GPR will then be used to scan over the object to confirm the feature width and depth. This data is then compared with the current database values. After producing a confidence interval of the object, the data is then sent through to the operator device.  
 
+\textcolor{red}{More details about what info the operator receives, and what they should do with this info (link back to scenario of operation: detection is made, quad bike stops, operator decides if it's worth checking out, send in the demining team, clear the mine, proceed (?))}
+
 \section{Platform modifications}
 \seclabel{detailedmodifications}
 A visual inspection and individual tests of each of the subsystems revealed a number of hardware and/or software issues. Due to this changes were made to the electronics and control, steering, braking, gearing and positioning systems. No changes were made to the throttle and wheel encoder systems as no issues were present.
 \subsection{Electronics and control}
 \seclabel{modificationElec}
+In accordance with the scheme detailed in the Concept Design, the low level I/O for controlling the remote platforms sensors and actuators was to be deferred to a microcontroller. The existing electronics within the quad bike had a central microcontroller fulfilling this same purpose. The existing microcontroller, a Motorola DragonBoard was however deemed inappropriate for the continued development of the platform due to obsolescence. The selected replacement microcontroller was to be Arduino based, to make the most of the more modern microcontroller system and the wide community support provided for the open source platform. An Arduino Mega2560 was chosen over other models due to the increased number of serial communication ports available and the increased potential for I/O expansion. 
+
+The remainder of the existing electronics were purpose built for the quad bike either by the University of Adelaide electronics workshop or by previous students involved with the quad bike project. Following discussions with the workshop staff and a review of the schematics the workshop constructed items were deemed appropriate for reuse. The items constructed by previous students were largely made redundant by the introduction of the more modern Arduino controller and so they were discarded. Electronics items retained from the previous design were the regulated switched mode power supply, the relays and relay control board, the wheel encoder signal converter, the limit switch breakout board and the opto-isolator. 
+
 
 \subsection{Steering}
 \seclabel{modificationSteering}
@@ -86,7 +92,7 @@ The original brake system (shown in \figref{brakemodifications} a) incorporated 
 \subfloat[Before]{\includegraphics[width=0.45\textwidth]{4-DetailedDesign/BrakesOldLabelled.png}} 
 & \subfloat[After]{\includegraphics[width=0.45\textwidth]{4-DetailedDesign/BrakesNewLabelled.png}}\\
 \end{tabular}}
-\caption{Before and after modification of the braking system. (1) Linear actuator (2) Brake lever (3) Limit switch (4) Strain gauge (5) Linear transducer}
+\caption[Braking system before and after modification]{Braking system before and after modification. (1) Linear actuator (2) Brake lever (3) Limit switch (4) Strain gauge (5) Linear transducer}
 \figlabel{brakemodifications}
 \end{figure}
 
@@ -132,7 +138,7 @@ For low curvature path following Pure Pursuit is used (\secref{lowcurvefollowing
 
 \subsection{Low curvature path following}
 \seclabel{lowcurvefollowing}
-The low curvature path tracker works through determining a steer angle that connects an arc from the centre point of the non steering wheel axle to a goal point on the path (refer to \Figref{purePursuitGeom}).  The goal point ($g_x, g_y$) acts as an intermediate waypoint and is determined from a look-ahead distance $l_d$. The angle, $\alpha$, can be related to the geometry using the law of sines,
+The low curvature path tracker works through determining a steer angle that connects an arc from the centre point of the non steering wheel axle to a goal point on the path (refer to \Figref{purePursuitGeom}).  The goal point ($g_x, g_y$) acts as an intermediate waypoint and is determined from a look-ahead distance $l_d$. The angle, $\alpha$, can be related to the geometry using the law of sines \textcolor{red}{label these equations},
 \begin{align*}
 \frac{l_d}{\sin(2\alpha)} &= \frac{R}{\sin(^{\pi}/_2-\alpha)},\\
 \frac{l_d}{2\sin(\alpha)\cos(\alpha)} &= \frac{R}{\cos(\alpha)},\\
@@ -146,7 +152,7 @@ where $\alpha$ and thus $\delta$ will be functions of time and thus will be calc
 \begin{figure}[ht]
 \includegraphics[width=0.7\textwidth]{4-DetailedDesign/Geometric_Bicycle_Model.png}
 \centering
-\caption{Geometric bicycle model \parencite{snider2009}} \figlabel{geometricBicycleModel}
+\caption[Geometric bicycle model]{Geometric bicycle model \parencite{snider2009}} \figlabel{geometricBicycleModel}
 \end{figure} 
 
 \subsection{Turning the platform a specified angle}
@@ -198,10 +204,11 @@ Throughout the N-point turn the quad bike must remain within the grey dashed lin
 \centering
 \caption{N-point turn template}
 \tablabel{npointTurnTemplate}
-\begin{tabular} {r | c c c c c c c c}
-Turn point & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\ \hline
+\begin{tabular} {r c c c c c c c c}
+\toprule
+Turn point & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\ \midrule
 Heading (\degree) & 0 & 26.7 & 60.5 & 77.3 & 95.6 & 113.9 & 130.8 & 180 \\
-$\Delta h$ required (m) & 0 & 1.46 & 0.09 & 0.44 & 0.37 & 0.11 & 0.62 & -1.18 \\
+$\Delta h$ required (m) & 0 & 1.46 & 0.09 & 0.44 & 0.37 & 0.11 & 0.62 & -1.18 \\ \bottomrule
 \end{tabular}
 \end{table}
 At the completion of the turn, the quad bike is not guaranteed to line up with the next segment of the path. A distance, $\Delta h$ is added to the end of the previous line segment to correct for this. $\Delta h$ is also determined from ideal geometry, and in real time by interpolating from the template shown in \tabref{npointTurnTemplate}.
@@ -241,7 +248,7 @@ To satisfy these characteristics an Extended Kalman Filter (EKF) was employed to
 &\mu_t = \bar{\mu_t} + K_t(z_t-h(\bar{\mu_t}))\\
 &\Sigma_t = (I - K_tH_t)\bar{\Sigma_t}
 \end{align*}
-Where the state vector, $\mu_t$, holds the positional information ($x, y, \theta$) in a 3x1 matrix. The EKF is calculated in two steps, a prediction step and an update step. The prediction step uses kinematic equations to update the position of the quad bike based on physical observations. In the case of the quad bike, readings of the velocity, steering angle and time-step are taken, then geometry is used to calculate where its updated position would be. The update step then uses information obtained through sensors to correct for any error that may be present in the prediction step. This is achieved by modelling positions as a Gaussian distribution and weighting them according to their reliability. Gaussian distributions are shown as covariance matrices, $R_t$ for the prediction step and $Q_t$ for the update step, and the weighting is the Kalman Gain, $K_t$. The predicted covariance matrix, $\Sigma_t$, can then be determined. As we know the starting position and heading of the quad bike through user input, $\Sigma_t$ is initialised as a 3x3 zero matrix.
+\textcolor{red}{\textbf{label equations}} Where the state vector, $\mu_t$, holds the positional information ($x, y, \theta$) in a 3x1 matrix. The EKF is calculated in two steps, a prediction step and an update step. The prediction step uses kinematic equations to update the position of the quad bike based on physical observations. In the case of the quad bike, readings of the velocity, steering angle and time-step are taken, then geometry is used to calculate where its updated position would be. The update step then uses information obtained through sensors to correct for any error that may be present in the prediction step. This is achieved by modelling positions as a Gaussian distribution and weighting them according to their reliability. Gaussian distributions are shown as covariance matrices, $R_t$ for the prediction step and $Q_t$ for the update step, and the weighting is the Kalman Gain, $K_t$. The predicted covariance matrix, $\Sigma_t$, can then be determined. As we know the starting position and heading of the quad bike through user input, $\Sigma_t$ is initialised as a 3x3 zero matrix.
 
 The geometry of the kinematic equations used are shown in \figref{quadKinematics}. From the geometry we get:
 \begin{align*}
@@ -323,7 +330,7 @@ Q =
     0	&	0	&	20^2
 \end{bmatrix}
 \]
-As the GPS drifts when stationary, positional data from this sensor is only used when the platform is at cruising speed, or when travelling in a forwards direction at 5 km/hr. Experimental data showed the GPS to be accurate within 0.4 m at this speed, and therefore the calculated heading accurate within ~20 degrees when measuring between subsequent points. This on its own is not accurate enough as it exceeds the desired positional accuracy.  
+\textcolor{red}{\textbf{label equations}} As the GPS drifts when stationary, positional data from this sensor is only used when the platform is at cruising speed, or when travelling in a forwards direction at 5 km/hr. Experimental data showed the GPS to be accurate within 0.4 m at this speed, and therefore the calculated heading accurate within ~20 degrees when measuring between subsequent points. This on its own is not accurate enough as it exceeds the desired positional accuracy.  
 
 Therefore, the IMU is also used to correct the heading. As only one element of the state vector is being updated the matrix math is set up slightly differently. Experimental data shows the IMU has an error of approximately 2 degrees per 360 degrees travelled.
 \[
@@ -411,10 +418,10 @@ The location of the sensors were dictated by each individual sensor requirements
 %A vibrational analysis was conducted to ensure that no frequency disturbances would be experienced by the sensors from the quad bike engine during operation. The analysis was also used to find the frame vibrations to ensure that the operational frequencies did not result in harmonics that could lead to unacceptable deflections.
 \subsection{Vibrational analysis}
 In order to determine the vibrational characteristics of the sensor mount while attached to the quad bike frame, a detailed analysis was undertaken. Initially, hand calculations for a simplified system were performed based on known theory. These results were then used to verify the results of simple FEA simulations. More complex FEA simulations were then performed, in order to more closely model the actual sensor mount. The next step will be to take experimental measurements, which should agree with FEA results within some margin of error. 
- 
+ \textcolor{red}{include some details about rough surface characterisation (from the back of the seminar slides) }
 \subsubsection{Theoretical results}
 While it is difficult to model the vibrational modes of a beam exactly, approximate analytical solutions for lower order modes may be obtained using classical methods. Two such methods are the Rayleigh and Dunkerly methods. The Rayleigh method considers the energy balance at the location of each beam mass element. A solution for the modes can be obtained based on knowledge of the static deflection. In general, the Rayleigh method provides an upper limit for the fundamental frequency. The Dunkerly method considers a force balance along the beam, which leads to the result that the overall modes are a superposition of the modes of the individual elements. The Dunkerly method generally provides a lower limit for the fundamental frequency.
-
+\textcolor{red}{some references?}
 Both methods were used to find the vibrational modes for three different configurations. The first configuration is a simple cantilever with self weight, the second is a massless cantilever with an end-loading, while the third is a cantilever with self-weight and an end loading.  \Tabref{theoreticalvibestable} shows the results for each of the different configurations and methods.
 
 %\[
@@ -426,13 +433,14 @@ Both methods were used to find the vibrational modes for three different configu
 
 \begin{table} [ht]
 \centering
-\caption{Theoretical results using Rayleigh and Dunkerly methods for a 35 x 70 x 1500 mm beam in different configurations }
+\caption[Theoretical vibration results using Rayleigh and Dunkerly methods]{Theoretical vibration results using Rayleigh and Dunkerly methods for a 35 x 70 x 1500 mm beam in different configurations }
 \tablabel{theoreticalvibestable}
-\begin{tabular} {r | c c}
-Configuration & f Dunkerly (Hz) & f Rayleigh (Hz)  \\ \hline
+\begin{tabular} {r c c}
+\toprule
+Configuration & f Dunkerly (Hz) & f Rayleigh (Hz)  \\ \midrule
 Cantilever (1.9kg self weight) & 22.2097 & 34.0655  \\
 Cantilever (massless, 5kg end load) & 6.7321 & 6.7321 \\
-Cantilever (1.9kg self weight , 5kg end load) & 6.4427 & 6.8844 \\
+Cantilever (1.9kg self weight , 5kg end load) & 6.4427 & 6.8844 \\ \bottomrule
 \end{tabular}
 \end{table}
 
@@ -466,6 +474,7 @@ The central processing hardware will be provided by a Windows based desktop comp
 The microcontroller selected is an Arduino Mega 2560 board, chosen for its cost, availability and fast development time. This board has considerable I/O capabilities that exceed the requirements for the project, but allow for future expansion of sensors and ensures that I/O limitations will not be a concern. The microcontroller will be connected to the desktop computer via the serial port as mentioned above.
 
 \section{Software}
+\textcolor{red}{Intro for this section}
 \seclabel{detailedSoftware}
 
 \subsection{Software architecture}
@@ -484,13 +493,13 @@ The virtual platform was designed to test software implementations for communica
 \begin{figure}[ht]
 \includegraphics[width=\textwidth]{4-DetailedDesign/virtualPlatform.jpg}
 \centering
-\caption{Virtual platform: graphical representation (top left), actuator states (top right), GPR output (bottom left), MD output (bottom right)} \figlabel{virtualPlatformPic}
+\caption[Virtual platform display window]{Virtual platform: graphical representation (top left), actuator states (top right), GPR output (bottom left), MD output (bottom right)} \figlabel{virtualPlatformPic}
 \end{figure}
 The user also has the option to display, on the graphical representation, the positional sensor data as seen in \figref{virtualPlatformDataPic}. Note that the IMU heading is in the incorrect direction as the initialised heading is unknown.
 \begin{figure}[ht]
 \includegraphics[]{4-DetailedDesign/dataVisibleVirtualPlatform.PNG}
 \centering
-\caption{Virtual platform graphical representation showing sensor data, GPS (blue), kinematic equations (red), Kalman Filtered (green), and IMU (pink). Purple is the goal waypoint.} \figlabel{virtualPlatformDataPic}
+\caption[Virtual platform graphical representation]{Virtual platform graphical representation showing sensor data, GPS (blue), kinematic equations (red), Kalman Filtered (green), and IMU (pink). Purple is the goal waypoint.} \figlabel{virtualPlatformDataPic}
 \end{figure}
 The virtual platform is initialised as soon as any waypoints are sent which can be navigated. It takes user waypoints which are passed to the virtual platform, are subdivided and sent to the automation code to begin navigation.
 

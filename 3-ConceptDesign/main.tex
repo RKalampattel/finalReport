@@ -23,7 +23,7 @@ Multisensor systems allow a greater range of targets to be identified. In additi
 \begin{figure}[ht]
 \includegraphics[width=0.6\textwidth]{3-ConceptDesign/FAR.PNG}
 \centering
-\caption[Reduction in false alarm rate observed as a result of using a multisensor system]{Reduction in false alarm rate observed as a result of using a multisensor system (ALIS-MD+GPR) as opposed to a metal detector alone \parencite{Takahashi10}} \figlabel{FAR}
+\caption[Reduction in false alarm rate as a result of using a multisensor system]{Reduction in false alarm rate observed as a result of using a multisensor system (ALIS-MD+GPR) as opposed to a metal detector alone \parencite{Takahashi10}} \figlabel{FAR}
 \end{figure}
 
 Initially, it was expected that the sensor suite would be comprised of a metal detector array and a GPR array provided by the DSTG, with a total payload weight of 80 kg. The use of the 3 m wide arrays would allow for larger areas to be scanned in a shorter period of time, leading to an increase in operational efficiency. Due to unforeseen circumstances, the arrays could not be made available for the project, and so smaller line scan sensors had to be used instead. Off-the-shelf sensors were then considered, however most were not able to produce any raw data output that could be processed to meet the project objectives. In the case of GPR systems, the high cost of systems was also a limiting factor. Eventually, a pair of sensors were borrowed from the DSTG, the specifications of which are presented below. Despite the fact that line scan sensors were used, it was assumed that the scanning arrays would be made available by the completion of the project, and so the size and weight specifications of the arrays were used in selecting the platform and designing the sensor suite. 
@@ -78,12 +78,12 @@ Initial tests with the metal detector were performed indoors. In the first set o
 \caption{Phase plots for several different metal samples at 32 cm depth} \figlabel{metals}
 \end{figure}
 
-In the second set of tests, a single brass sample was scanned, with the distance to the metal detector changed between scans. The results are shown in \Figref{phaseDepth}, and while the phase angle does not vary with depth, the signal magnitude does. Based on on these tests, it was concluded that the magnitude and phase angle of the signal would be suitable metrics for characterising objects; the phase angle can be used to identify the metal, while the magnitude provides information about the depth, size and material. Thus, the aim of the signal processing algorithm for the metal detector is to find these metrics given the metal detector input data. 
+In the second set of tests, a single brass sample was scanned, with the distance to the metal detector changed between scans. The results are shown in \Figref{phaseDepths}, and while the phase angle does not vary with depth, the signal magnitude does. Based on on these tests, it was concluded that the magnitude and phase angle of the signal would be suitable metrics for characterising objects; the phase angle can be used to identify the metal, while the magnitude provides information about the depth, size and material. Thus, the aim of the signal processing algorithm for the metal detector is to find these metrics given the metal detector input data. 
 
 \begin{figure}[ht]
 \includegraphics[width=0.65\textwidth]{3-ConceptDesign/phaseDepth.PNG}
 \centering
-\caption{Phase plots for a brass sample scanned at different depths} \figlabel{phaseDepth}
+\caption{Phase plots for a brass sample scanned at different depths} \figlabel{phaseDepths}
 \end{figure}
 
 \subsection{GPR output}
@@ -97,7 +97,7 @@ Unlike with the phase plots obtained from the metal detector, it was not as clea
 \subfloat[]{\includegraphics[width=0.47\textwidth]{3-ConceptDesign/bg.PNG}}
 & \subfloat[]{\includegraphics[width=0.47\textwidth]{3-ConceptDesign/cans.PNG}}\\
 \end{tabular}}
-\caption{Background scan (a) and B-scan over two soft drink cans, circled in red (b)} 
+\caption[Background scan over two soft drink cans]{Background scan (a) and B-scan over two soft drink cans, circled in red (b)} 
 \figlabel{cans}
 \end{figure}
 
@@ -182,7 +182,7 @@ While bamboo is the best material to use for the sensor mount frame based on it'
 \nomenclature[A]{GFRP}{Glass fibre reinforced polymer}%
 
 \subsection{Steering focal point}
-The sensors need to be mounted in a configuration that will keep individual sensor elements aligned, so that corresponding ground information can be collated and analysed correctly. This becomes more important when using a sensor array instead of line scan sensors. Under the assumption that the quad bike uses the Ackermann steering geometry, i.e. each wheel has it's own pivot during turns, we can use the simplified, 2-wheel model to assess the location of the sensors relative to the quad bike. The simplified model provides the following geometric relationship:
+The sensors need to be mounted in a configuration that will keep individual sensor elements aligned, so that corresponding ground information can be collated and analysed correctly. This becomes more important when using a sensor array instead of line scan sensors. Under the assumption that the quad bike uses the Ackermann steering geometry, i.e. each wheel has it's own pivot during turns, we can use the simplified, 2-wheel model to assess the location of the sensors relative to the quad bike. The simplified model provides the following geometric relationship \textcolor{red}{label equation}:
 $$
 \tan(\delta) = \frac{L}{R}
 $$
@@ -225,7 +225,7 @@ There are three support points at the rear of the quad bike to which the mount c
 
 A multi-beam structure is used rather than a single cantilever in order to reduce mass and improve torsional rigidity. The main beam rests on the tow hitch, and is made of wood. The two diagonal supports could also be made of wood, however metal supports provides a more rigid frame. The total length of the frame is 1.5 m, which allows enough length for the metal detector and GPR to be mounted with the required minimum proximity. 
 
-\textcolor{red}{Add details about the perspex case for the MD, different concepts for mounting the MD, design for GPR attachment}
+\textcolor{red}{Add details about the perspex case for the MD, different concepts for mounting the MD, design for GPR attachment. Nylon rods allow height of MD to be adjusted, same with a telescopic rod for the GPR. Wooden supports add torsional stiffness, preventing MD from moving as much compared to nylon rods alone. }
 
 % \begin{figure}[ht]
 % \includegraphics[width=.5\textwidth]{3-ConceptDesign/MD.PNG}
@@ -246,34 +246,38 @@ A multi-beam structure is used rather than a single cantilever in order to reduc
 % \end{figure}
 
 \section{Subsystem integration}
+\textcolor{red}{Introduction for the section}
 
 \seclabel{conceptprojectdesign}
 
-\subsection{Electronics}
-As a major component of the project is advanced signal processing in real time, significant computational capabilities will be required on the quad bike. In addition to signal processing, other platform software systems such as vehicle control and telemetry will also be running. To achieve this without requiring multiple discrete hardware components (which would require communications input/output (I/O) interfaces to share data), a single hardware system capable of executing multiple threads simultaneously and asynchronously is required on the vehicle. The hardware system executing the signal processing software must also be capable of reading sensory input from USB devices, as this is the communications format available on the SIRO-PULSE II GPR unit. 
-\nomenclature[A]{I/O}{Input/Output}% 
+% \subsection{Electronics}
+% As a major component of the project is advanced signal processing in real time, significant computational capabilities will be required on the quad bike. In addition to signal processing, other platform software systems such as vehicle control and telemetry will also be running. To achieve this without requiring multiple discrete hardware components (which would require communications input/output (I/O) interfaces to share data), a single hardware system capable of executing multiple threads simultaneously and asynchronously is required on the vehicle. The hardware system executing the signal processing software must also be capable of reading sensory input from USB devices, as this is the communications format available on the SIRO-PULSE II GPR unit. 
+% \nomenclature[A]{I/O}{Input/Output}% 
 
-A second major component of the project is the automation of the quad bike, requiring software control over a series of actuators and sensors. To provide the greatest fidelity of control over the vehicle, the electronics hardware used to interface with the actuators and sensors must be capable of reading and writing to low-level I/O devices quickly and with minimal latency or overhead. 
+% A second major component of the project is the automation of the quad bike, requiring software control over a series of actuators and sensors. To provide the greatest fidelity of control over the vehicle, the electronics hardware used to interface with the actuators and sensors must be capable of reading and writing to low-level I/O devices quickly and with minimal latency or overhead. 
 
-\begin{itemize}
-\item \textbf{Bespoke Electronics}\\
-Bespoke electronic equipment has the capacity to allow incredibly fast access to I/O devices through the use of task-specific commercial off-the-shelf (COTS) chips. However, the time consumption and expense of planning an entirely hardware-driven control system for anything more than trivial data handling is inappropriate for this project. The inability to prototype as with software means that the ability to test and then revisit a solution is not possible, and a hardware/purely electronics driven system is not capable of general purpose processing. Therefore, this is not a realistic option for achieving the project aims.
-\nomenclature[A]{COTS}{Commercial off-the-shelf}% 
-\item \textbf{Microcontrollers}\\
-Microcontrollers have become the de facto standard for small to medium software-based projects which require access to physical sensors and actuators, due to their readily available access to low level I/O. Microcontrollers supporting common languages such as C++ and Java allow easy development and rapid prototyping, though the inability to easily connect debugging equipment or generate test output slows the development process. Microcontrollers are inexpensive and provide high I/O availability but at the cost of limited processing power. The low-level nature of microcontrollers means that desirable features like hardware interrupts are exposed to and accessible by developers. 
-\item \textbf{Desktop computing equipment/Laptop} \\
-Conventional desktop computing equipment is the fastest general purpose computing hardware that will be available to the project. In addition to having the greatest computing power, it has the highest ability to support prototyping and allows for rapid software development with readily accessible software generation and debugging tools. The drawback of this higher-level computing platform is the reduced accessibility of low-level I/O devices, and the amount of computing overhead caused by operating system processes. Operations that require fast I/O access may be hampered by the inability to ensure thread availability, and so for robust operation this may require buffering to a secondary, lower level device.
-\end{itemize}
+% \begin{itemize}
+% \item \textbf{Bespoke Electronics}\\
+% Bespoke electronic equipment has the capacity to allow incredibly fast access to I/O devices through the use of task-specific commercial off-the-shelf (COTS) chips. However, the time consumption and expense of planning an entirely hardware-driven control system for anything more than trivial data handling is inappropriate for this project. The inability to prototype as with software means that the ability to test and then revisit a solution is not possible, and a hardware/purely electronics driven system is not capable of general purpose processing. Therefore, this is not a realistic option for achieving the project aims.
+% \nomenclature[A]{COTS}{Commercial off-the-shelf}% 
+% \item \textbf{Microcontrollers}\\
+% Microcontrollers have become the de facto standard for small to medium software-based projects which require access to physical sensors and actuators, due to their readily available access to low level I/O. Microcontrollers supporting common languages such as C++ and Java allow easy development and rapid prototyping, though the inability to easily connect debugging equipment or generate test output slows the development process. Microcontrollers are inexpensive and provide high I/O availability but at the cost of limited processing power. The low-level nature of microcontrollers means that desirable features like hardware interrupts are exposed to and accessible by developers. 
+% \item \textbf{Desktop computing equipment/Laptop} \\
+% Conventional desktop computing equipment is the fastest general purpose computing hardware that will be available to the project. In addition to having the greatest computing power, it has the highest ability to support prototyping and allows for rapid software development with readily accessible software generation and debugging tools. The drawback of this higher-level computing platform is the reduced accessibility of low-level I/O devices, and the amount of computing overhead caused by operating system processes. Operations that require fast I/O access may be hampered by the inability to ensure thread availability, and so for robust operation this may require buffering to a secondary, lower level device.
+% \end{itemize}
 
-None of the individual items presented allow for the full range of requirements of this project. As a result, the general concept for the hardware arrangement to execute the software systems is shown below in \Figref{hardwareLayout}.
-% is this figure text fucking big enough maziar??
-\begin{figure}[ht]
-\includegraphics[width = \textwidth]{3-ConceptDesign/electronics.png}
-\centering
-\caption{Conceptual hardware layout} \figlabel{hardwareLayout}
-\end{figure}
+% None of the individual items presented allow for the full range of requirements of this project. As a result, the general concept for the hardware arrangement to execute the software systems is shown below in \Figref{hardwareLayout}.
+% % is this figure text fucking big enough maziar??
+% \begin{figure}[ht]
+% \includegraphics[width = \textwidth]{3-ConceptDesign/electronics.png}
+% \centering
+% \caption{Conceptual hardware layout} \figlabel{hardwareLayout}
+% \end{figure}
 
-Under this system, the project will use standard desktop computing equipment for the bulk of the software, to make use of its superior processing power and the rapid development it allows. This device will be the data handler and processor, and act as the 'central' software location for the project. Sensors and actuators that require low level I/O access will be connected to a secondary microcontroller, which will act independently to buffer inputs and outputs of the system, which can then be communicated to the primary computer over a serial communications connection. The project will not aim to develop any custom electronics boards and handle all signal amplification or processing in software.
+% Under this system, the project will use standard desktop computing equipment for the bulk of the software, to make use of its superior processing power and the rapid development it allows. This device will be the data handler and processor, and act as the 'central' software location for the project. Sensors and actuators that require low level I/O access will be connected to a secondary microcontroller, which will act independently to buffer inputs and outputs of the system, which can then be communicated to the primary computer over a serial communications connection. The project will not aim to develop any custom electronics boards and handle all signal amplification or processing in software.
+
+\subsection{Software architecture}
+The autonomous quad bike will be used as the platform on which the sensor mount and software subsytems will operate. To achieve the framework for overall automation of the platform the integration of the actuator electronics, navigation, sensors, signal processing and operator device is required. This framework is completed through the Central Hub as shown in \Figref{central} where dotted lines indicate implementations of the interfaces. The Central Hub will combine and read all the relevant processes and transmit the required information to the operator device. This enables all processes to be completed in parallel on independent threads, satisfying the deliverables as defined in \secref{primary}.
 
 \begin{figure}[ht]
 \includegraphics[width=\textwidth]{3-ConceptDesign/fyp_structure.png}
@@ -282,9 +286,36 @@ Under this system, the project will use standard desktop computing equipment for
 \figlabel{central}
 \end{figure}
 
-\subsection{Software architecture}
-The autonomous quad bike will be used as the platform on which the sensor mount and software subsytems will operate. To achieve the framework for overall automation of the platform the integration of the actuator electronics, navigation, sensors, signal processing and operator device is required. This framework is completed through the Central Hub as shown in \Figref{central} where dotted lines indicate implementations of the interfaces. The Central Hub will combine and read all the relevant processes and transmit the required information to the operator device. This enables all processes to be completed in parallel, satisfying the deliverables as defined in \secref{primary}.
+The mine detection system as a whole requires at minimum two control devices: the control system on the remote platform, and the control device held by a remote operator. The various subsystems involved in the software design were considered when selecting these control devices, and the decision was made to place the majority of software base on the on the remote platform. Having the majority of software systems physically residing on the remote platform allows the vehicle to remain in control of all systems in the event of a communications loss, meaning that necessary actions to stop the vehicle can be made if a severance of communications is detected. Under this scheme, the operator device would act only as a remote terminal to relay data to the central processing system.
+
+\subsection{Electronics}
+A conventional PC running a Windows XP operating system was chosen for the primary control device on the remote platform, as this was a requirement to interface with the supplied GPR and metal detector. The PC also allowed for maximum ease of development under a familiar operating environmental, and provided tools for fast debugging of code.
+
+The control device on the remote platform needed to provide low level I/O to support the sensors and actuators controlling the motion of the quad bike. This functionality is available through a conventional PC, however can be difficult to configure correctly and suffers from delay and buffering issues caused by thread switching. The options available were to retain the PC as the sole electronic controller, or to push the control of low level sensors and actuators to a microcontroller which was better suited to the task. The microcontroller was selected due to its low cost, high I/O flexibility and the ability to manage I/O at a consistent cycle rate. 
+
 
 \subsection{Communications}
+Communications between electronics systems inevitably introduces latency in signals and so the relationships between electronics systems were chosen to minimise the amount of data that was required to be transmitted. This also minimises the possibility of the communications channel becoming saturated and blocking the transmission of important time critical signals, such as an emergency stop. Where possible, data will be retained within the bounds of a single controller and only transferred when absolutely required. The major communications interfaces in the control system are detailed in the diagram below.
+
+Xx insert image – low level I/O to Arduino (inc GPS and IMU). Smart motor Serial to Arduino. Arduino Serial to PC. PC to tablet Wifi. XXXxxX
+
+An example of our minimal communications strategy is evident from the above figure. The output from the GPS unit is a series of registers which is reported to the Arduino at a rate of approximately 10 Hz. Some degree of processing is required to translate this block of data into a geographic position, which can be represented by only two numbers. To reduce communications overhead, the Arduino is responsible for performing this calculation and will only report the position to the PC when explicitly requested to. This limits the volume of data required to be transmitted, and can limit the rate at which the transmission is sent. As the PC is the central unit for all other systems, the PC also maintains control over all of the communications interfaces and is responsible for initiating all communication traffic.
 
 \end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
