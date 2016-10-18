@@ -2,9 +2,9 @@
 % \nomenclature[A]{GPR}{Ground Penetrating Radar}%
 
 \begin{document}
-\chapter{Benchmarking and Literature Review}
+\chapter{Feasibility Study}
 \chaplabel{literatureReview}
-This chapter provides a summary of the benchmarking process, as detailed in \Chapref{benchmarking}, and then presents the literature review, which covers the areas of signal processing and sensor fusion, as well automation and navigation.
+This chapter provides a summary of the benchmarking process, as detailed in \Chapref{benchmarking}, and then presents the literature review, which covers the areas of signal processing and sensor fusion, as well automation and navigation. \textcolor{red}{\textbf{General comments for lit review: Very shallow, needs many more references, need to explain ``state of the art'', explain current level of understanding in this field }}
 
 \section{Benchmarking}
 Metal detectors are the most widely used sensor for manual landmine detection. While they are simple to operate, metal detectors are limited by the variety of landmine types they can detect. They also produce a large number of false positives, leading to demining operations being inefficient. Another type of sensor that is increasingly used for manual landmine detection applications is the ground penetrating radar or GPR. These sensors allow variations in density beneath the soil surface to be detected, which means that unlike metal detectors, GPRs can be used to find a range of target types with improved penetration depth. However, this increased sensitivity makes it more difficult to identify detected objects, especially in certain soil types. Multisensor systems, which for instance combine a metal detector and a GPR, allow the limitations of the individual systems to be addressed, leading to improved landmine detection performance. Whatever the sensor used, signal processing is an intensive requirement, particularly for the GPR. In the case of the multisensor system, sensor fusion must also be employed to consolidate the data from the individual sensors to provide meaningful output.  
@@ -14,7 +14,7 @@ An alternative to manual landmine detection methods is vehicle or platform based
 \textcolor{red}{Need to add some references to the above paragraphs, grab them from the benchmarking appendix - RK}
 
 \section{Signal processing}
-Signal processing is a major component of this project, and there is a need to process the raw signal output from both a metal detector and a GPR in order to  be able to detect landmines.  
+Signal processing is a major component of this project, and there is a need to process the raw signal output from both a metal detector and a GPR in order to  be able to detect landmines. \textcolor{red}{Need to talk about challenges and relate to mission profile}
 \seclabel{splitreview}
 
 \subsection{Metal detector signal processing}
@@ -51,6 +51,8 @@ A notable failure of the phase plot signature method is the effect of nearby met
 \subsection{GPR signal processing}
 \seclabel{gpr}
 \subsubsection{Hardware configuration influence on detection capability}
+\textcolor{red}{Maziar underlined this heading, not sure why... But this subsection isn't really about signal processing}
+
 Ground penetrating radars operate by transmitting radio signals, and measuring the strength of reflected signals, caused by changes in density at the interface between objects and the soil \parencite{sakaguchi2014}. Achieving a high signal to noise ratio is a challenge with a GPR, as signal noise is introduced at all locations where even a small change in density occurs \parencite{shresta2003}. Thus, the primary challenge when searching for objects using GPR technology is being capable of distinguishing important objects from a noisy signal response \parencite{sakaguchi2014}.
 
 Radar frequencies are attenuated by underground objects, as they absorb the energy in the transmitting signal, dampening the possible response to the receiving antenna. This is particularly apparent in certain soil types, notably wet soils and clays, which have a significant damping effect on the radar pulses \parencite{sakaguchi2014}.By increasing the power of the transmitted signal or increasing the gain on the receiving signal, the effects of ground attenuation can be reduced, allowing for greater scanning depth with a GPR \parencite{Ho2008}. Increasing the receiver gain also has the effect of amplifying any noise generated through the system, making the detection of subsurface objects heavily constrained by the ability to differentiate objects of interest from non-significant features \parencite{shresta2003}. 
@@ -160,5 +162,7 @@ In a path similar to that described by the piecewise linear definition, a turn c
 \end{figure}
 
 \textcolor{red}{This section (automation and navigation) needs more examples of what others have been able to achieve, rather than just listing advantages of various methods}
+\section{Decisions???}
+\textcolor{red}{Maz said we need a section at the end of the lit review on the decisions (i.e. we did the whole lit review, now what are the things we decided to use or apply to our project (I think?))}
 
 \end{document}
