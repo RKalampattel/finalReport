@@ -2,23 +2,25 @@
 % \nomenclature[A]{GPR}{Ground Penetrating Radar}%
 
 \begin{document}
-\chapter{Concept Design}
+\chapter{Conceptual Design}
 \chaplabel{conceptDesign}
+ \todo[inline]{maybe: "The conceptual design presents the design requirements......." - HV}
+This chapter presents the design requirements and concept solutions for the various project subsystems, namely the sensor subsystem, including signal processing and sensor fusion, the platform subsystem, including automation and navigation, and the sensor mount subsystem. \textcolor{red}{\textbf{General comments for conceptual design: Quantify requirements in detail and use the info developed in the feasibility study to make a decision about the component to select}}
 
-This chapter presents the design requirements and concept solutions for the various project subsystems, namely the sensor subsystem, including signal processing and sensor fusion, the platform subsystem, including automation and navigation, and the sensor mount subsystem.
 
 \section{Sensor selection}
-The selection of sensors for the project was based on the requirements from the scenario of operation. These are as follows:
+\todo[inline]{As maz said, did we select the sensors or had we already 'chosen' them before the project started, feasibility study only mentions MD and GPR so maybe we had already chosen them before the project. maybe rename this section to "Sensor Background", or "Sensor Introduction" or "Sensor Description" or just get rid of it entirely? - HV}
+The selection of sensors for the project was based on the requirements from the scenario of operation. These are as follows: \textcolor{red}{Maz: need numbers for these requirements}
 
 \begin{itemize}
 \item Detection of various target types: The sensor suite should be able to detect anti-personnel and anti-tank mines with high and low metal content 
 \item Detection speed and depth: The sensors must be capable of real time detection at an operational speed of 5 km/h and depths of up to 15 cm
-\item Accurate discrimination: The chosen sensors must be able to discriminate between landmines and other objects, with an aim to minimise false positives
+\item Accurate discrimination: The chosen sensors must be able to discriminate between landmines and other objects, with the aim to minimise false positives
 \end{itemize}
 
 As outlined in the benchmarking section, the primary sensors used for landmine detection operations are metal detectors and GPRs. When used in isolation, each sensor has several limitations. Metal detectors can only be used to detect metallic mines, they produce a large number of false positives, and their penetration depth is restricted. On the other hand, GPR systems produce data that is difficult to interpret, and is also very sensitive to environmental conditions such as soil type and moisture content. In both cases, signal processing of some form is required, either using software to identify detected objects, or with the involvement of a skilled operator.
 
-Multisensor systems allow a greater range of targets to be identified. In addition, having two sensors provides the ability to confirm the presence of metallic mines, which reduces false positives and thereby increases the efficiency of operations. While it is difficult to quantify this increase in efficiency, this result has been demonstrated in experimental work carried out by \textcite{Takahashi10}. As can be seen in \Figref{FAR}, the false alarm rate, defined as the number of false alarms per unit area, for a system that combines a metal detector and GPR is roughly half that of a metal detector alone. Thus, a multisensor system meets the necessary requirements outlined above, while addressing some limitations of individual sensor systems.
+Multisensor systems allow a greater range of targets to be identified. In addition, having two sensors provides the ability to confirm the presence of metallic mines, which reduces false positives and thereby increases the efficiency of operations. While it is difficult to quantify this increase in efficiency, this result has been demonstrated in experimental work carried out by \textcite{Takahashi10}. As can be seen in \Figref{FAR}, the false alarm rate, defined as the number of false alarms per unit area, for a system that combines a metal detector and GPR is roughly half that of a metal detector alone. Thus, a multisensor system meets the necessary requirements outlined above, while addressing some limitations of individual sensor systems. \textcolor{red}{\textbf{General comment for all figures: shows/label items in figure (post-process), make sure font size is at least as large as the text, assume it will be in black and white (i.e. don't refer to colours in the figure, number or label things instead)}}
 
 \begin{figure}[ht]
 \includegraphics[width=0.6\textwidth]{3-ConceptDesign/FAR.PNG}
@@ -29,6 +31,7 @@ Multisensor systems allow a greater range of targets to be identified. In additi
 Initially, it was expected that the sensor suite would be comprised of a metal detector array and a GPR array provided by the DSTG, with a total payload weight of 80 kg. The use of the 3 m wide arrays would allow for larger areas to be scanned in a shorter period of time, leading to an increase in operational efficiency. Due to unforeseen circumstances, the arrays could not be made available for the project, and so smaller line scan sensors had to be used instead. Off-the-shelf sensors were then considered, however most were not able to produce any raw data output that could be processed to meet the project objectives. In the case of GPR systems, the high cost of systems was also a limiting factor. Eventually, a pair of sensors were borrowed from the DSTG, the specifications of which are presented below. Despite the fact that line scan sensors were used, it was assumed that the scanning arrays would be made available by the completion of the project, and so the size and weight specifications of the arrays were used in selecting the platform and designing the sensor suite. 
 
 \subsection{AMDS metal detector panel}
+\todo[inline]{again, this isnt conceptual design, just information on the sensor we will be using}
 The AMDS is a metal detector panel produced by Minelab (\Figref{AMDS}). The device has three sets of transmitting coils and a single receiving coil, allowing for three channels of data to be recorded at once. Each channel operates at four frequencies, 1.5 kHz, 4.5 kHz, 13.5 kHz and 40.5 kHz, which means that in total up to 12 sets of data can be recorded simultaneously. This recorded data contains the real and imaginary parts of the voltage signal measured due to changes in magnetic flux in the target. The data is transferred to a computer through USB, where it can be seen in real-time using a LabVIEW virtual instrument called Dataspleen, or saved in CSV format. The metal detector requires a 10 volt power supply at 0.5 amps.  
 
 \begin{figure}[ht]
@@ -178,8 +181,8 @@ The main requirement for the mount was that a non-metallic material was used, to
 
 While bamboo is the best material to use for the sensor mount frame based on it's vibrational characteristics and stiffness alone, it is difficult to obtain in Australia in structural form. Wood is the next best option, being very easy to work with and readily available. GFRP has a similar stiffness to wood but with worse damping properties and a higher density. On the other hand, CFRP has a much better stiffness however it sacrifices damping properties and density. The two composites are also more difficult to work with, and are more expensive. Hence, the best material to use for the sensor mount is wood. In order to meet the stiffness requirements, structural grade timber will be used. 
  
-\nomenclature[A]{CFRP}{Carbon fibre reinforced polymer}%
-\nomenclature[A]{GFRP}{Glass fibre reinforced polymer}%
+\nomenclature[A]{CFRP}{Carbon Fibre Reinforced Polymer}%
+\nomenclature[A]{GFRP}{Glass Fibre Reinforced Polymer}%
 
 \subsection{Steering focal point}
 The sensors need to be mounted in a configuration that will keep individual sensor elements aligned, so that corresponding ground information can be collated and analysed correctly. This becomes more important when using a sensor array instead of line scan sensors. Under the assumption that the quad bike uses the Ackermann steering geometry, i.e. each wheel has it's own pivot during turns, we can use the simplified, 2-wheel model to assess the location of the sensors relative to the quad bike. The simplified model provides the following geometric relationship \textcolor{red}{label equation}:
@@ -297,7 +300,7 @@ The control device on the remote platform needed to provide low level I/O to sup
 \subsection{Communications}
 Communications between electronics systems inevitably introduces latency in signals and so the relationships between electronics systems were chosen to minimise the amount of data that was required to be transmitted. This also minimises the possibility of the communications channel becoming saturated and blocking the transmission of important time critical signals, such as an emergency stop. Where possible, data will be retained within the bounds of a single controller and only transferred when absolutely required. The major communications interfaces in the control system are detailed in the diagram below.
 
-Xx insert image – low level I/O to Arduino (inc GPS and IMU). Smart motor Serial to Arduino. Arduino Serial to PC. PC to tablet Wifi. XXXxxX
+\textcolor{red}{Xx insert image – low level I/O to Arduino (inc GPS and IMU). Smart motor Serial to Arduino. Arduino Serial to PC. PC to tablet Wifi. XXXxxX}
 
 An example of our minimal communications strategy is evident from the above figure. The output from the GPS unit is a series of registers which is reported to the Arduino at a rate of approximately 10 Hz. Some degree of processing is required to translate this block of data into a geographic position, which can be represented by only two numbers. To reduce communications overhead, the Arduino is responsible for performing this calculation and will only report the position to the PC when explicitly requested to. This limits the volume of data required to be transmitted, and can limit the rate at which the transmission is sent. As the PC is the central unit for all other systems, the PC also maintains control over all of the communications interfaces and is responsible for initiating all communication traffic.
 

@@ -17,7 +17,7 @@ This project proposes the development of an autonomous and unmanned platform to 
 
 \nomenclature[A]{DSTG}{Defence Science and Technology Group}% 
 \nomenclature[A]{ADF}{Australian Defence Force}% 
-\nomenclature[A]{GPR}{Ground penetrating radar}%
+\nomenclature[A]{GPR}{Ground Penetrating Radar}%
 
 \section{Project goal}
 \seclabel{projectGoal}
@@ -26,6 +26,7 @@ The goal of this project is to develop an autonomous platform for landmine detec
  
 \subsection{Primary objectives}
 \seclabel{primary}
+\textcolor{red}{Add more info about the primary objectives, how we chose them and how they relate to the project goal}
 The primary objectives are the minimum allowable outcomes for the project and should be delivered upon completion. These objectives are \textcolor{red}{Check these against the SMART criteria, and make sure they are reflected in the Gantt chart}:
 \begin{enumerate}
 \item Selection and subsequent modification of an existing platform for remote control via a handheld device. Necessary systems for control, such as throttle, steering, gear and brake actuation, and communication will be implemented on the platform. Each system will be tested separately to ensure that it functions correctly and is safe to operate remotely. Once all systems are operating independently, simultaneous operation shall be conducted with the aim to maintain controllability of the platform at all instances. Successful completion of this objective, once the platform is able to be operated remotely, is the first step towards full platform automation.  
@@ -41,6 +42,7 @@ The primary objectives are the minimum allowable outcomes for the project and sh
 
 \subsection{Extended objectives}
 \seclabel{extendedObjectives}
+\textcolor{red}{Add more info about the primary objectives}
 Extended objectives are those that are beyond the scope of the project, but may be attempted on completion of the primary objectives. These objectives are:
 
 \begin{enumerate}
@@ -57,7 +59,7 @@ This section will look at several real world environments that the platform coul
 
 \subsection{Operating environments}
 \seclabel{operatingEnvironments}
-There are a large number of countries in which ADF personnel are deployed, each of which has differing terrain, vegetation, soil types, landmine types and sizes of landmine affected areas. Since it is impossible to develop a platform that suits all real world operating conditions, only two such environments are considered, both of which are heavily affected by landmines \parencite{AustralianGovernment2016}. 
+There are a large number of countries in which ADF personnel are deployed, each of which has differing terrain, vegetation, soil types, landmine types and sizes of landmine affected areas. Since it is impossible to develop a platform that suits all real world operating conditions, only two such environments are considered, both of which are heavily affected by landmines \parencite{AustralianGovernment2016} \textcolor{red}{Maz: describe it in general terms first, then move onto case studies}. 
 
 \subsubsection{Eqypt}
 \seclabel{Egypt}
@@ -70,13 +72,14 @@ Iran has an area of approximately 18,000 square kilometres of land contaminated 
 
 \subsection{Mission profile}
 \seclabel{MissionProfile}
-A typical demining operation requires personnel to clear a path or area, ensuring it is safe for ground troops and vehicles to pass over. The mission profile developed for the platform resembles such an operation, and will form the basis of many of the project's design requirements.
-\begin{quote}\textit{The mission takes place in a region with dry, sandy soils and level terrain unobstructed by vegetation or obstacles, such as a road or open field. A number of types of landmines, including high and low metal content anti-personnel and anti-tank mines, can be found buried at depths of up to 15 cm. The operator will use a handheld device to select waypoints that define a path or the boundaries of an area of interest. The platform will travel out to this path or area, then autonomously navigate it. Using the onboard sensor suite, the platform scans the area in real time at an operational speed of 5 km/h. Whenever a detection is made, the platform will stop and log the GPS coordinates of the location, with a positional error of less than 0.5 m. Sensor data and a confidence interval are then sent to the operator, giving the likelihood of the detected object being a landmine. Once the operator instructs the platform to resume, it continues to scan the area. Over time, a map of the scanned region showing all detected objects is developed using the sensor data. At any point the operator can abort the mission, or take manual control of the platform.}
+A typical demining operation requires personnel to clear a path or area, ensuring it is safe for ground troops and vehicles to pass over. The mission profile developed for the platform resembles such an operation, and will form the basis of many of the project's design requirements.\textcolor{red}{Relate more explicitly to the case studies from previous section}
+\begin{quote}The mission takes place in a region with dry, sandy soils and level terrain unobstructed by vegetation or obstacles, such as a road or open field. A number of types of landmines, including high and low metal content anti-personnel and anti-tank mines, can be found buried at depths of up to 15 cm. The operator will use a handheld device to select waypoints that define a path or the boundaries of an area of interest. The platform will travel out to this path or area, then autonomously navigate it. Using the onboard sensor suite, the platform scans the area in real time at an operational speed of 5 km/h. Whenever a detection is made, the platform will stop and log the GPS coordinates of the location, with a positional error of less than 0.5 m. Sensor data and a confidence interval are then sent to the operator, giving the likelihood of the detected object being a landmine. Once the operator instructs the platform to resume, it continues to scan the area. Over time, a map of the scanned region showing all detected objects is developed using the sensor data. At any point the operator can abort the mission, or take manual control of the platform.
 \end{quote}
+\textcolor{red}{Add pictures of schematics}
 
 \subsection{Performance specifications}
 \seclabel{performance}
-Knowing the basic operating environment and mission profile, performance specifications can be defined, encompassing the platform and sensor systems.
+Knowing the basic operating environment and mission profile, performance specifications can be defined, encompassing the platform and sensor systems. \textcolor{red}{In this section, explain more clearly how each performance specification satisfies the mission profile, and }
 
 \subsubsection{Platform}
 \seclabel{platform}
@@ -108,5 +111,5 @@ The requirements for the sensor system are as listed below:
 
 The aim of this project is to demonstrate the feasibility of a concept that incorporates an autonomous platform and a real time multisensor landmine detection system. It is not intended for the final design solution to be a commercially viable device that is ready to be deployed for the ADF. Rather, the challenges associated with the development of such a system, and the methods used to overcome these challenges, are perhaps the most valuable outcomes of the project. 
 
-\textcolor{red}{Things outside of scope: objection avoidance, mine clearance, }
+\textcolor{red}{\textbf{Need to add more things here, this is just the start.} Things that are outside of scope: objection avoidance, mine clearance, }
 \end{document}

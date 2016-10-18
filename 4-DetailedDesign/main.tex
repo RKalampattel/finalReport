@@ -71,7 +71,7 @@ The algorithm starts with the phase angle output metric and if there is a phase 
 
 \section{Platform modifications}
 \seclabel{detailedmodifications}
-A visual inspection and individual tests of each of the subsystems revealed a number of hardware and/or software issues. Due to this changes were made to the electronics and control, steering, braking, gearing and positioning systems. No changes were made to the throttle and wheel encoder systems as no issues were present.
+A visual inspection and individual tests of each of the subsystems revealed a number of hardware and/or software issues. Due to this changes were made to the electronics and control, steering, braking, gearing and positioning systems. No changes were made to the throttle and wheel encoder systems as no issues were present. \textcolor{red}{Need schematics/diagrams to support this section}
 \subsection{Electronics and control}
 \seclabel{modificationElec}
 In accordance with the scheme detailed in the Concept Design, the low level I/O for controlling the remote platforms sensors and actuators was to be deferred to a microcontroller. The existing electronics within the quad bike had a central microcontroller fulfilling this same purpose. The existing microcontroller, a Motorola DragonBoard was however deemed inappropriate for the continued development of the platform due to obsolescence. The selected replacement microcontroller was to be Arduino based, to make the most of the more modern microcontroller system and the wide community support provided for the open source platform. An Arduino Mega2560 was chosen over other models due to the increased number of serial communication ports available and the increased potential for I/O expansion. 
@@ -132,7 +132,7 @@ The linescan algorithm searches for the nearest corner from the nearest convex p
 \begin{figure}[ht]
 \includegraphics[width=0.6\textwidth]{4-DetailedDesign/radiusOfCurvatures.png}
 \centering
-\caption{Radii of curvatures present in region subdivision} \figlabel{curvatures}
+\caption{Radii of curvatures present in region subdivision \textcolor{red}{Maz didn't like this}} \figlabel{curvatures}
 \end{figure}
 For low curvature path following Pure Pursuit is used (\secref{lowcurvefollowing}). Low curvature is defined as any path with a radius of curvature greater than that of the minimum turn radius of the quad bike, ie. a radius of curvature greater than 3.14 meters. The quad bike's maximum steering angle of 24 degrees restricts it from making any turn sharper than this. For a radius of curvature of zero, the pure pursuit method breaks down due to turn angle limitations on the quad bike and another turning method is required.
 
@@ -229,7 +229,7 @@ For each of the turns, the algorithm to deduce the locations of the modified pat
 \subfloat[Input: user or region defined path]{\includegraphics[width=0.3\textwidth]{4-DetailedDesign/rawpath.png}} 
 & \subfloat[Output: subdivided path with calculated turns]{\includegraphics[width=0.3\textwidth]{4-DetailedDesign/subdividedpath.png}}\\
 \end{tabular}}
-\caption{Path subdivision input and output}
+\caption{Path subdivision input and output \textcolor{red}{The lines are quite faint, can we make them darker/thicker}}
 \figlabel{pathSubdivisionBeforeAfter}
 \end{figure}
 
@@ -248,7 +248,7 @@ To satisfy these characteristics an Extended Kalman Filter (EKF) was employed to
 &\mu_t = \bar{\mu_t} + K_t(z_t-h(\bar{\mu_t}))\\
 &\Sigma_t = (I - K_tH_t)\bar{\Sigma_t}
 \end{align*}
-\textcolor{red}{\textbf{label equations}} Where the state vector, $\mu_t$, holds the positional information ($x, y, \theta$) in a 3x1 matrix. The EKF is calculated in two steps, a prediction step and an update step. The prediction step uses kinematic equations to update the position of the quad bike based on physical observations. In the case of the quad bike, readings of the velocity, steering angle and time-step are taken, then geometry is used to calculate where its updated position would be. The update step then uses information obtained through sensors to correct for any error that may be present in the prediction step. This is achieved by modelling positions as a Gaussian distribution and weighting them according to their reliability. Gaussian distributions are shown as covariance matrices, $R_t$ for the prediction step and $Q_t$ for the update step, and the weighting is the Kalman Gain, $K_t$. The predicted covariance matrix, $\Sigma_t$, can then be determined. As we know the starting position and heading of the quad bike through user input, $\Sigma_t$ is initialised as a 3x3 zero matrix.
+\textcolor{red}{\textbf{Label equations}} Where the state vector, $\mu_t$, holds the positional information ($x, y, \theta$) in a 3x1 matrix. The EKF is calculated in two steps, a prediction step and an update step. The prediction step uses kinematic equations to update the position of the quad bike based on physical observations. In the case of the quad bike, readings of the velocity, steering angle and time-step are taken, then geometry is used to calculate where its updated position would be. The update step then uses information obtained through sensors to correct for any error that may be present in the prediction step. This is achieved by modelling positions as a Gaussian distribution and weighting them according to their reliability. Gaussian distributions are shown as covariance matrices, $R_t$ for the prediction step and $Q_t$ for the update step, and the weighting is the Kalman Gain, $K_t$. The predicted covariance matrix, $\Sigma_t$, can then be determined. As we know the starting position and heading of the quad bike through user input, $\Sigma_t$ is initialised as a 3x3 zero matrix.
 
 The geometry of the kinematic equations used are shown in \figref{quadKinematics}. From the geometry we get:
 \begin{align*}
@@ -391,7 +391,7 @@ For the final design for the sensor mount to adhere to all the sensory requireme
 \subsection{Structural analysis}
 The sensor frame design was constructed in FEA. The FEA methods discretises a geometry into a finite number of elements connected together via nodes. Boundary conditions, loads and constraints as well as material properties are subject to the design and depending on the analysis type, a result can be interpreted that can be used to alter and fine tune the design.  To properly and accurately model the frame, 3D elements were chosen to represent the geometry and a basic load test was conducted. This load test was conducted to ensure that the deflection of the mount when subject to the weight of the sensor systems would not interfere with the sensor requirements, and to check if the design was strong enough to support the weight.
 
-The initial FEA analysis was used to determine the thickness of the required mount material as well as the support locations. It was found that using structural pine MGP10 a thickness of 70 x 35 mm provided adequate support and minimised deflection to less than 4 mm. The supports were chosen to be made from mild steel with square hollow sections with dimension 25 x 25 x 1.6 mm. The equivalent (von-Mises) stresses for both the frame and mild steel supports did not exceed their yield stresses of 10 MPa and 370 MPa respectively. \figref{topframe} and \figref{bottomframe} show the equivalent stresses experienced by the segmented parts. 
+The initial FEA analysis was used to determine the thickness of the required mount material as well as the support locations. It was found that using structural pine MGP10 a thickness of 70 x 35 mm provided adequate support and minimised deflection to less than 4 mm. The supports were chosen to be made from mild steel with square hollow sections with dimension 25 x 25 x 1.6 mm. The equivalent (von-Mises) stresses for both the frame and mild steel supports did not exceed their yield stresses of 10 MPa and 370 MPa respectively. \figref{topframe} and \figref{bottomframe} show the equivalent stresses experienced by the segmented parts \textcolor{red}{FEA pictures need to be larger, also maybe change colour scale so that it's easier to see in black and white}. 
 
 \begin{figure}[ht]
 \includegraphics[width=0.4\textwidth]{4-DetailedDesign/top_frame.PNG}
@@ -480,11 +480,11 @@ The microcontroller selected is an Arduino Mega 2560 board, chosen for its cost,
 \subsection{Software architecture}
 \seclabel{detailedSoftwareArchitecture}
 Due to the experimental nature of much of this project, and with the short timeframe available, it was anticipated that moving goalposts would have a significant impact on the development of this project. As project complexities could not be fully understood in the design stage, an Agile software development strategy was adopted. Under this routine, strict determinations of the software design were not detailed at the outset of development. The agile practice involves delivering incremental improvements to a working software and constantly assessing progress to identify software features that do not perform as anticipated or are more difficult than planned to implement. The agile strategy welcomes changing software requirements even late in development to accommodate the outcomes of these evaluations.
-As such, the software design prior to the development phase included only the outline description of a completed system, with software subsystems partially detailed. Full detail of these subsystems or additional systems would be determined during the development phase after assessment of progress and performance. This initial outline is shown below in figure XXX.
+As such, the software design prior to the development phase included only the outline description of a completed system, with software subsystems partially detailed. Full detail of these subsystems or additional systems would be determined during the development phase after assessment of progress and performance. This initial outline is shown below in \textcolor{red}{figure XXX}.
 
-XXxXX figure XXXxXXxX
+\textcolor{red}{XXxXX figure XXXxXXxX}
 
-To allow for the most rapid development, the primary focus for the initial portion of the development phase was to complete the Central object and the Window and Data Logging objects. These were chosen due to the anticipated low complexity for these systems, and the dependency other systems would have regarding these systems. The full Software Requirements Specification, and Software Design Document – which were completed as part of the iterative agile development process and reflect the design changes made during development – are presented in Appendix XXX.
+To allow for the most rapid development, the primary focus for the initial portion of the development phase was to complete the Central object and the Window and Data Logging objects. These were chosen due to the anticipated low complexity for these systems, and the dependency other systems would have regarding these systems. The full Software Requirements Specification, and Software Design Document – which were completed as part of the iterative agile development process and reflect the design changes made during development – are presented in \textcolor{red}{Appendix XXX}.
 
 
 \subsection{Virtual platform}
