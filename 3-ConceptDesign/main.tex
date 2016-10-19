@@ -5,12 +5,12 @@
 \chapter{Conceptual Design}
 \chaplabel{conceptDesign}
  \todo[inline]{maybe: "The conceptual design presents the design requirements......." - HV}
-This chapter presents the design requirements and concept solutions for the various project subsystems, namely the sensor subsystem, including signal processing and sensor fusion, the platform subsystem, including automation and navigation, and the sensor mount subsystem. \textcolor{red}{\textbf{General comments for conceptual design: Quantify requirements in detail and use the info developed in the feasibility study to make a decision about the component to select}}
+This chapter presents the design requirements and concept solutions for the various project subsystems, namely the sensor subsystem, including signal processing and sensor fusion, the platform subsystem, including automation and navigation, and the sensor mount subsystem.  \todo[inline]{General comments for conceptual design: Quantify requirements in detail and use the info developed in the feasibility study to make a decision about the component to select}
 
 
 \section{Sensor selection}
 \todo[inline]{As maz said, did we select the sensors or had we already 'chosen' them before the project started, feasibility study only mentions MD and GPR so maybe we had already chosen them before the project. maybe rename this section to "Sensor Background", or "Sensor Introduction" or "Sensor Description" or just get rid of it entirely? - HV}
-The selection of sensors for the project was based on the requirements from the scenario of operation. These are as follows: \textcolor{red}{Maz: need numbers for these requirements}
+The selection of sensors for the project was based on the requirements from the scenario of operation. These are as follows:  \todo[inline]{Maz: need numbers for these requirements}
 
 \begin{itemize}
 \item Detection of various target types: The sensor suite should be able to detect anti-personnel and anti-tank mines with high and low metal content 
@@ -73,7 +73,8 @@ Initial tests with the metal detector were performed indoors. In the first set o
 \caption{Metal samples used for evaluation of metal detector outputs} \figlabel{samples}
 \end{figure}
 
-\Figref{metals} shows the results obtained from the second channel plotted in Matlab. The four lines in each plot correspond to the four frequency signals, while the axes represent the real and imaginary components of the voltage signal. It can be seen that for different metals, the magnitude and phase angle of the signal vary, as discussed in the literature review. 
+\todo[inline]{why ONLY from the second channel?}
+\Figref{metals} shows the results obtained from the second channel plotted in Matlab.    The four lines in each plot correspond to the four frequency signals, while the axes represent the real and imaginary components of the voltage signal. It can be seen that for different metals, the magnitude and phase angle of the signal vary, as discussed in the literature review. 
 
 \begin{figure}[ht]
 \includegraphics[width=0.65\textwidth]{3-ConceptDesign/metals.PNG}
@@ -81,7 +82,7 @@ Initial tests with the metal detector were performed indoors. In the first set o
 \caption{Phase plots for several different metal samples at 32 cm depth} \figlabel{metals}
 \end{figure}
 
-In the second set of tests, a single brass sample was scanned, with the distance to the metal detector changed between scans. The results are shown in \Figref{phaseDepths}, and while the phase angle does not vary with depth, the signal magnitude does. Based on on these tests, it was concluded that the magnitude and phase angle of the signal would be suitable metrics for characterising objects; the phase angle can be used to identify the metal, while the magnitude provides information about the depth, size and material. Thus, the aim of the signal processing algorithm for the metal detector is to find these metrics given the metal detector input data. 
+In the second set of tests, a single brass sample was scanned, with the distance to the metal detector changed between scans. The results are shown in \Figref{phaseDepths}, and while the phase angle does not vary with depth, the signal magnitude does. Based on on these tests,   it was concluded that the magnitude and phase angle of the signal would be suitable metrics for characterising objects; the phase angle can be used to identify the metal, while the magnitude provides information about the depth, size and material. Thus, the aim of the signal processing algorithm for the metal detector is to find these metrics given the metal detector input data. \todo[inline]{sounds like these were the only two tests that we did, were there any others that didnt make the cut for to be in the metrics?}
 
 \begin{figure}[ht]
 \includegraphics[width=0.65\textwidth]{3-ConceptDesign/phaseDepth.PNG}

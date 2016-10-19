@@ -10,6 +10,11 @@ Tests were conducted to ensure that each subsystem was functioning correctly. Qu
 \section{Test plan ???}
 \textcolor{red}{Maz wants a new section that explains why we are doing the tests we are doing, and what the structure of the overall test plan is. \textbf{Within each subsequent section, start with aims of test, cover the test plan/requirements (need to include schematics and tables), discuss the results and talk about the relevance to the project objectives}}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\todo[inline]{Rac (Sensors) and Peter (Quad bike) to explain}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 \section{Sensor testing}
 The completed tests and its procedure is discussed and includes details of the target objects buried and scanned with the AMDS metal detector and SIROPULSE II GPR. The results from these tests are provided with further analysis of how the data is used. 
 
@@ -48,7 +53,7 @@ The phase angle and signal magnitude are the two main characteristics that were 
 
 \Figref{phaseDepth} shows the phase angle result of the objects at varying depths. It is found that the phase angle is consistent across the three operating depths, as expected based on the results of the completed outdoor preliminary tests. The average phase angle for both anti-tank and high metal content anti-personnel mine were positive 25 degrees and negative 50 degrees, respectively. From the nine clutter objects tested, only five signatures may be compared with these two landmines. Based on the calculated results, the only object with phase angles closely similar to the anti-tank mine is the thin galvanised plate with an average phase angle of positive 16 degrees. However, the plate’s signature is differentiable from the actual anti-tank mine using the second metric. 
 \begin{figure}[ht]
-\includegraphics[width=0.9\textwidth]{5-Testing/phaseDepth.PNG}
+\includegraphics[width=\textwidth]{5-Testing/phaseDepth.PNG}
 \centering
 \caption{Phase angle variation with target depth }
 \figlabel{phaseDepth}
@@ -59,7 +64,7 @@ Upon inspection of the graph (\Figref{magDepth}), signal magnitude with varying 
 The anti-personnel mine and steel rebar have two similar signatures, with an average signal magnitude of 7.9e4 and 6.9e4, respectively. This factor provides an increase in false positive detection rate for the anti-personnel mine if they are both detected simultaneously. However, this false positive detection rate is reduced by analysing the phase angle of the object shown in the previous \Figref{phaseDepth}.
 
 \begin{figure}[!ht]
-\includegraphics[width=0.9\textwidth]{5-Testing/magDepth.PNG}
+\includegraphics[width=\textwidth]{5-Testing/magDepth.PNG}
 \centering
 \caption{Signal magnitude variation with target depth }
 \figlabel{magDepth}
@@ -70,7 +75,7 @@ When the phase angle is plotted against the signal magnitude (\Figref{phaseMag})
 A noticeable result for this plot is that the thin galvanised plate was within the signatures of the anti-tank mines. This means that it may be detected by the metal detector as an anti-tank mine and increase the false positive rate. 
 
 \begin{figure}[ht]
-\includegraphics[width=0.9\textwidth]{5-Testing/phaseMag.PNG}
+\includegraphics[width=\textwidth]{5-Testing/phaseMag.PNG}
 \centering
 \caption{Phase angle variation with signal magnitude}
 \figlabel{phaseMag}
@@ -106,7 +111,7 @@ The ground penetrating radar results are analysed based on the feature width and
 \Figref{featureWidth} shows the  feature width plotted against the target depth, where AT is clearly distinguishable for all three depths. It also shows that both APC and APM have almost identical signals at depths of 2.5 and 7.5 cm. A number of clutter objects (glass bottle, PVC pipe and tin can) also have similar feature widths to the APM and APC at 7.5 cm, making it difficult to identify the mines. 
 
 \begin{figure}[ht]
-\includegraphics[width=0.9\textwidth]{5-Testing/featureWidth.PNG}
+\includegraphics[width=\textwidth]{5-Testing/featureWidth.PNG}
 \centering
 \caption{Feature width variation with target depth}
 \figlabel{featureWidth}
@@ -115,7 +120,7 @@ The ground penetrating radar results are analysed based on the feature width and
 The results for the feature depth (\Figref{featureDepth}) are quite similar to the feature width at the target depth of 7.5cm. The characteristics and false positive rates are high for both APC and AT where the feature depth was similar to that of a large rock. However, this percentage probability can be differentiated using the feature width metric. Similarly, the feature width false detections for the tin can, glass bottle and PVC pipe can be differentiated using the feature depth.  The APM is distinguishable for all three depths for this plot.
 
 \begin{figure}[!ht]
-\includegraphics[width=0.9\textwidth]{5-Testing/featureDepth.PNG}
+\includegraphics[width=\textwidth]{5-Testing/featureDepth.PNG}
 \centering
 \caption{Feature depth variation with target depth}
 \figlabel{featureDepth}
@@ -124,7 +129,7 @@ The results for the feature depth (\Figref{featureDepth}) are quite similar to t
 When feature depth is plotted against the variation of feature width, all three mines have distinguishable features, with no clutter within their calculated ranges (\Figref{depthWidth}). Although it is differentiable, the clutter objects (aluminium can, tin can, glass bottle and PVC pipe) were found to be within close proximity to the signatures of both APM and APC at shallow target depths of 2.5 cm and 7.5 cm.
 
 \begin{figure}[!ht]
-\includegraphics[width=0.9\textwidth]{5-Testing/depthWidth.PNG}
+\includegraphics[width=\textwidth]{5-Testing/depthWidth.PNG}
 \centering
 \caption{Feature depth variation with feature width}
 \figlabel{depthWidth}
@@ -158,6 +163,10 @@ Lead pipe & Lead pipe/Rock & Lead pipe/Tin can\\ \bottomrule
 The results show that the algorithm can produce unique sets of data and is able to distinguish between the landmines and clutter objects. The metal detector output metrics produced consistent results and identified the AT and APM mines from both tests. In comparison, the GPR was able to distinguish between both metallic and non metallic objects, however, it was not as consistent as the metal detector output metrics and produced a higher rate of false positives. Further testing is required to be able to produce and analyse further data in order to reduce the false positive detection with the GPR algorithm. Regardless, the false positives can be reduced when the results from both sensors are combined using the sensor fusion algorithm discussed in detailed design.
 
 The phase angle and magnitude output from the metal detector may be used independently to confirm metallic landmines and clutter objects. The phase angle data may be analysed first as this is independent of the target depth. If the algorithm detects it as a landmine, the magnitude is then used to confirm the object as shown in \Tabref{mdMetrics}. Similarly, the feature width for the GPR data may be analysed first, followed by a confirmation of the object using the feature depth. The data from these results are stored in a database to be used by the sensor fusion algorithm. The output metric values from the phase angle, magnitude, feature width and depth are then retrieved by the algorithm to be able to compare the current scans with the relevant values. This then produces a percentage confidence of the scanned object of being a landmine and sent wirelessly from the platform’s central computer system to the tablet device. The operator is then able to effectively decide to remove the object based on the data it receives from the processed data. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\todo[inline]{Rac to modify}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \textcolor{red}{Seems to be some repetition here from the detailed design for sensor fusion. Need to discuss what some of the limitations of the tests were. Only a small number of clutter objects were used, clutter was only buried at one depth, if it was some other depth is might have led to more/less false positives, i.e. the current data set needs to be expanded on largely in order to make the detection algorithm more robust. The same type object would have a different signature if it was a different size, or in a different orientation - need to do more sensitivity testing, ideally in a controlled environment with the use of a test rig, allowing for repeated sweeps in an identical manner. \textbf{Some of these points could go in future work.}The results can't really be applied to any other scenarios, as both metal detector and GPR signals will look different in different soil types. Soil moisture was high, and the soil wasn't very clean (not layered nicely, rocks and things present), this may have had an effect on GPR results.Would be better to test in DSTG test lanes. Could not achieve real time processing, however the sensor fusion algorithm (still needs to be done) was tested with sample dara to simulate batch processing of results.}
 
