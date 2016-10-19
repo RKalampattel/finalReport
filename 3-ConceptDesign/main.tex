@@ -59,7 +59,7 @@ As discussed in the literature review, there are three primary levels of sensor 
 To be able to implement decision level sensor fusion, a decision needs to be made with each sensor regarding whether or not the target is a mine. This decision, along with a confidence interval, can be passed onto the sensor fusion algorithm as shown in \Figref{fusion}, which assigns then makes the final decision based on a weighted evaluation of the data it has received. In order for each sensor to make a decision, metrics need to be identified which can be used to characterise targets. As a result, preliminary tests were carried with both sets of sensors to find such metrics.
 
 \begin{figure}[ht]
-\includegraphics[width=0.85\textwidth]{3-ConceptDesign/fusion.PNG}
+\includegraphics[width=\textwidth]{3-ConceptDesign/fusion.PNG}
 \centering
 \caption{Integration of signal processing and sensor fusion algorithms} \figlabel{fusion}
 \end{figure}
@@ -77,7 +77,7 @@ Initial tests with the metal detector were performed indoors. In the first set o
 \Figref{metals} shows the results obtained from the second channel plotted in Matlab.    The four lines in each plot correspond to the four frequency signals, while the axes represent the real and imaginary components of the voltage signal. It can be seen that for different metals, the magnitude and phase angle of the signal vary, as discussed in the literature review. 
 
 \begin{figure}[ht]
-\includegraphics[width=0.65\textwidth]{3-ConceptDesign/metals.PNG}
+\includegraphics[width=\textwidth]{3-ConceptDesign/metals.PNG}
 \centering
 \caption{Phase plots for several different metal samples at 32 cm depth} \figlabel{metals}
 \end{figure}
@@ -85,7 +85,7 @@ Initial tests with the metal detector were performed indoors. In the first set o
 In the second set of tests, a single brass sample was scanned, with the distance to the metal detector changed between scans. The results are shown in \Figref{phaseDepths}, and while the phase angle does not vary with depth, the signal magnitude does. Based on on these tests,   it was concluded that the magnitude and phase angle of the signal would be suitable metrics for characterising objects; the phase angle can be used to identify the metal, while the magnitude provides information about the depth, size and material. Thus, the aim of the signal processing algorithm for the metal detector is to find these metrics given the metal detector input data. \todo[inline]{sounds like these were the only two tests that we did, were there any others that didnt make the cut for to be in the metrics?}
 
 \begin{figure}[ht]
-\includegraphics[width=0.65\textwidth]{3-ConceptDesign/phaseDepth.PNG}
+\includegraphics[width=\textwidth]{3-ConceptDesign/phaseDepth.PNG}
 \centering
 \caption{Phase plots for a brass sample scanned at different depths} \figlabel{phaseDepths}
 \end{figure}

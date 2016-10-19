@@ -16,7 +16,7 @@ The metrics for the metal detector data are the magnitude and phase angle, as id
 The result then produces distinguishable peaks from any objects detected. To select peaks belonging to targets, two criteria are used, a minimum prominence and a magnitude greater than some threshold value. Nearby peaks are paired, and are averaged to obtain the magnitude of the object’s signal. The phase angle is then calculated based on which quadrant the points lie in. These metrics can be compared to a database of metrics, and a decision can be made as to whether or not the object is a mine. 
 
 \begin{figure}[ht]
-\includegraphics[width=0.9\textwidth]{4-DetailedDesign/MDflow.PNG}
+\includegraphics[width=\textwidth]{4-DetailedDesign/MDflow.PNG}
 \centering
 \caption{Algorithm to process the metal detector raw data}
 \figlabel{MDflow}
@@ -41,7 +41,7 @@ It was decided from these tests that only the centre panel (channel 2) and the l
 The processing of the GPR data is completed using an algorithm similar to the metal detector algorithm, except the metrics of interest are the feature width, feature depth and A-scan characteristics. These steps are shown on the flowchart in \Figref{GPRflow}. One key difference is that there are two pre-processing stages, which is due to the lower signal to noise ratio required in identifying subsurface objects.  In the first, an average is taken over all the A-scans, and this offset is removed from the data set. This results in a smoothing of horizontal lines seen in the raw scan when compared to the processed image. The next step is to find the A-scan with the lowest magnitude and remove this reference signal from all the data. This results in smoothing of the signal in the vertical direction.
 
 \begin{figure}[ht]
-\includegraphics[width=0.9\textwidth]{4-DetailedDesign/GPRflow.PNG}
+\includegraphics[width=\textwidth]{4-DetailedDesign/GPRflow.PNG}
 \centering
 \caption{Algorithm to process the GPR raw data}
 \figlabel{GPRflow}
@@ -67,7 +67,13 @@ The sensor fusion algorithm combines the results of the metal detector and GPR a
 
 The algorithm starts with the phase angle output metric and if there is a phase angle value produced from the metal detector, it then compares this to the landmine data from the existing database. The object is then confirmed with the magnitude value to provide a confidence interval. If the phase angle or magnitude is zero or indistinguishable from the current database, it can be determined that the object is not metallic, thus, the GPR will then be used to scan over the object to confirm the feature width and depth. This data is then compared with the current database values. After producing a confidence interval of the object, the data is then sent through to the operator device.  
 
-\textcolor{red}{More details about what info the operator receives, and what they should do with this info (link back to scenario of operation: detection is made, quad bike stops, operator decides if it's worth checking out, send in the demining team, clear the mine, proceed (?))}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\todo[inline]{Moved from Results}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\textcolor{blue}{The phase angle and magnitude output from the metal detector may be used independently to confirm metallic landmines and clutter objects. The phase angle data may be analysed first as this is independent of the target depth. If the algorithm detects it as a landmine, the magnitude is then used to confirm the object as shown in \Tabref{mdMetrics}. Similarly, the feature width for the GPR data may be analysed first, followed by a confirmation of the object using the feature depth. The data from these results are stored in a database to be used by the sensor fusion algorithm. The output metric values from the phase angle, magnitude, feature width and depth are then retrieved by the algorithm to be able to compare the current scans with the relevant values. This then produces a percentage confidence of the scanned object of being a landmine. As discussed in scenario of operations, the platform stops when it has detected an object and data is sent wirelessly from the platform’s central computer system to the tablet device. The operator is then able to effectively decide to remove the object based on the processed data it receives from the central computer.} 
+
+\textcolor{red}{More details about what info the operator receives, and what they should do with this info (link back to scenario of operation: detection is made, quad bike stops, operator decides if it's worth checking out, send in the demining team, clear the mine, proceed (?)) - See paragraph above in blue}
 
 \section{Platform modifications}
 \seclabel{detailedmodifications}
