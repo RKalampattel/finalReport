@@ -391,7 +391,7 @@ The navigation software is able to detect an inbound turn via the distances betw
 
 \section{Sensor mount}
 %\subsubsection{Final sensor mount design}
-For the final design for the sensor mount to adhere to all the sensory requirements, design tests were required to be conducted. These tests were necessary to test for variations in ground clearances and vibrational interference from the Quad bike during operation. Testing for these were carried out using the Finite Element Analysis (FEA) method and engine run tests on the quad bike. FEA was used to test vibrational harmonics and load carrying ability of the frame when subject to operational conditions while engine run tests were used to test the vibrational frequency of the operating quad bike. 
+For the final design for the sensor mount to adhere to all the sensory requirements, design tests were required to be conducted. These tests were necessary to test for variations in ground clearances and vibrational interference from the Quad bike during operation. Testing for these were carried out using the Finite Element Analysis (FEA) method and engine run tests on the quad bike with attached accelerometers. FEA was used to test vibrational harmonics and load carrying ability of the frame when subject to operational conditions while engine run tests were used to test the vibrational frequency of the operating quad bike. 
 %The sensor mount, as described previously, is required to carry the sensory systems and mount them to the platform in a fashion that does not limit their functionality. The design process of the mount consisted of hand calculations followed, computer aided design and verification. 
 
 \subsection{Structural analysis}
@@ -460,15 +460,21 @@ A cantilever beam of self weight was analysed in ANSYS. The transverse vertical 
 
 The addition of the metal detector to the frame resulted in fundamental frequencies of 13.647, 14.573 and 31.913 Hz with a maximum deflection of 9.9417 mm. The addition of the weight of the metal detector acts to dampen the fundamental frequency as expected. This same damping can be seen from the theoretical results for the cantilever beam with the added end weight.
 
-Variations in sensor systems tat could be installed could result in different fundamental frequencies due to the changing damping effects. this can be accounted for by increasing of decreasing the length of the frame to change the fundamental frequency to one that is desired. The frame design can be tuned to a specific fundamental frequency through the alteration of its design and end weight. 
-
-\textcolor{red}{bike vibrations}  
+Variations in sensor arrangements that could be installed would result in different fundamental frequencies due to the changing damping effects. This can be accounted for by increasing of decreasing the length of the frame to change the fundamental frequency to one that is desired. The frame design can be tuned to a specific fundamental frequency through the alteration of its design and end weight.   
 
 \subsection{Manufacturing}
 The processes required in the construction the sensor mount consisted of wood work and metal work. Wooden dowels were used to join the sections together near the metal detector as no metallic objects were allowed near it. Supports for the metal detector were made out of four nylon rods that connect to horizontal wooden supports. two acrylic boards were made to encase the metal detector to act as both a safety protector and a mounting device for the nylon rods. As the sensor was a loaned piece of equipment, no modifications or damages were allowed to happen to it resulting in the need for the acrylic case. The requirement for variation in the height of the sensor was satisfied by the use of the nylon rods, the length and subsequently the height of the sensor off the ground could be altered by varying the length of the rods and supports. Another benefit to using the nylon rods is that in the case that the quad bike were to hit something, the metal detector would not break, instead the nylon rods would shear resulting in no damage to the sensor.
 GPR install...
 
 \textcolor{red}{final picture of it all installed }  
+\subsubsection{Quad bike Vibration testing}
+Accelerometers were used to measure the amount of vibration present on the quad bike and the sensor frame during operation. Measurements from inside the storage compartment and the end of the frame were taken through a variation of throttle positions. \Figref{Vibrationtest} shows the vibrational frequencies experienced by the frame due to the quad bike vibrations. It can be seen that there is a peak in vibrational frequency at roughly 15 Hz which corresponds to the calculated fundamental frequency for the frame.   
+
+\begin{figure}[ht]
+\includegraphics[width=0.8\textwidth]{4-DetailedDesign/FrameVibeTest}
+\centering
+\caption{Sensor mount Vibrational testing} \figlabel{Vibrationtest}
+\end{figure} 
 
 \section{Electronics}
 The electronics hardware to be used for the project will fit in the categories as described in the Conceptual Design. The custom electronics work pre-existing on the quad bike supplied by the DSTG meets the requirements for the COTS bespoke electronics, providing digital interfaces to the actuators and sensors attached to the platform. The need for replacement or improvement of any of these electronics will be determined after testing has been completed on the supplied vehicle and their performance has been evaluated.
