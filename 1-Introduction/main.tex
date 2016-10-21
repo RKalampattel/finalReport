@@ -22,35 +22,37 @@ This project proposes the development of an autonomous and unmanned platform to 
 \section{Project goal}
 \seclabel{projectGoal}
 
-The goal of this project is to develop an autonomous platform for landmine detection, with a focus on the reduction of false positives. Achieving this goal will require multi-sensor integration and signal processing, as well as software development for platform navigation and automation. The project objectives necessary to achieve this goal are described below.
+The goal of this project is to develop an autonomous platform for landmine detection, with a focus on the reduction of false positives. Achieving this goal will require multi-sensor integration and signal processing, as well as software development for platform automation and navigation. The project objectives necessary to achieve this goal are described below.
  
 \subsection{Primary objectives}
 \seclabel{primary}
-\textcolor{red}{Add more info about the primary objectives, how we chose them and how they relate to the project goal}
-The primary objectives are the minimum allowable outcomes for the project and should be delivered upon completion. These objectives are: \textcolor{red}{Check these against the SMART criteria, and make sure they are reflected in the Gantt chart. Add something (somewhere) about making things easier for an unskilled operator to use}
+The primary objectives are the minimum allowable outcomes for the project and should be delivered upon completion. The objectives are derived from the project goal, and successful completion of these objectives will also allow the goal to be achieved. These objectives are: \textcolor{red}{Check these against the SMART criteria, and make sure they are reflected in the Gantt chart.}
 \begin{enumerate}
-\item \textbf{Selection and subsequent modification of an existing platform for remote control via a handheld device}\\ Necessary systems for control, such as throttle, steering, gear and brake actuation, and communication will be implemented on the platform. Each system will be tested separately to ensure that it functions correctly and is safe to operate remotely. Once all systems are operating independently, simultaneous operation shall be conducted with the aim to maintain controllability of the platform at all instances. Successful completion of this objective, once the platform is able to be operated remotely, is the first step towards full platform automation.  
+\item \textbf{Selection and subsequent modification of an existing platform for control via a remote device}\\ Necessary systems for control, such as throttle, steering, gear and brake actuation, and communication will be implemented on the platform. Each system will be tested separately to ensure that it functions correctly, meets the project requirements, and is safe to operate remotely. Once all systems are operating independently, simultaneous operation shall be conducted with the aim to maintain controllability of the platform at all instances. Successful completion of this objective, once the platform is able to be operated remotely, is the first step towards full platform automation.  
+
+\item \textbf{Development of software for platform automation and basic navigational commands, allowing for the platform to travel autonomously under supervision from an operator}\\ Initially, automation and navigation software will be tested in a virtual environment, allowing for full simulation of basic manoeuvres in a risk-free manner. The outputs of this virtual platform will include the location, heading, and speed of the platform. On completion of objective 1, the software and control systems will be integrated into the real platform, and further testing will be performed. After completing this objective, the platform will be fully autonomous.
+
+\item \textbf{Automatic traversal of a user defined path or region}\\ Initially, single waypoint navigation will be implemented, allowing an operator to instruct the platform to travel from one predefined point to another before coming to a stop. Once this is achieved, the operator will be able to define waypoints that enclose a region. The platform will then subdivide the region and generate its own path to traverse. Software will again be tested in a virtual environment before being implemented into the platform. Completion of this objective will extend the navigational capabilities of the platform, and make it easier for an operator to define a mission. 
 
 \item \textbf{Modification of an existing platform to accommodate a metal detector and a GPR}\\ A sensor mount will be designed and built so that it can attach to the platform and support the chosen sensors safely, while adhering to the operating requirements of both the platform and sensors. The most suitable design will be chosen from several concepts based on its ability to isolate the sensor suite and minimise sources of interference to the sensor output. On completion of this objective, the platform will be fully integrated with the sensor suite.
 
-\item \textbf{Development of software for platform automation and navigation, allowing for the platform to travel autonomously under supervision from an operator}\\ Initially, automation and navigation software will be tested in a virtual environment, allowing for full simulation of operations in a risk-free manner. The outputs of this virtual platform will include the location, heading, and speed of the platform. On completion of objective 1,  the software and control systems will be integrated into the real platform, and further testing will be performed. After completing this objective, the platform will be fully autonomous.
-
 \item \textbf{Development of software for detection and autonomous classification of subsurface objects, with a focus on reducing the number of incorrect identifications or false positives}\\ After initial testing, the output signals from the metal detector and GPR will be processed in real time. The results will be analysed with the aim of identifying suitable metrics that can be used to classify and differentiate various targets. A database of metrics will produced and used to identify the likelihood of a landmine being present. Operational trials will be conducted to test the effectiveness of the developed system. On completion of this objective, the sensor suite will be able to detect targets in real time.
-
-\item \textbf{Logging of detected objects with GPS coordinates. Once an object has been located, its position will be recorded and transmitted to a handheld device used by an operator}\\ The output from the detection software in objective 4 will also be made available, allowing the operator to make an informed decision about how to proceed. Once the sensor suite has integrated with the platform (objective 2) and the platform is fully autonomous (objectives 1 and 3), this is the final objective required to complete the project goal.
 \end{enumerate}
 
 \subsection{Extended objectives}
 \seclabel{extendedObjectives}
-\textcolor{red}{Add more info about the primary objectives}
+\textcolor{red}{Add more info about the extended objectives}
 Extended objectives are those that are beyond the scope of the project, but may be attempted on completion of the primary objectives. These objectives are:
 
 \begin{enumerate}
-\item \textbf{Automatic traversal of a designated area enclosed by a user defined region}\\ Initially, single waypoint navigation will be conducted, requiring the platform to travel from one predefined point to another before coming to a stop. In this objective, waypoints enclosing an area will be used, requiring the platform to generate its own path to traverse the enclosed area. Software will be tested in a virtual environment before being implemented into the platform on completion of the primary objectives. Completion of this objective will extend the navigational capabilities of the platform, and make it easier for an operator to use. 
+\item \textbf{Development of a tablet application that allows for communication with the platform and sensor systems}\\ 
 
-\item \textbf{Provision of a live video feed as well as live updates of vehicle location and direction to the operator's handheld device}\\ While the operator will be able to view the location of the platform using a handheld device, a live video feed allows for greater visualisation of operating conditions. This would also provide a greater ability to detect and respond appropriately to unknown obstacles in the search area.
+\item \textbf{Provision of a live video feed as well as live updates of vehicle location and direction to the operator's device}\\ While the operator will be able to view the location of the platform using some remote device, a live video feed allows for greater visualisation of operating conditions. This would also provide a greater ability to detect and respond appropriately to unknown obstacles in the search area.
+
+\item \textbf{Logging of detected objects with GPS coordinates}\\ Once an object has been located, its position will be recorded and transmitted to a remote device used by an operator. The output from the detection software in objective 4 will also be made available, allowing the operator to make an informed decision about how to proceed. Once the sensor suite has integrated with the platform (objective 2) and the platform is fully autonomous (objectives 1 and 3), this is the final objective required to complete the project goal.
 
 \item \textbf{Physical marking of landmine locations by the platform at the time of detection}\\ GPS coordinates alone may not provide sufficient precision for identifying the location of landmines. An electromechanical system that physically marks the location would allow demining personnel to identify this location more clearly.
+
 \end{enumerate}
 
 \section{Scenario of operation}
@@ -73,13 +75,13 @@ Iran has an area of approximately 18,000 square kilometres of land contaminated 
 \subsection{Mission profile}
 \seclabel{MissionProfile}
 A typical demining operation requires personnel to clear a path or area, ensuring it is safe for ground troops and vehicles to pass over. The mission profile developed for the platform resembles such an operation, and will form the basis of many of the project's design requirements.\textcolor{red}{Relate more explicitly to the case studies from previous section}
-\begin{quote}The mission takes place in a region with dry, sandy soils and level terrain unobstructed by vegetation or obstacles, such as a road or open field. A number of types of landmines, including high and low metal content anti-personnel and anti-tank mines, can be found buried at depths of up to 15 cm. The operator will use a handheld device to select waypoints that define a path or the boundaries of an area of interest. The platform will travel out to this path or area, then autonomously navigate it. Using the onboard sensor suite, the platform scans the area in real time at an operational speed of 5 km/h. Whenever a detection is made, the platform will stop and log the GPS coordinates of the location, with a positional error of less than 0.5 m. Sensor data and a confidence interval are then sent to the operator, giving the likelihood of the detected object being a landmine. Once the operator instructs the platform to resume, it continues to scan the area. Over time, a map of the scanned region showing all detected objects is developed using the sensor data. At any point the operator can abort the mission, or take manual control of the platform.
+\begin{quote}The mission takes place in a region with dry, sandy soils and level terrain unobstructed by vegetation or obstacles, such as a road or open field. A number of types of landmines, including high and low metal content anti-personnel and anti-tank mines, can be found buried at depths of up to 15 cm. The operator will use a remote device to select waypoints that define a path or the boundaries of an area of interest. The platform will travel out to this path or area, then autonomously navigate it. Using the onboard sensor suite, the platform scans the area in real time at an operational speed of 5 km/h. Whenever a detection is made, the platform will stop and log the GPS coordinates of the location, with a positional error of less than 0.5 m. Sensor data and a confidence interval are then sent to the operator, giving the likelihood of the detected object being a landmine. Once the operator instructs the platform to resume, it continues to scan the area. Over time, a map of the scanned region showing all detected objects is developed using the sensor data. At any point the operator can abort the mission, or take manual control of the platform.
 \end{quote}
 \textcolor{red}{Add pictures of schematics}
 
 \subsection{Performance specifications}
 \seclabel{performance}
-Knowing the basic operating environment and mission profile, performance specifications can be defined, encompassing the platform and sensor systems. \textcolor{red}{In this section, explain more clearly how each performance specification satisfies the mission profile, and }
+Knowing the basic operating environment and mission profile, performance specifications can be defined, encompassing the platform and sensor systems. \textcolor{red}{In this section, explain more clearly how each performance specification satisfies the mission profile, and relates to the operating environment}
 
 \subsubsection{Platform}
 \seclabel{platform}
@@ -87,7 +89,7 @@ In order to be able to autonomously navigate a region of interest and meet the o
 \begin{itemize}
  \item Carry a total payload of 100 kg. A pair of metal detector and GPR arrays with their respective control boxes have an estimated gross weight of 80 kg. This allows 20 kg for any mounting structures,  electronics and computers. 
  \item Travel off-road in regions with dry sandy soils and level unobstructed terrain.
-\item Travel in a straight line, both forwards and reverse, and perform turns while maintaining an operational speed of 5 km/h.
+\item Travel in a straight line, both forwards and reverse, and perform turns while maintaining an operational speed of 5 km/h. \textcolor{red}{Relate this to the operating environment, or add these details there}
 \item Be manoeuvrable enough to navigate the region of interest, yet controllable enough that in case of an emergency, it can come to a complete stop from its operational speed in 1 m.
 \end{itemize}
 
@@ -95,9 +97,9 @@ In order to be able to autonomously navigate a region of interest and meet the o
 \seclabel{sensors} 
 The requirements for the sensor system are as listed below:
 \begin{itemize}
-\item Detect high and low metal content anti-personnel and anti-tank mines.
+\item Detect high and low metal content anti-personnel and anti-tank mines. \textcolor{red}{More details}
 \item Identify mines at depths of up to 15 cm at an operational speed of 5 km/h.
-\item Discriminate between landmines and other objects, aiming to minimise the number of false positives detected.
+\item Discriminate between different landmines and other objects, aiming to minimise the number of false positives detected.
 \end{itemize}
 
 \section{Project scope}
