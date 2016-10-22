@@ -4,35 +4,13 @@
 \begin{document}
 \chapter{Conceptual Design}
 \chaplabel{conceptDesign}
- \todo[inline]{maybe: "The conceptual design presents the design requirements......." - HV}
 This chapter presents the design requirements and concept solutions for the various project subsystems, namely the sensor subsystem, including signal processing and sensor fusion, the platform subsystem, including automation and navigation, and the sensor mount subsystem.  \todo[inline]{General comments for conceptual design: Quantify requirements in detail and use the info developed in the feasibility study to make a decision about the component to select}
 
-
-\section{Sensor selection}
-\todo[inline]{As maz said, did we select the sensors or had we already 'chosen' them before the project started, feasibility study only mentions MD and GPR so maybe we had already chosen them before the project. maybe rename this section to "Sensor Background", or "Sensor Introduction" or "Sensor Description" or just get rid of it entirely? - HV}
-The selection of sensors for the project was based on the requirements from the scenario of operation. These are as follows:  \todo[inline]{Maz: need numbers for these requirements}
-
-\begin{itemize}
-\item Detection of various target types: The sensor suite should be able to detect anti-personnel and anti-tank mines with high and low metal content 
-\item Detection speed and depth: The sensors must be capable of real time detection at an operational speed of 5 km/h and depths of up to 15 cm
-\item Accurate discrimination: The chosen sensors must be able to discriminate between landmines and other objects, with the aim to minimise false positives
-\end{itemize}
-
-As outlined in the benchmarking section, the primary sensors used for landmine detection operations are metal detectors and GPRs. When used in isolation, each sensor has several limitations. Metal detectors can only be used to detect metallic mines, they produce a large number of false positives, and their penetration depth is restricted. On the other hand, GPR systems produce data that is difficult to interpret, and is also very sensitive to environmental conditions such as soil type and moisture content. In both cases, signal processing of some form is required, either using software to identify detected objects, or with the involvement of a skilled operator.
-
-Multisensor systems allow a greater range of targets to be identified. In addition, having two sensors provides the ability to confirm the presence of metallic mines, which reduces false positives and thereby increases the efficiency of operations. While it is difficult to quantify this increase in efficiency, this result has been demonstrated in experimental work carried out by \textcite{Takahashi10}. As can be seen in \Figref{FAR}, the false alarm rate, defined as the number of false alarms per unit area, for a system that combines a metal detector and GPR is roughly half that of a metal detector alone. Thus, a multisensor system meets the necessary requirements outlined above, while addressing some limitations of individual sensor systems. \textcolor{red}{\textbf{General comment for all figures: shows/label items in figure (post-process), make sure font size is at least as large as the text, assume it will be in black and white (i.e. don't refer to colours in the figure, number or label things instead)}}
-
-\begin{figure}[ht]
-\includegraphics[width=0.8\textwidth]{3-ConceptDesign/FAR2.png}
-\centering
-\caption[Reduction in false alarm rate as a result of using a multisensor system]{Reduction in false alarm rate observed as a result of using a multisensor system (ALIS-MD+GPR) as opposed to a metal detector alone \parencite{Takahashi10}} \figlabel{FAR}
-\end{figure}
-
-Initially, it was expected that the sensor suite would be comprised of a metal detector array and a GPR array provided by the DSTG, with a total payload weight of 80 kg. The use of the 3 m wide arrays would allow for larger areas to be scanned in a shorter period of time, leading to an increase in operational efficiency. Due to unforeseen circumstances, the arrays could not be made available for the project, and so smaller line scan sensors had to be used instead. Off-the-shelf sensors were then considered, however most were not able to produce any raw data output that could be processed to meet the project objectives. In the case of GPR systems, the high cost of systems was also a limiting factor. Eventually, a pair of sensors were borrowed from the DSTG, the specifications of which are presented below. Despite the fact that line scan sensors were used, it was assumed that the scanning arrays would be made available by the completion of the project, and so the size and weight specifications of the arrays were used in selecting the platform and designing the sensor suite. 
+\section{Sensor system}
+It was initially expected that the sensor suite would be comprised of a metal detector array and a GPR array provided by the DSTG, with a total payload weight of 80 kg. The use of the 3 m wide arrays would allow for larger areas to be scanned in a shorter period of time, leading to an increase in operational efficiency. Due to unforeseen circumstances, the arrays could not be made available for the project, and so smaller line scan sensors had to be used instead. Off-the-shelf sensors were considered, however most were not able to produce any raw data output that could be processed to meet the project objectives. In the case of GPR systems, the high cost of systems was also a limiting factor. Eventually, a pair of sensors were borrowed from the DSTG, the specifications of which are presented below. Despite the fact that line scan sensors were used, it was assumed that the scanning arrays would be made available by the completion of the project, and so the size and weight specifications of the arrays were used in selecting the platform and designing the sensor mount. 
 
 \subsection{AMDS metal detector panel}
-\todo[inline]{again, this isn't conceptual design, just information on the sensor we will be using}
-The AMDS is a metal detector panel produced by Minelab (\Figref{AMDS}). The device has three sets of transmitting coils and a single receiving coil, allowing for three channels of data to be recorded at once. Each channel operates at four frequencies, 1.5 kHz, 4.5 kHz, 13.5 kHz and 40.5 kHz, which means that in total up to 12 sets of data can be recorded simultaneously. This recorded data contains the real and imaginary parts of the voltage signal measured due to changes in magnetic flux in the target. The data is transferred to a computer through USB, where it can be seen in real-time using a LabVIEW virtual instrument called Dataspleen, or saved in CSV format. The metal detector requires a 10 volt power supply at 0.5 amps.  
+The AMDS is a metal detector panel produced by Minelab (\Figref{AMDS}). The device has three sets of transmitting coils and a single receiving coil, allowing for three channels of data to be recorded at once. Each channel operates at four frequencies, 1.5 kHz, 4.5 kHz, 13.5 kHz and 40.5 kHz, which means that in total up to 12 sets of data can be recorded simultaneously. This recorded data contains the real and imaginary parts of the voltage signal measured due to changes in magnetic flux in the target. The data is transferred to a computer through USB, where it can be seen in real-time using a LabVIEW virtual instrument called Dataspleen, or saved in CSV format. 
 
 \begin{figure}[ht]
 \includegraphics[width=0.6\textwidth]{3-ConceptDesign/AMDS.JPG}
@@ -41,7 +19,7 @@ The AMDS is a metal detector panel produced by Minelab (\Figref{AMDS}). The devi
 \end{figure}
 
 \subsection{SIRO-PULSE II GPR unit}
-The SIRO-PULSE II is a handheld GPR unit developed by the CSIRO, originally intended for the inspection of buildings (\Figref{siro}). It is a pulsed radar that can operate in either bi-static or differential antenna configurations, producing three sets of data in total. The unit comes with three interchangeable antenna heads of frequencies 800 MHz, 1.4 GHz and 2 GHz, allowing the resolution and penetration characteristics of the radar to be varied. Data is transferred to a computer via USB, where it can be viewed in real-time with the accompanying SiroPuleII software program. The program produces outputs of the frequency waveform over time, which are collected together to produce a B-scan in real time. The unit is battery powered with a runtime of up to 10 hours. 
+The SIRO-PULSE II is a handheld GPR unit developed by the CSIRO, originally intended for the inspection of buildings (\Figref{siro}). It is a pulsed radar that can operate in either bi-static or differential antenna configurations, producing three sets of data in total. The unit comes with three interchangeable antenna heads of frequencies 800 MHz, 1.4 GHz and 2 GHz, allowing the resolution and penetration characteristics of the radar to be varied. Data is transferred to a computer via USB, where it can be viewed in real-time with the accompanying SiroPuleII software program. The program produces outputs of the frequency waveform over time, which are collected together to produce a B-scan in real time. 
 
 \begin{figure}[ht]
 \includegraphics[width=0.6\textwidth]{3-ConceptDesign/SiroPulse.JPG}
@@ -51,6 +29,13 @@ The SIRO-PULSE II is a handheld GPR unit developed by the CSIRO, originally inte
 
 \section{Sensor fusion and signal processing}
 \seclabel{signalConcept}
+
+\begin{itemize}
+\item Detection of various target types: The sensor suite should be able to detect anti-personnel and anti-tank mines with high and low metal content 
+\item Detection speed and depth: The sensors must be capable of real time detection at an operational speed of 5 km/h and depths of up to 15 cm
+\item Accurate discrimination: The chosen sensors must be able to discriminate between landmines and other objects, with the aim to minimise false positives
+\end{itemize}
+
 Regardless of the fact that the sensors suite met the outlined requirements, there were several key challenges to be addressed, namely sensor fusion and signal processing. The first of these relates to how the data from the separate sensors can be consolidated to provide a single meaningful result, while the second involves processing the output from the sensors to allow an operator to identify targets. 
 
 \subsection{Sensor fusion}
@@ -68,13 +53,12 @@ To be able to implement decision level sensor fusion, a decision needs to be mad
 Initial tests with the metal detector were performed indoors. In the first set of tests, horizontal sweeps were made over a number of small metal samples (\Figref{samples}) placed on the floor, with the distance to the metal detector being kept constant at 32 cm. 
 
 \begin{figure}[ht]
-\includegraphics[width=0.9\textwidth]{3-ConceptDesign/samples.jpg}
+\includegraphics[width=\textwidth]{3-ConceptDesign/samples.jpg}
 \centering
 \caption{Metal samples used for evaluation of metal detector outputs} \figlabel{samples}
 \end{figure}
 
-\todo[inline]{why ONLY from the second channel?}
-\Figref{metals} shows the results obtained from the second channel plotted in Matlab.    The four lines in each plot correspond to the four frequency signals, while the axes represent the real and imaginary components of the voltage signal. It can be seen that for different metals, the magnitude and phase angle of the signal vary, as discussed in the literature review. 
+\Figref{metals} shows the results obtained from the second channel plotted in Matlab, corresponding to the received signal at the centre of the metal detector panel. The four lines in each plot correspond to the four frequency signals, while the axes represent the real and imaginary components of the voltage signal. It can be seen that for different metals, the magnitude and phase angle of the signal vary, as discussed in the literature review. 
 
 \begin{figure}[ht]
 \includegraphics[width=\textwidth]{3-ConceptDesign/metals.PNG}
@@ -186,13 +170,13 @@ While bamboo is the best material to use for the sensor mount frame based on it'
 \nomenclature[A]{GFRP}{Glass Fibre Reinforced Polymer}%
 
 \subsection{Steering focal point}
-The sensors need to be mounted in a configuration that will keep individual sensor elements aligned, so that corresponding ground information can be collated and analysed correctly. This becomes more important when using a sensor array instead of line scan sensors. Under the assumption that the quad bike uses the Ackermann steering geometry, i.e. each wheel has it's own pivot during turns, we can use the simplified, 2-wheel model to assess the location of the sensors relative to the quad bike. The simplified model provides the following geometric relationship \textcolor{red}{label equation}:
-$$
-\tan(\delta) = \frac{L}{R}
-$$
+The sensors need to be mounted in a configuration that will keep individual sensor elements aligned, so that corresponding ground information can be collated and analysed correctly. This becomes more important when using a sensor array instead of line scan sensors. Under the assumption that the quad bike uses the Ackermann steering geometry, i.e. each wheel has it's own pivot during turns, we can use the simplified, 2-wheel model to assess the location of the sensors relative to the quad bike. The simplified model provides the following geometric relationship,
+\begin{align}
+\tan(\delta) = \frac{L}{R}.
+\end{align}
 Here, $\delta$ is the steering angle, $L$ is the wheelbase and $R$ is the radius of the arc that the centre of the rear axle will follow. This simplification has been used to perform simulations on the sensor coverage and sensor element misalignment.
-\nomenclature[S]{$L$}{Wheelbase}%
-\nomenclature[S]{$R$}{Radius of rear axle arc}%
+%\nomenclature[S]{$L$}{Wheelbase}%
+%\nomenclature[S]{$R$}{Radius of rear axle arc}%
 Three simulations were conducted, with the steering axle and sensor position changed in each. The results are shown in \Figref{turnCoverage}, and are discussed below.
 
 \begin{figure}[ht]
@@ -213,7 +197,7 @@ Three simulations were conducted, with the steering axle and sensor position cha
 \end{itemize}
 
 This result can be demonstrated theoretically by using the geometric bicycle model \parencite{snider2009}. Referring to \Figref{geometricBicycleModel}, the turning radius of the rear wheel is $R$ and the turning radius of the front wheel is $\sqrt{R^2 + L^2}$, which is greater than $R$. If the sensor array was some distance $q$ in front of the front wheels, its turning radius would be $\sqrt{R^2 + [L+q]^2}$, greater yet again. However, if the sensing array was an equal distance $q$ behind the rear wheels (or front wheels if this was a rear steering arrangement) then the turning radius of the sensors would be $\sqrt{R^2 + q^2}$. From this it can be seen that to minimise the effective turning radius then $q$ should be minimised, i.e. rear wheel steering should be used. To achieve this, the sensor arrays will be mounted at the rear of the quad bike, which will be driven in reverse. 
-\nomenclature[S]{$q$}{Sensor array distance from turning wheels}%
+%\nomenclature[S]{$q$}{Sensor array distance from turning wheels}%
 
 \subsection{Initial designs}
 Knowing the basic sensor requirements, the selected material for the mount, and the mounting location on the quad bike, preliminary designs for sensor mount were developed. 
@@ -221,9 +205,9 @@ Knowing the basic sensor requirements, the selected material for the mount, and 
 There are three support points at the rear of the quad bike to which the mount can be attached, a tow hitch near the rear axle, and two metal brackets beneath the rear tray. The tow hitch has a level surface and is capable of supporting a vertical load of 14 kg, which means that a cantilever beam could be mounted on the tow hitch, but it's weight would be limited. To fix this, diagonal support braces can be used, attached to the two metal brackets. Based on this geometry, a basic design for the sensor mount is shown in \Figref{basic}
 
 \begin{figure}[ht]
-\includegraphics[width=.6\textwidth]{3-ConceptDesign/basic.PNG}
+\includegraphics[width=.7\textwidth]{3-ConceptDesign/basic.PNG}
 \centering
-\caption{Basic sensor mount with support points in blue}
+\caption{Basic sensor mount design showing central wooden beam and metal supports}
 \figlabel{basic}
 \end{figure}
 
@@ -231,23 +215,24 @@ A multi-beam structure is used rather than a single cantilever in order to reduc
 
 \textcolor{red}{Add details about the perspex case for the MD, different concepts for mounting the MD, design for GPR attachment. Nylon rods allow height of MD to be adjusted, same with a telescopic rod for the GPR. Wooden supports add torsional stiffness, preventing MD from moving as much compared to nylon rods alone. }
 
-% \begin{figure}[ht]
-% \includegraphics[width=.5\textwidth]{3-ConceptDesign/MD.PNG}
-% \centering
-% \caption{Metal detector with Perspex covers}
-% \figlabel{MD}
-% \end{figure}
+\begin{figure}[ht]
+\centerline{
+\begin{tabular}{cc}
+\subfloat[Design 1]{\includegraphics[height=0.3\textwidth]{3-ConceptDesign/square.PNG}}
+& \subfloat[Design 2]{\includegraphics[height=0.3\textwidth]{3-ConceptDesign/final.PNG}}\\
+\subfloat[Design 3]{\includegraphics[height=0.3\textwidth]{3-ConceptDesign/triangle.PNG}}
+& \subfloat[Design 4]{\includegraphics[height=0.3\textwidth]{3-ConceptDesign/cantilever.PNG}}
+\end{tabular}}
+\caption{Concepts for attaching the metal detector the the sensor mount} 
+\figlabel{MDdesigns}
+\end{figure}
 
-% \begin{figure}[ht]
-% \centerline{
-% \begin{tabular}{cc}
-% \subfloat[]{\includegraphics[width=0.4\textwidth]{3-ConceptDesign/square.PNG}}
-% & \subfloat[]{\includegraphics[width=0.4\textwidth]{3-ConceptDesign/triangle.PNG}}\\
-% & \subfloat[]{\includegraphics[width=0.4\textwidth]{3-ConceptDesign/cantilever.png}}\\
-% \end{tabular}}
-% \caption{Concepts for attaching the metal detector the the sensor mount} 
-% \figlabel{MDdesigns}
-% \end{figure}
+\begin{figure}[ht]
+\includegraphics[width=.5\textwidth]{3-ConceptDesign/MD.PNG}
+\centering
+\caption{Metal detector with Perspex covers}
+\figlabel{MD}
+\end{figure}
 
 \section{Subsystem integration}
 \textcolor{red}{Introduction for the section}

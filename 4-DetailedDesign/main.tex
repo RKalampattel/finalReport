@@ -37,6 +37,8 @@ The data was processed by the algorithm above and the results found that the APM
 
 It was decided from these tests that only the centre panel (channel 2) and the lowest frequency of 1.5 kHz are to be used in further tests as suggested by Minelab and supported by literature \parencite{bruschini02}. The results contributes to the development of a database to be able to determine the percentage confidence of an object being a mine. The output metric values, such as phase angle and magnitude are stored in this database, which is used as part of the sensor fusion algorithm. 
 
+\textcolor{red}{\textbf{General comment for all figures: shows/label items in figure (post-process), make sure font size is at least as large as the text, assume it will be in black and white (i.e. don't refer to colours in the figure, number or label things instead)}}
+
 \subsection{GPR algorithm}
 The processing of the GPR data is completed using an algorithm similar to the metal detector algorithm, except the metrics of interest are the feature width, feature depth and A-scan characteristics. These steps are shown on the flowchart in \Figref{GPRflow}. One key difference is that there are two pre-processing stages, which is due to the lower signal to noise ratio required in identifying subsurface objects.  In the first, an average is taken over all the A-scans, and this offset is removed from the data set. This results in a smoothing of horizontal lines seen in the raw scan when compared to the processed image. The next step is to find the A-scan with the lowest magnitude and remove this reference signal from all the data. This results in smoothing of the signal in the vertical direction.
 
@@ -87,7 +89,7 @@ The remainder of the existing electronics were purpose built for the quad bike e
 
 \subsection{Steering}
 \seclabel{modificationSteering}
-Initial testing of the steering system demonstrated that the existing arrangement was not adequate for providing the required torque to steer the quad bike. Under stationary tests with the quad bike on a raised stand, the steering motor performed as expected, however under loading the motor would quickly draw a greater current than the regulated 24 V power supply could deliver. This resulted in the motor enabling a brake mode, ceasing all motion and losing track of current encoder position making positional accuracy and repeatability impossible. To remedy this, a new 24 V regulated power supply was sourced which was capable of delivering the maximum current the steering motor could draw – 19 A, a significantly larger unit than the previous 2.5 A supply. The result of this replacement was the completion of all further testing without experiencing current supply issues. The steering motor is now capable of turning the wheels over the full range of motion while under the load from the entire weight of the quad bike, without losing positional accuracy.
+Initial testing of the steering system demonstrated that the existing arrangement was not adequate for providing the required torque to steer the quad bike. Under stationary tests with the quad bike on a raised stand, the steering motor performed as expected, however under loading the motor would quickly draw a greater current than the regulated 24 V power supply could deliver. This resulted in the motor enabling a brake mode, ceasing all motion and losing track of the current encoder position making positional accuracy and repeatability impossible. To remedy this, a new 24 V regulated power supply was sourced which was capable of delivering the maximum current the steering motor could draw – 19 A, a significantly larger unit than the previous 2.5 A supply. The result of this replacement was the completion of all further testing without experiencing current supply issues. The steering motor is now capable of turning the wheels over the full range of motion while under the load from the entire weight of the quad bike, without losing positional accuracy.
 %%photo? of the power supplies?
 \subsection{Brakes}
 \seclabel{modificationBrakes}
@@ -144,8 +146,8 @@ For low curvature path following Pure Pursuit is used (\secref{lowcurvefollowing
 
 \subsection{Low curvature path following}
 \seclabel{lowcurvefollowing}
-The low curvature path tracker works through determining a steer angle that connects an arc from the centre point of the non steering wheel axle to a goal point on the path (refer to \Figref{purePursuitGeom}).  The goal point ($g_x, g_y$) acts as an intermediate waypoint and is determined from a look-ahead distance $l_d$. The angle, $\alpha$, can be related to the geometry using the law of sines \textcolor{red}{label these equations},
-\begin{align*}
+The low curvature path tracker works through determining a steer angle that connects an arc from the centre point of the non steering wheel axle to a goal point on the path (refer to \Figref{purePursuitGeom}).  The goal point ($g_x, g_y$) acts as an intermediate waypoint and is determined from a look-ahead distance $l_d$. The angle, $\alpha$, can be related to the geometry using the law of sines,
+\begin{align}
 \frac{l_d}{\sin(2\alpha)} &= \frac{R}{\sin(^{\pi}/_2-\alpha)},\\
 \frac{l_d}{2\sin(\alpha)\cos(\alpha)} &= \frac{R}{\cos(\alpha)},\\
 \frac{l_d}{2\sin(\alpha)} &= R.
@@ -153,7 +155,7 @@ The low curvature path tracker works through determining a steer angle that conn
 R &= \frac{l_d}{2\sin(\alpha)},
 \shortintertext{and the pure pursuit controller is given as}
 \delta &= \tan^{-1}\Bigg(\frac{2L\sin(\alpha)}{l_d}\Bigg)
-\end{align*}
+\end{align}
 where $\alpha$ and thus $\delta$ will be functions of time and thus will be calculated in real time. The goal point is determined as a result of further path subdivision discussed in \secref{pathsubdivision}.
 \begin{figure}[ht]
 \includegraphics[width=0.7\textwidth]{4-DetailedDesign/Geometric_Bicycle_Model.png}
@@ -205,7 +207,7 @@ Geometry for the N-point turn is very similar to that of the simple turn and is 
 \figlabel{nPointTurnGeometry}
 \end{figure}
 
-Throughout the N-point turn the quad bike must remain within the grey dashed lines else it would be traversing un-scanned terrain, risking the detonation of landmines. By analysing a 180 degree N-point turn in a 3 meter swathe, a template is constructed, and for any turn angles of less than 180 degrees the turn algorithm exits early, once the desired turn angle has been reached. The specific algorithms to achieve this are discussed further in \secref{pathsubdivision}. The template, shown in \tabref{npointTurnTemplate}, matches each point in the turn with an angle corresponding to the angle at which the quad bike touches the edge of the swathe. In \Figref{nPointTurnGeometry}a, the quad bike is touching the edge of the swathe at position 1, 26.7\degree. Accumulative error here is not an issue as this is the ideal path that the quad bike would follow, and any quad bike deviation error is corrected for by aiming for the ideal path point.
+Throughout the N-point turn the quad bike must remain within the grey dashed lines else it would be traversing un-scanned terrain, risking the detonation of landmines. By analysing a 180 degree N-point turn in a 3 meter swathe, a template is constructed, and for any turn angles of less than 180 degrees the turn algorithm exits early, once the desired turn angle has been reached. The specific algorithms to achieve this are discussed further in \secref{pathsubdivision}. The template, shown in \Tabref{npointTurnTemplate}, matches each point in the turn with an angle corresponding to the angle at which the quad bike touches the edge of the swathe. In \Figref{nPointTurnGeometry}a, the quad bike is touching the edge of the swathe at position 1, 26.7\degree. Accumulative error here is not an issue as this is the ideal path that the quad bike would follow, and any quad bike deviation error is corrected for by aiming for the ideal path point.
 \begin{table} [ht]
 \centering
 \caption{N-point turn template}
@@ -217,7 +219,7 @@ Heading (\degree) & 0 & 26.7 & 60.5 & 77.3 & 95.6 & 113.9 & 130.8 & 180 \\
 $\Delta h$ required (m) & 0 & 1.46 & 0.09 & 0.44 & 0.37 & 0.11 & 0.62 & -1.18 \\ \bottomrule
 \end{tabular}
 \end{table}
-At the completion of the turn, the quad bike is not guaranteed to line up with the next segment of the path. A distance, $\Delta h$ is added to the end of the previous line segment to correct for this. $\Delta h$ is also determined from ideal geometry, and in real time by interpolating from the template shown in \tabref{npointTurnTemplate}.
+At the completion of the turn, the quad bike is not guaranteed to line up with the next segment of the path. A distance, $\Delta h$ is added to the end of the previous line segment to correct for this. $\Delta h$ is also determined from ideal geometry, and in real time by interpolating from the template shown in \Tabref{npointTurnTemplate}.
 
 \subsection{Path subdivision}
 \seclabel{pathsubdivision}
@@ -450,10 +452,12 @@ Cantilever (1.9kg self weight , 5kg end load) & 6.4427 & 6.8844 \\ \bottomrule
 \end{tabular}
 \end{table}
 
-A cantilever beam of self weight was analysed in ANSYS. The transverse vertical fundamental frequency was found to be 27.707 HZ which lies between the frequency ranges found from using the Dunkerly and Rayleigh methods.the Modes fro the sensor mount were found to be 34.298 Hz which is very similar to the Rayleigh theoretical result for a self weighted cantilever beam. The addition of the cross member supports add stiffness to the frame resulting in the increased frequency over a standard cantilever beam. The vertical supports act to reduce the length of the cantilever beam further increasing the fundamental frequency. The deflections caused to the frame due to the fundamental frequency was 32.805 mm as can be seen in \Figref{Finalframeansys}. 
+A cantilever beam of self weight was analysed in ANSYS. The transverse vertical fundamental frequency was found to be 27.707 HZ which lies between the frequency ranges found from using the Dunkerly and Rayleigh methods. This validates that the FEA model is working correctly and can be used to model the sensor mount accurately.
+
+The modes for the sensor mount were found to be 17.89 Hz. The addition of the cross member supports add stiffness to the frame resulting in the increased frequency over a standard cantilever beam. The vertical supports act to reduce the length of the cantilever beam further increasing the fundamental frequency. The deflections caused to the frame due to the fundamental frequency was 32.805 mm as can be seen in \Figref{Finalframeansys}. 
 
 \begin{figure}[ht]
-\includegraphics[width=0.8\textwidth]{4-DetailedDesign/frameANSYS.PNG}
+\includegraphics[width=0.8\textwidth]{4-DetailedDesign/VibeAnal.PNG}
 \centering
 \caption{Sensor mount frame design vibrational analysis} \figlabel{Finalframeansys}
 \end{figure} 
@@ -472,9 +476,6 @@ The processes required in the construction the sensor mount consisted of wood wo
 \end{figure}
 
 The installation of the GPR had to fulfil the requirements outlined for the correct operation of the sensor. The main requirement being the operating distance off the ground. A telescoping mounting arm was utilised whereby any changes in the slope of the terrain would allow for the GPR head to maintain within contact with the ground satisfying the sensors operating requirement. This was attached in line with the central metal detector panel through the use of a PVC pipe to reduce misalignment that would be present during turns. With the pipe being fixed to the frame using silicon glue, the flexibility of the join would ensure that the GPR would not get damaged if it were to hit a object, as the join would flex and bend instead of the load being felt by the sensor.  
-
-
- 
   
 \subsubsection{Quad bike Vibration testing}
 Accelerometers were used to measure the amount of vibration present on the quad bike and the sensor frame during operation. Measurements from inside the storage compartment and the end of the frame were taken through a variation of throttle positions. \Figref{Vibrationtest} shows the vibrational frequencies experienced by the frame due to the quad bike vibrations. It can be seen that there is a peak in vibrational frequency at roughly 15 Hz which corresponds to the calculated fundamental frequency for the frame. Figure XX shows the vibrational frequency for the quad bike that excites the frame. Due to the accelerometer    
