@@ -37,6 +37,8 @@ The data was processed by the algorithm above and the results found that the APM
 
 It was decided from these tests that only the centre panel (channel 2) and the lowest frequency of 1.5 kHz are to be used in further tests as suggested by Minelab and supported by literature \parencite{bruschini02}. The results contributes to the development of a database to be able to determine the percentage confidence of an object being a mine. The output metric values, such as phase angle and magnitude are stored in this database, which is used as part of the sensor fusion algorithm. 
 
+\textcolor{red}{\textbf{General comment for all figures: shows/label items in figure (post-process), make sure font size is at least as large as the text, assume it will be in black and white (i.e. don't refer to colours in the figure, number or label things instead)}}
+
 \subsection{GPR algorithm}
 The processing of the GPR data is completed using an algorithm similar to the metal detector algorithm, except the metrics of interest are the feature width, feature depth and A-scan characteristics. These steps are shown on the flowchart in \Figref{GPRflow}. One key difference is that there are two pre-processing stages, which is due to the lower signal to noise ratio required in identifying subsurface objects.  In the first, an average is taken over all the A-scans, and this offset is removed from the data set. This results in a smoothing of horizontal lines seen in the raw scan when compared to the processed image. The next step is to find the A-scan with the lowest magnitude and remove this reference signal from all the data. This results in smoothing of the signal in the vertical direction.
 
@@ -77,7 +79,7 @@ The algorithm starts with the phase angle output metric and if there is a phase 
 
 \section{Platform modifications}
 \seclabel{detailedmodifications}
-A visual inspection and individual tests of each of the subsystems revealed a number of hardware and/or software issues. Due to this changes were made to the electronics and control, steering, braking, gearing and positioning systems. No changes were made to the throttle and wheel encoder systems as no issues were present. \textcolor{red}{Need schematics/diagrams to support this section}
+A visual inspection and individual tests of each of the subsystems revealed a number of hardware and software issues. Due to this changes were made to the electronics and control, steering, braking, gearing and positioning systems. No changes were made to the throttle and wheel encoder systems as they appeared to be operating correctly. \textcolor{red}{Need schematics/diagrams to support this section}
 \subsection{Electronics and control}
 \seclabel{modificationElec}
 In accordance with the scheme detailed in the Concept Design, the low level I/O for controlling the remote platforms sensors and actuators was to be deferred to a microcontroller. The existing electronics within the quad bike had a central microcontroller fulfilling this same purpose. The existing microcontroller, a Motorola DragonBoard was however deemed inappropriate for the continued development of the platform due to obsolescence. The selected replacement microcontroller was to be Arduino based, to make the most of the more modern microcontroller system and the wide community support provided for the open source platform. An Arduino Mega2560 was chosen over other models due to the increased number of serial communication ports available and the increased potential for I/O expansion. 
@@ -87,18 +89,18 @@ The remainder of the existing electronics were purpose built for the quad bike e
 
 \subsection{Steering}
 \seclabel{modificationSteering}
-Initial testing of the steering system demonstrated that the existing arrangement was not adequate for providing the required torque to steer the quad bike. Under stationary tests with the quad bike on a raised stand, the steering motor performed as expected, however under loading the motor would quickly draw a greater current than the regulated 24 V power supply could deliver. This resulted in the motor enabling a brake mode, ceasing all motion and losing track of current encoder position making positional accuracy and repeatability impossible. To remedy this, a new 24 V regulated power supply was sourced which was capable of delivering the maximum current the steering motor could draw – 19 A, a significantly larger unit than the previous 2.5 A supply. The result of this replacement was the completion of all further testing without experiencing current supply issues. The steering motor is now capable of turning the wheels over the full range of motion while under the load from the entire weight of the quad bike, without losing positional accuracy.
+Initial testing of the steering system demonstrated that the existing arrangement was not adequate for providing the required torque to steer the quad bike. Under stationary tests with the quad bike on a raised stand, the steering motor performed as expected, however under loading the motor would quickly draw a greater current than the regulated 24 V power supply could deliver. This resulted in the motor enabling a brake mode, ceasing all motion and losing track of the current encoder position making positional accuracy and repeatability impossible. To remedy this, a new 24 V regulated power supply was sourced which was capable of delivering the maximum current the steering motor could draw – 19 A, a significantly larger unit than the previous 2.5 A supply. The result of this replacement was the completion of all further testing without experiencing current supply issues. The steering motor is now capable of turning the wheels over the full range of motion while under the load from the entire weight of the quad bike, without losing positional accuracy.
 %%photo? of the power supplies?
 \subsection{Brakes}
 \seclabel{modificationBrakes}
-The original brake system (shown in \figref{brakemodifications} a) incorporated a limit switch and strain gauge to determine if the brake actuator was extended. The limit switch limited the brake motion at the extreme limit and the strain gauge dictated the brake intensity and ensured the brake lever was not being over strained. A high level testing set-up was carried out by requesting certain braking intensities and measuring two values: travel distance of the actuator arm and the retarding torque on the wheel provided by the brake. It was found that the brake intensity fluctuated by 15 percent which would result in inconsistent stopping distances and speeds. The tests lead to the redesign of the brake measurement for greater accuracy. Improved braking accuracy was achieved through the use of a linear transducer type PZ34-A-125 being installed alongside the actuator (shown in \figref{brakemodifications} b). This transducer allowed for the position of the brake actuator to be known with sub-millimetre accuracy. Knowing the position of the actuator arm allows for accurate and uniform brake intensities and thus, braking distances.
+The original brake system (shown in \Figref{brakemodifications} a) incorporated a limit switch and strain gauge to determine if the brake actuator was extended. The limit switch limited the brake motion at the extreme limit and the strain gauge dictated the brake intensity and ensured the brake lever was not being over strained. A high level testing set-up was carried out by requesting certain braking intensities and measuring two values: travel distance of the actuator arm and the retarding torque on the wheel provided by the brake. It was found that the brake intensity fluctuated by 15 percent which would result in inconsistent stopping distances and speeds. The tests lead to the redesign of the brake measurement for greater accuracy. Improved braking accuracy was achieved through the use of a linear transducer type PZ34-A-125 being installed alongside the actuator (shown in \Figref{brakemodifications} b). This transducer allowed for the position of the brake actuator to be known with sub-millimetre accuracy. Knowing the position of the actuator arm allows for accurate and uniform brake intensities and thus, braking distances.
 \begin{figure}[ht]
 \centerline{
 \begin{tabular}{cc}
 \subfloat[Before]{\includegraphics[width=0.45\textwidth]{4-DetailedDesign/BrakesOldLabelled.png}} 
 & \subfloat[After]{\includegraphics[width=0.45\textwidth]{4-DetailedDesign/BrakesNewLabelled.png}}\\
 \end{tabular}}
-\caption[Braking system before and after modification]{Braking system before and after modification. (1) Linear actuator (2) Brake lever (3) Limit switch (4) Strain gauge (5) Linear transducer}
+\caption[Braking system before and after modification]{Braking system before and after modification, showing the linear actuator (1), brake level (2), limit switch (3), strain gauge (4), and linear transducer (5)}
 \figlabel{brakemodifications}
 \end{figure}
 
@@ -112,7 +114,7 @@ As highlighted in the platform requirements, forwards and reverse motion is requ
 \end{figure}
 \subsection{Positioning}
 \seclabel{modificationPositioning}
-No positioning system was initially present in the quad bike. For implementation of the designed Kalman Filter (see \secref{positioningSystem}) a uBlox NEO-6M GPS and GY-87 10-DOF IMU were installed into the system. The selected units are shown in \figref{gpsIMU}. The uBlox NEO-6M has an update rate of 1 Hz and a horizontal position accuracy of 2.5 meters \parencite{ublox2011}. The GY-87 chip includes an MPU-6050, HMC5883L, and a BMP180. The MPU-6050 combines a 3-axis gyroscope with sensitivity of +/- 2g, and 3-axis accelerometer with a sensitivity of 250 \degree/s \parencite{invensense2013}. The HMC5883L compass and BMP180 pressure sensor were not used as part of the positioning system.
+No positioning system was initially present in the quad bike. For implementation of the designed Kalman Filter (see \secref{positioningSystem}) a uBlox NEO-6M GPS and GY-87 10-DOF IMU were installed into the system. The selected units are shown in \Figref{gpsIMU}. The uBlox NEO-6M has an update rate of 1 Hz and a horizontal position accuracy of 2.5 meters \parencite{ublox2011}. The GY-87 chip includes an MPU-6050, HMC5883L, and a BMP180. The MPU-6050 combines a 3-axis gyroscope with sensitivity of +/- 2g, and 3-axis accelerometer with a sensitivity of 250 \degree/s \parencite{invensense2013}. The HMC5883L compass and BMP180 pressure sensor were not used as part of the positioning system.
 
 \begin{figure}[ht]
 \includegraphics[width=0.6\textwidth]{4-DetailedDesign/Positioning.jpg}
@@ -130,11 +132,11 @@ The waypoints are generated from a zone of interest to facilitate the autonomous
 
 To allow for complex polygonal zones to be entered by the user, the original user-defined polygon boundary is split into a series of convex hulls, simplifying the line scanning algorithm. The split of the user polygon is shown in \Figref{wayPointGeneration}, where the user-defined polygon is outlined in bold blue and the series of generated convex search regions are shaded within. The black path shows the output of the linescan algorithm starting at the origin (marked by the red dot in the south-east corner), and ends at the second red dot at the far end of the path. 
 \begin{figure}[ht]
-\includegraphics[width=0.5\textwidth]{4-DetailedDesign/lineScanAlgorithm.png}
+\includegraphics[width=0.5\textwidth]{4-DetailedDesign/lineScanAlgorithm2.png}
 \centering
 \caption{Output of preliminary waypoint generation algorithm} \figlabel{wayPointGeneration}
 \end{figure}
-The linescan algorithm searches for the nearest corner from the nearest convex polygon and begins plotting successive alternating scanlines through the polygon. After a convex polygon has been completely covered, the linescan algorithm connects to the next nearest corner of the next nearest polygon and the process continues. This system allows for multiple user defined regions to be connected and autonomously scanned in a single pass. Due to the way the region subdivision takes place the only radius of curvatures present are either zero (corner), or infinite (straight line) shown in \figref{curvatures}.
+The linescan algorithm searches for the nearest corner from the nearest convex polygon and begins plotting successive alternating scanlines through the polygon. After a convex polygon has been completely covered, the linescan algorithm connects to the next nearest corner of the next nearest polygon and the process continues. This system allows for multiple user defined regions to be connected and autonomously scanned in a single pass. Due to the way the region subdivision takes place the only radius of curvatures present are either zero (corner), or infinite (straight line) shown in \Figref{curvatures}.
 \begin{figure}[ht]
 \includegraphics[width=0.6\textwidth]{4-DetailedDesign/radiusOfCurvatures.png}
 \centering
@@ -144,8 +146,8 @@ For low curvature path following Pure Pursuit is used (\secref{lowcurvefollowing
 
 \subsection{Low curvature path following}
 \seclabel{lowcurvefollowing}
-The low curvature path tracker works through determining a steer angle that connects an arc from the centre point of the non steering wheel axle to a goal point on the path (refer to \Figref{purePursuitGeom}).  The goal point ($g_x, g_y$) acts as an intermediate waypoint and is determined from a look-ahead distance $l_d$. The angle, $\alpha$, can be related to the geometry using the law of sines \textcolor{red}{label these equations},
-\begin{align*}
+The low curvature path tracker works through determining a steer angle that connects an arc from the centre point of the non steering wheel axle to a goal point on the path (refer to \Figref{purePursuitGeom}).  The goal point ($g_x, g_y$) acts as an intermediate waypoint and is determined from a look-ahead distance $l_d$. The angle, $\alpha$, can be related to the geometry using the law of sines,
+\begin{align}
 \frac{l_d}{\sin(2\alpha)} &= \frac{R}{\sin(^{\pi}/_2-\alpha)},\\
 \frac{l_d}{2\sin(\alpha)\cos(\alpha)} &= \frac{R}{\cos(\alpha)},\\
 \frac{l_d}{2\sin(\alpha)} &= R.
@@ -153,7 +155,7 @@ The low curvature path tracker works through determining a steer angle that conn
 R &= \frac{l_d}{2\sin(\alpha)},
 \shortintertext{and the pure pursuit controller is given as}
 \delta &= \tan^{-1}\Bigg(\frac{2L\sin(\alpha)}{l_d}\Bigg)
-\end{align*}
+\end{align}
 where $\alpha$ and thus $\delta$ will be functions of time and thus will be calculated in real time. The goal point is determined as a result of further path subdivision discussed in \secref{pathsubdivision}.
 \begin{figure}[ht]
 \includegraphics[width=0.7\textwidth]{4-DetailedDesign/Geometric_Bicycle_Model.png}
@@ -163,7 +165,7 @@ where $\alpha$ and thus $\delta$ will be functions of time and thus will be calc
 
 \subsection{Turning the platform a specified angle}
 \seclabel{turningspecifiedangle}
-For the quad bike to not stray more than 0.5 meters from the path, as defined in the project requirements, turning procedures were incorporated at path points of zero radius of curvature. In these situations one of two methods were used to turn the angle, a simple turn, or an extended 3-point turn (N-point turn) to some number of required points, both shown in \figref{turnTypes}. 
+For the quad bike to not stray more than 0.5 meters from the path, as defined in the project requirements, turning procedures were incorporated at path points of zero radius of curvature. In these situations one of two methods were used to turn the angle, a simple turn, or an extended 3-point turn (N-point turn) to some number of required points, both shown in \Figref{turnTypes}. 
 
 \begin{figure}[ht]
 \centerline{
@@ -182,19 +184,19 @@ The turn type used at any point is determined by a user set threshold of angles.
 \item $\alpha \geqslant$ 40\degree: N-point turn
 \end{itemize}
 
-The geometry of the simple turn is shown in \figref{simpleTurnGeometry} where the solid bold line and dashed bold line represent the user defined path and the modified region of the path, respectively. We can visually see that to reduce the deviation from the user defined path, d should be kept to a minimum.
+The geometry of the simple turn is shown in \Figref{simpleTurnGeometry} where the solid bold line and dashed bold line represent the user defined path and the modified region of the path, respectively. We can visually see that to reduce the deviation from the user defined path, d should be kept to a minimum.
 \begin{figure}[ht]
 \includegraphics[width=0.4\textwidth]{4-DetailedDesign/simpleTurnGeometry.png}
 \centering
 \caption{Simple turn geometry} \figlabel{simpleTurnGeometry}
 \end{figure} 
-From \figref{simpleTurnGeometry} we get:
+From \Figref{simpleTurnGeometry} we get:
 \begin{align*}
 d = R \tan{\frac{\alpha}{2}}\\
 \end{align*}
 To minimise $d$, the turn radius, $R$, should be minimised. To minimise the turn radius the turn should be executed at maximum turn angle, or with $\delta$ equal to 24\degree. Mapping waypoints along the simple turn is covered further in \secref{pathsubdivision}.
 
-Geometry for the N-point turn is very similar to that of the simple turn and is shown in \figref{nPointTurnGeometry}. Again, the solid bold line and dashed bold line represent the user defined path and the modified region of the path, respectively. The grey box is the quad bike position and the grey dashed lines are the scanned swathe from the sensor suite.
+Geometry for the N-point turn is very similar to that of the simple turn and is shown in \Figref{nPointTurnGeometry}. Again, the solid bold line and dashed bold line represent the user defined path and the modified region of the path, respectively. The grey box is the quad bike position and the grey dashed lines are the scanned swathe from the sensor suite.
 \begin{figure}[ht]
 \centerline{
 \begin{tabular}{cc}
@@ -205,7 +207,7 @@ Geometry for the N-point turn is very similar to that of the simple turn and is 
 \figlabel{nPointTurnGeometry}
 \end{figure}
 
-Throughout the N-point turn the quad bike must remain within the grey dashed lines else it would be traversing un-scanned terrain, risking the detonation of landmines. By analysing a 180 degree N-point turn in a 3 meter swathe, a template is constructed, and for any turn angles of less than 180 degrees the turn algorithm exits early, once the desired turn angle has been reached. The specific algorithms to achieve this are discussed further in \secref{pathsubdivision}. The template, shown in \tabref{npointTurnTemplate}, matches each point in the turn with an angle corresponding to the angle at which the quad bike touches the edge of the swathe. In \figref{nPointTurnGeometry}a, the quad bike is touching the edge of the swathe at position 1, 26.7\degree. Accumulative error here is not an issue as this is the ideal path that the quad bike would follow, and any quad bike deviation error is corrected for by aiming for the ideal path point.
+Throughout the N-point turn the quad bike must remain within the grey dashed lines else it would be traversing un-scanned terrain, risking the detonation of landmines. By analysing a 180 degree N-point turn in a 3 meter swathe, a template is constructed, and for any turn angles of less than 180 degrees the turn algorithm exits early, once the desired turn angle has been reached. The specific algorithms to achieve this are discussed further in \secref{pathsubdivision}. The template, shown in \Tabref{npointTurnTemplate}, matches each point in the turn with an angle corresponding to the angle at which the quad bike touches the edge of the swathe. In \Figref{nPointTurnGeometry}a, the quad bike is touching the edge of the swathe at position 1, 26.7\degree. Accumulative error here is not an issue as this is the ideal path that the quad bike would follow, and any quad bike deviation error is corrected for by aiming for the ideal path point.
 \begin{table} [ht]
 \centering
 \caption{N-point turn template}
@@ -217,7 +219,7 @@ Heading (\degree) & 0 & 26.7 & 60.5 & 77.3 & 95.6 & 113.9 & 130.8 & 180 \\
 $\Delta h$ required (m) & 0 & 1.46 & 0.09 & 0.44 & 0.37 & 0.11 & 0.62 & -1.18 \\ \bottomrule
 \end{tabular}
 \end{table}
-At the completion of the turn, the quad bike is not guaranteed to line up with the next segment of the path. A distance, $\Delta h$ is added to the end of the previous line segment to correct for this. $\Delta h$ is also determined from ideal geometry, and in real time by interpolating from the template shown in \tabref{npointTurnTemplate}.
+At the completion of the turn, the quad bike is not guaranteed to line up with the next segment of the path. A distance, $\Delta h$ is added to the end of the previous line segment to correct for this. $\Delta h$ is also determined from ideal geometry, and in real time by interpolating from the template shown in \Tabref{npointTurnTemplate}.
 
 \subsection{Path subdivision}
 \seclabel{pathsubdivision}
@@ -228,7 +230,7 @@ The goal of the path subdivision step is to provide intermediate, or 'goal', way
 \end{enumerate}
 Straight line segments are subdivided through linear interpolation and adding intermediate waypoints at some user defined distance. In the Virtual Platform, and for testing, a distance of 0.2 meters is used.
 
-For each of the turns, the algorithm to deduce the locations of the modified path is a fast, vector based process. For more detail on the algorithms used to achieve this see \chapref{pathSubdivisionDetail}. The final result of the subdivision process is shown in \figref{pathSubdivisionBeforeAfter}.
+For each of the turns, the algorithm to deduce the locations of the modified path is a fast, vector based process. For more detail on the algorithms used to achieve this see \chapref{pathSubdivisionDetail}. The final result of the subdivision process is shown in \Figref{pathSubdivisionBeforeAfter}.
 \begin{figure}[ht]
 \centerline{
 \begin{tabular}{cc}
@@ -256,7 +258,7 @@ To satisfy these characteristics an Extended Kalman Filter (EKF) was employed to
 \end{align*}
 \textcolor{red}{\textbf{Label equations}} Where the state vector, $\mu_t$, holds the positional information ($x, y, \theta$) in a 3x1 matrix. The EKF is calculated in two steps, a prediction step and an update step. The prediction step uses kinematic equations to update the position of the quad bike based on physical observations. In the case of the quad bike, readings of the velocity, steering angle and time-step are taken, then geometry is used to calculate where its updated position would be. The update step then uses information obtained through sensors to correct for any error that may be present in the prediction step. This is achieved by modelling positions as a Gaussian distribution and weighting them according to their reliability. Gaussian distributions are shown as covariance matrices, $R_t$ for the prediction step and $Q_t$ for the update step, and the weighting is the Kalman Gain, $K_t$. The predicted covariance matrix, $\Sigma_t$, can then be determined. As we know the starting position and heading of the quad bike through user input, $\Sigma_t$ is initialised as a 3x3 zero matrix.
 
-The geometry of the kinematic equations used are shown in \figref{quadKinematics}. From the geometry we get:
+The geometry of the kinematic equations used are shown in \Figref{quadKinematics}. From the geometry we get:
 \begin{align*}
 &R = \frac{L}{tan\ \delta}\\
 &\phi = \frac{V\Delta t}{R}\\
@@ -397,16 +399,16 @@ For the final design for the sensor mount to adhere to all the sensory requireme
 \subsection{Structural analysis}
 The sensor frame design was constructed in FEA. The FEA methods discretises a geometry into a finite number of elements connected together via nodes. Boundary conditions, loads and constraints as well as material properties are subject to the design and depending on the analysis type, a result can be interpreted that can be used to alter and fine tune the design.  To properly and accurately model the frame, 3D elements were chosen to represent the geometry and a basic load test was conducted. This load test was conducted to ensure that the deflection of the mount when subject to the weight of the sensor systems would not interfere with the sensor requirements, and to check if the design was strong enough to support the weight.
 
-The initial FEA analysis was used to determine the thickness of the required mount material as well as the support locations. It was found that using structural pine MGP10 a thickness of 70 x 35 mm provided adequate support and minimised deflection to less than 4 mm. The supports were chosen to be made from mild steel with square hollow sections with dimension 25 x 25 x 1.6 mm. The equivalent (von-Mises) stresses for both the frame and mild steel supports did not exceed their yield stresses of 10 MPa and 370 MPa respectively. \figref{topframe} and \figref{bottomframe} show the equivalent stresses experienced by the segmented parts \textcolor{red}{FEA pictures need to be larger, also maybe change colour scale so that it's easier to see in black and white}. 
+The initial FEA analysis was used to determine the thickness of the required mount material as well as the support locations. It was found that using structural pine MGP10 a thickness of 70 x 35 mm provided adequate support and minimised deflection to less than 4 mm. The supports were chosen to be made from mild steel with square hollow sections with dimension 25 x 25 x 1.6 mm. The equivalent (von-Mises) stresses for both the frame and mild steel supports did not exceed their yield stresses of 10 MPa and 370 MPa respectively. \Figref{topframe} and \Figref{bottomframe} show the equivalent stresses experienced by the segmented parts \textcolor{red}{FEA pictures need to be larger, also maybe change colour scale so that it's easier to see in black and white}. 
 
 \begin{figure}[ht]
-\includegraphics[width=0.4\textwidth]{4-DetailedDesign/top_frame.PNG}
+\includegraphics[width=0.7\textwidth]{4-DetailedDesign/top_frame.PNG}
 \centering
 \caption{Supports for sensor mount von-Mises stress} \figlabel{topframe}
 \end{figure}
 
 \begin{figure}[ht]
-\includegraphics[width=0.4\textwidth]{4-DetailedDesign/bottomframe.PNG}
+\includegraphics[width=0.7\textwidth]{4-DetailedDesign/bottomframe.PNG}
 \centering
 \caption{Structural pine frame von-Mises stress} \figlabel{bottomframe}
 \end{figure}
@@ -416,7 +418,7 @@ Hand calculations were used to verify the results from FEA. An axial force of 33
 The location of the sensors were dictated by each individual sensor requirements as discussed previously. The metal detector had to be in a 40 cm halo free of metallic objects while the GPR had to be as close to the ground as possible. \Figref{finalSensorFrameDesign} shows the final frame design and attachment of the sensors. The metal detector was placed 45 cm in-front of the metal supports and the GPR to reduce the interference. The GPR was mounted as close as allowable to the metal detector to minimise the separation between the sensors, so that the amount of miss-alignment experienced during turns would be low.  
 
 \begin{figure}[ht]
-\includegraphics[width=0.4\textwidth]{4-DetailedDesign/frame.PNG}
+\includegraphics[width=0.6\textwidth]{4-DetailedDesign/frame.PNG}
 \centering
 \caption{Sensor mount frame design} \figlabel{finalSensorFrameDesign}
 \end{figure} 
@@ -450,10 +452,12 @@ Cantilever (1.9kg self weight , 5kg end load) & 6.4427 & 6.8844 \\ \bottomrule
 \end{tabular}
 \end{table}
 
-A cantilever beam of self weight was analysed in ANSYS. The transverse vertical fundamental frequency was found to be 27.707 HZ which lies between the frequency ranges found from using the Dunkerly and Rayleigh methods.the Modes fro the sensor mount were found to be 34.298 Hz which is very similar to the Rayleigh theoretical result for a self weighted cantilever beam. The addition of the cross member supports add stiffness to the frame resulting in the increased frequency over a standard cantilever beam. The vertical supports act to reduce the length of the cantilever beam further increasing the fundamental frequency. The deflections caused to the frame due to the fundamental frequency was 32.805 mm as can be seen in \figref{Finalframeansys}. 
+A cantilever beam of self weight was analysed in ANSYS. The transverse vertical fundamental frequency was found to be 27.707 HZ which lies between the frequency ranges found from using the Dunkerly and Rayleigh methods. This validates that the FEA model is working correctly and can be used to model the sensor mount accurately.
+
+The modes for the sensor mount were found to be 17.89 Hz. The addition of the cross member supports add stiffness to the frame resulting in the increased frequency over a standard cantilever beam. The vertical supports act to reduce the length of the cantilever beam further increasing the fundamental frequency. The deflections caused to the frame due to the fundamental frequency was 32.805 mm as can be seen in \Figref{Finalframeansys}. 
 
 \begin{figure}[ht]
-\includegraphics[width=0.8\textwidth]{4-DetailedDesign/frameANSYS.PNG}
+\includegraphics[width=0.8\textwidth]{4-DetailedDesign/VibeAnal.PNG}
 \centering
 \caption{Sensor mount frame design vibrational analysis} \figlabel{Finalframeansys}
 \end{figure} 
@@ -463,18 +467,32 @@ The addition of the metal detector to the frame resulted in fundamental frequenc
 Variations in sensor arrangements that could be installed would result in different fundamental frequencies due to the changing damping effects. This can be accounted for by increasing of decreasing the length of the frame to change the fundamental frequency to one that is desired. The frame design can be tuned to a specific fundamental frequency through the alteration of its design and end weight.   
 
 \subsection{Manufacturing}
-The processes required in the construction the sensor mount consisted of wood work and metal work. Wooden dowels were used to join the sections together near the metal detector as no metallic objects were allowed near it. Supports for the metal detector were made out of four nylon rods that connect to horizontal wooden supports. two acrylic boards were made to encase the metal detector to act as both a safety protector and a mounting device for the nylon rods. As the sensor was a loaned piece of equipment, no modifications or damages were allowed to happen to it resulting in the need for the acrylic case. The requirement for variation in the height of the sensor was satisfied by the use of the nylon rods, the length and subsequently the height of the sensor off the ground could be altered by varying the length of the rods and supports. Another benefit to using the nylon rods is that in the case that the quad bike were to hit something, the metal detector would not break, instead the nylon rods would shear resulting in no damage to the sensor.
-GPR install...
+The processes required in the construction the sensor mount consisted of wood work and metal work. Wooden dowels were used to join the sections together near the metal detector as no metallic objects were allowed near it. Supports for the metal detector were made out of four nylon rods that connect to horizontal wooden supports. Two acrylic boards were made to encase the metal detector to act as both a safety protector and a mounting device for the nylon rods. As the sensor was a loaned piece of equipment, no modifications or damages were allowed  resulting in the need for the acrylic case. The requirement for variation in the height of the sensor was satisfied by the use of the nylon rods, the length and subsequently the height of the sensor off the ground could be altered by varying the length of the rods and supports. Another benefit to using the nylon rods is that in the case that the quad bike were to hit something, the metal detector would not break, instead the nylon rods would shear resulting in no damage to the sensor.
+\Figref{ManufactoredFrame} shows the completed manufactured frame with the sensors attached. 
+\begin{figure}[ht]
+\includegraphics[width=0.8\textwidth]{4-DetailedDesign/QuadBikeFinalFrame.jpg}
+\centering
+\caption{Manufactured and mounted frame with sensors attached} \figlabel{ManufactoredFrame}
+\end{figure}
 
-\textcolor{red}{final picture of it all installed }  
+The installation of the GPR had to fulfil the requirements outlined for the correct operation of the sensor. The main requirement being the operating distance off the ground. A telescoping mounting arm was utilised whereby any changes in the slope of the terrain would allow for the GPR head to maintain within contact with the ground satisfying the sensors operating requirement. This was attached in line with the central metal detector panel through the use of a PVC pipe to reduce misalignment that would be present during turns. With the pipe being fixed to the frame using silicon glue, the flexibility of the join would ensure that the GPR would not get damaged if it were to hit a object, as the join would flex and bend instead of the load being felt by the sensor.  
+  
 \subsubsection{Quad bike Vibration testing}
-Accelerometers were used to measure the amount of vibration present on the quad bike and the sensor frame during operation. Measurements from inside the storage compartment and the end of the frame were taken through a variation of throttle positions. \Figref{Vibrationtest} shows the vibrational frequencies experienced by the frame due to the quad bike vibrations. It can be seen that there is a peak in vibrational frequency at roughly 15 Hz which corresponds to the calculated fundamental frequency for the frame.   
+Accelerometers were used to measure the amount of vibration present on the quad bike and the sensor frame during operation. Measurements from inside the storage compartment and the end of the frame were taken through a variation of throttle positions. \Figref{Vibrationtest} shows the vibrational frequencies experienced by the frame due to the quad bike vibrations. It can be seen that there is a peak in vibrational frequency at roughly 15 Hz which corresponds to the calculated fundamental frequency for the frame. Figure XX shows the vibrational frequency for the quad bike that excites the frame. Due to the accelerometer    
 
 \begin{figure}[ht]
-\includegraphics[width=0.8\textwidth]{4-DetailedDesign/FrameVibeTest}
-\centering
-\caption{Sensor mount Vibrational testing} \figlabel{Vibrationtest}
-\end{figure} 
+\centerline{
+\begin{tabular}{cc}
+\subfloat[Power spectrum of accelerometer data on idling quad bike]{\includegraphics[height=0.4\textwidth]{4-DetailedDesign/quadIdle}} 
+   & \subfloat[Power spectrum of accelerometer data on throttling quad bike]{\includegraphics[height=0.4\textwidth]{4-DetailedDesign/quadThrottle}}\\
+\subfloat[Power spectrum of accelerometer data on sensor mount for idling quad bike]{\includegraphics[height=0.4\textwidth]{4-DetailedDesign/mountIdle}}
+   & \subfloat[Power spectrum of accelerometer data on sensor mount for throttling quad bike]{\includegraphics[height=0.4\textwidth]{4-DetailedDesign/mountThrottle}}
+\end{tabular}}
+\caption{Sensor mount Vibrational testing x is forwards, y is transverse and z is horizontal vibration direction. All directions are relative to rear wheel steering}
+\figlabel{Vibrationtest}
+\end{figure}
+
+The vibrational tests from inside the quad bike storage tray resulted in the data as seen in Figure XXX. Due to the accelerometer used only having a sampling rate of 100 Hz, the highest frequency that was able to be resolved was up to was 50 Hz. This results in no peaks for the quad bike vibrations as the fundamental vibrational mode was greater than 50 Hz. This leads to the conclusion that the operation of the quad bike would not result in the fundamental mode of the sensor frame being excited. The mode would only be excited for a brief moment during start up and shut down procedures of the engine as the vibrations passed through the harmonic range of the frame.
 
 \section{Electronics}
 The electronics hardware to be used for the project will fit in the categories as described in the Conceptual Design. The custom electronics work pre-existing on the quad bike supplied by the DSTG meets the requirements for the COTS bespoke electronics, providing digital interfaces to the actuators and sensors attached to the platform. The need for replacement or improvement of any of these electronics will be determined after testing has been completed on the supplied vehicle and their performance has been evaluated.
@@ -501,13 +519,13 @@ To allow for the most rapid development, the primary focus for the initial porti
 
 \subsection{Virtual platform}
 \seclabel{detailedVP}
-The virtual platform was designed to test software implementations for communications, automation, and navigation software. As shown in \figref{virtualPlatformPic}, the virtual platform displays a graphical representation of the quad bike as it traverses a given path, graphs showing the actuator states of the wheel encoder, steering, gear, and throttle subsystems, ground penetrating radar output, and the metal detector output.
+The virtual platform was designed to test software implementations for communications, automation, and navigation software. As shown in \Figref{virtualPlatformPic}, the virtual platform displays a graphical representation of the quad bike as it traverses a given path, graphs showing the actuator states of the wheel encoder, steering, gear, and throttle subsystems, ground penetrating radar output, and the metal detector output.
 \begin{figure}[ht]
 \includegraphics[width=\textwidth]{4-DetailedDesign/virtualPlatform.jpg}
 \centering
 \caption[Virtual platform display window]{Virtual platform: graphical representation (top left), actuator states (top right), GPR output (bottom left), MD output (bottom right)} \figlabel{virtualPlatformPic}
 \end{figure}
-The user also has the option to display, on the graphical representation, the positional sensor data as seen in \figref{virtualPlatformDataPic}. Note that the IMU heading is in the incorrect direction as the initialised heading is unknown.
+The user also has the option to display, on the graphical representation, the positional sensor data as seen in \Figref{virtualPlatformDataPic}. Note that the IMU heading is in the incorrect direction as the initialised heading is unknown.
 \begin{figure}[ht]
 \includegraphics[]{4-DetailedDesign/dataVisibleVirtualPlatform.PNG}
 \centering

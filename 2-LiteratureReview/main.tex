@@ -4,17 +4,17 @@
 \begin{document}
 \chapter{Feasibility Study}
 \chaplabel{literatureReview}
-This chapter provides a summary of the benchmarking process, as detailed in \Chapref{benchmarking}, and then presents the literature review, which covers the areas of signal processing and sensor fusion, as well automation and navigation. \todo[inline]{\textbf{General comments for lit review: Very shallow, needs many more references, need to explain ``state of the art'', explain current level of understanding in this field }}
+This chapter provides a summary of the benchmarking process, as detailed in \Chapref{benchmarking}, and then presents the literature review, which covers the areas of signal processing and sensor fusion, as well as navigation. \todo[inline]{\textbf{General comments for lit review: Very shallow, needs many more references, need to explain ``state of the art'', explain current level of understanding in this field }}
 
 \section{Benchmarking}
-Metal detectors are the most widely used sensor for manual landmine detection. While they are simple to operate, metal detectors are limited by the variety of landmine types they can detect. They also produce a large number of false positives, leading to demining operations being inefficient. Another type of sensor that is increasingly used for manual landmine detection applications is the ground penetrating radar or GPR. These sensors allow variations in density beneath the soil surface to be detected, which means that unlike metal detectors, GPRs can be used to find a range of target types with improved penetration depth. However, this increased sensitivity makes it more difficult to identify detected objects, especially in certain soil types. Multisensor systems, which for instance combine a metal detector and a GPR, allow the limitations of the individual systems to be addressed, leading to improved landmine detection performance. Whatever the sensor used, signal processing is an intensive requirement, particularly for the GPR. In the case of the multisensor system, sensor fusion must also be employed to consolidate the data from the individual sensors to provide meaningful output.  
+Metal detectors are the most widely used sensor for manual landmine detection. While they are simple to operate, they are limited by the variety of landmine types they can detect. They also produce a large number of false positives, leading to demining operations being inefficient \parencite{minelabF3}. Another type of sensor that is increasingly used for manual landmine detection applications is the ground penetrating radar or GPR. These sensors allow small variations in density beneath the soil surface to be detected, meaning GPRs can be used to find metallic and non-metallic targets \parencite{sakaguchi2014}. However, this sensitivity makes it difficult to identify detected objects, especially in certain soil types. Multisensor systems, which for instance combine a metal detector and a GPR, allow the limitations of the individual systems to be addressed, leading to improved landmine detection performance \parencite{Takahashi10}. Whatever the sensor used, signal processing is an important requirement, particularly for the GPR. In the case of a multisensor system, sensor fusion must also be employed to consolidate the data from the individual sensors to provide meaningful output.  
 
-An alternative to manual landmine detection methods is vehicle or platform based landmine detection. There are a wide variety of platform types used, a growing number of which have remote control or autonomous operation capabilities. The selection of platform type largely depends on the sensor payload and scenario of operation. Key challenges regardless of the platform used include automation of the system, encompassing hardware and the control system, and navigation, which could have varying levels of complexity depending on the features to be implemented. 
+An alternative to manual landmine detection methods is vehicle or platform based landmine detection. There are a wide variety of platform types used, a growing number of which have remote control or autonomous operation capabilities \parencite{portugal2014}. The selection of platform type largely depends on the sensor payload and scenario of operation. Key challenges regardless of the platform used include automation of the system, encompassing hardware and the control system, and navigation, which could have varying levels of complexity depending on the features to be implemented. 
 
 \textcolor{red}{Need to add some references to the above paragraphs, grab them from the benchmarking appendix - RK}
 
 \section{Signal processing}
-Signal processing is a major component of this project, and there is a need to process the raw signal output from both a metal detector and a GPR in order to  be able to detect landmines. \textcolor{red}{Need to talk about challenges and relate to mission profile}
+As identified through benchmarking, signal processing is a major challenge associated with landmine detection. As part of the project, the outputs from both a metal detector and a GPR must processed. \textcolor{red}{Need to talk about challenges and relate to mission profile}
 \seclabel{splitreview}
 
 \subsection{Metal detector signal processing}
@@ -51,7 +51,7 @@ A notable failure of the phase plot signature method is the effect of nearby met
 \subsection{GPR signal processing}
 \seclabel{gpr}
 \subsubsection{Hardware configuration influence on detection capability}
-\textcolor{red}{Maziar underlined this heading, not sure why... But this subsection isn't really about signal processing}
+\textcolor{red}{Maziar underlined this heading, not sure why... But this subsection isn't really about signal processing, can get rid of it or summarise it a lot.}
 
 Ground penetrating radars operate by transmitting radio signals, and measuring the strength of reflected signals, caused by changes in density at the interface between objects and the soil \parencite{sakaguchi2014}. Achieving a high signal to noise ratio is a challenge with a GPR, as signal noise is introduced at all locations where even a small change in density occurs \parencite{shresta2003}. Thus, the primary challenge when searching for objects using GPR technology is being capable of distinguishing important objects from a noisy signal response \parencite{sakaguchi2014}.
 
@@ -105,7 +105,7 @@ A common distinction is made between potential levels of sensor fusion \parencit
 Experimental trials suggest that all forms of sensor fusion are capable of producing significantly more accurate detection results with far fewer false-positive incidents than single sensor systems \parencite{Yarovoy2009}. 
 
 \textcolor{red}{Add more references, more details about achievements, sensor fusion results achieved by other people}
-\section{Automation and navigation}
+\section{Navigation}
 \seclabel{navigationandautomation}
 A major challenge associated with the automation of a platform is the development of software for control and navigation. Two aspects of this are how the platform tracks a path, and how it performs turning manoeuvres. 
 
@@ -132,8 +132,8 @@ Pure Pursuit uses a path ``look-ahead'' distance to measure the future error bet
 \caption[Pure Pursuit geometry]{Pure Pursuit geometry \parencite{snider2009}} \figlabel{purePursuitGeom}
 \end{figure}
 
-\nomenclature[S]{$l_d$}{Pure Pursuit model look ahead distance}%
-\nomenclature[S]{$(g_x, g_y)$}{Pure Pursuit model goal point}%
+%\nomenclature[S]{$l_d$}{Pure Pursuit model look ahead distance}%
+%\nomenclature[S]{$(g_x, g_y)$}{Pure Pursuit model goal point}%
 
 Unlike Pure Pursuit which is based on the future error, the Stanley method uses the current lateral error between the centre of a wheel's axle and the nearest path point (\Figref{stanleyGeom}). The desired effect is that as the vehicle strays further from the path, the wheel's steering angle is amplified in an attempt to correct for the error. The Stanley method is very well suited to higher speed tracking but can run into problems when curvature discontinuities are present in the path. The model sets the steer angle to the heading error, which is calculated as the difference between the vehicle's heading and the instantaneous heading of the nearest point on the path, $\theta_e$. An extra term is used when the lateral error is non-zero which amplifies the steer angle to a new value of $\delta$.
 \begin{figure}[ht]
@@ -142,8 +142,8 @@ Unlike Pure Pursuit which is based on the future error, the Stanley method uses 
 \caption[Stanley method geometry]{Stanley method geometry \parencite{snider2009}} \figlabel{stanleyGeom}
 \end{figure}
 
-\nomenclature[S]{$\theta_e$}{Stanley method heading error}%
-\nomenclature[S]{$\delta$}{Steering angle}%
+%\nomenclature[S]{$\theta_e$}{Stanley method heading error}%
+%\nomenclature[S]{$\delta$}{Steering angle}%
 
 Some limitations of geometric path tracking methods are related to the dynamics of a vehicle which are not present in the theory, namely the capabilities of a platform and its actuators. Due to this, the method expects an instant response from elements such as the steering, which is an issue when high path curvatures are present or when the curvature of the path suddenly changes. As a result, the method cannot guarantee that the vehicle will follow a path as accurately as designed and at high speeds that vehicle may skid or tip \parencite{coulter1992}.
 
@@ -162,7 +162,8 @@ In a path similar to that described by the piecewise linear definition, a turn c
 \end{figure}
 
 \textcolor{red}{This section (automation and navigation) needs more examples of what others have been able to achieve, rather than just listing advantages of various methods}
-\section{Decisions???}
+\subsection{Outcomes}
 \textcolor{red}{Maz said we need a section at the end of the lit review on the decisions (i.e. we did the whole lit review, now what are the things we decided to use or apply to our project (I think?))}
+The literature review covered different methods for signal processing, sensor fusion and platform navigation.
 
 \end{document}
