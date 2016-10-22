@@ -299,7 +299,7 @@ The path subdivision algorithm cycles through the user or region defined path co
 \item Subdivide the straight line segment up to the next point
 \item If there is a following line segment, conduct a turn and align with it
 \end{enumerate}
-For the point $P_1 = (x_1, y_1)$, we first subdivide the line segment to the next point $P_2 = (x_2, y_2)$, shown in step 2 of \figref{simpleTurnProgression}. This is done by doing a linear interpolation between the two points to find a series of intermediate waypoints $P_i = (x_i, y_i)$:
+For the point $P_1 = (x_1, y_1)$, we first subdivide the line segment to the next point $P_2 = (x_2, y_2)$, shown in step 2 of \Figref{simpleTurnProgression}. This is done by doing a linear interpolation between the two points to find a series of intermediate waypoints $P_i = (x_i, y_i)$:
 \begin{align*}
 P_i = |P_2 - P_1| \times k \times j
 \end{align*}
@@ -327,7 +327,7 @@ In the event of a large turn angle where an N-point turn is required, only stage
 \caption[Simple turn progression]{N-point turn progression}
 \figlabel{nPointTurnProgression}
 \end{figure}
-The distance added or removed, $\Delta h$, is based on the turn angle and is found from the geometrically determined template, \tabref{npointTurnTemplate}, shown below.
+The distance added or removed, $\Delta h$, is based on the turn angle and is found from the geometrically determined template, \Tabref{npointTurnTemplate}, shown below.
 \begin{table} [ht]
 \centering
 \begin{tabular} {r | c c c c c c c c}
@@ -336,7 +336,7 @@ Heading (\degree) & 0 & 26.7 & 60.5 & 77.3 & 95.6 & 113.9 & 130.8 & 180 \\
 $\Delta h$ required (m) & 0 & 1.46 & 0.09 & 0.44 & 0.37 & 0.11 & 0.62 & -1.18 \\
 \end{tabular}
 \end{table}
-Similar to the simple turn, the centre point, $P_c$, of the turn arc is be found based on the turn radius, $R$, and is perpendicular to the current line segment. Arc points are added by incrementing the vector by the angle, $\Delta angle$. Incrementing stops once the vector has been rotated by a total angle equal to the difference between the current turn point and the next turn point, in the case of \figref{nPointTurnProgression} part 4, we are at the first turn point so the vector is rotated, $(26.7 - 0)\degree = 26.7\degree$, in total. If at this point the desired turn angle has not been reached, additional arcs are added to the path in the same fashion as just described. Stage 1 is then executed again for the next straight line segment.
+Similar to the simple turn, the centre point, $P_c$, of the turn arc is be found based on the turn radius, $R$, and is perpendicular to the current line segment. Arc points are added by incrementing the vector by the angle, $\Delta angle$. Incrementing stops once the vector has been rotated by a total angle equal to the difference between the current turn point and the next turn point, in the case of \Figref{nPointTurnProgression} part 4, we are at the first turn point so the vector is rotated, $(26.7 - 0)\degree = 26.7\degree$, in total. If at this point the desired turn angle has not been reached, additional arcs are added to the path in the same fashion as just described. Stage 1 is then executed again for the next straight line segment.
 
 \chapter{Arduino Code Chart}
 \chaplabel{arduinoCodeChart}
@@ -551,7 +551,7 @@ Testing of the system as a whole is required to carried out in order to determin
 %\item Determine turning radius
 \begin{qb}
 \textbf{Determine braking distance}\\
-\textbf{Objectives:} 
+\textbf{Objectives:} The quad bike will travel forwards for a measured 3.5 m marked by a flag, then apply the brakes. The final distance will be marked and the distance between the brake marker and the final position of the quad bike will be the braking distance. There is an aim to reduce the effective braking distance as the quad bike is required to stop within 60 cm to avoid detonation a detected landmine. 
 
 \end{qb}
 %\item Test remote control functions 
@@ -581,7 +581,7 @@ Testing of the navigation software is the final step. This incorporates all the 
 % \item Check the angle of turns and path following abilities of the platform when compared to desired performance. A straight line test will be conducted in order to sync up the Virtual display to the real world motion. Once the distance and motion is similar angled turns will be conducted. these will first be simple turns with gradual angle increases until complex angle turns are required. A 90 degree turn will be executed to check the accuracy and navigation performance before full automation tests can be performed. 
 \begin{qb}
 \textbf{Check the angle of turns and path following abilities of the platform when compared to desired performance.}\\
-\textbf{Objectives:} A straight line test will be conducted in order to sync up the Virtual display to the real world motion. Once the distance and motion is similar angled turns will be conducted. these will first be simple turns with gradual angle increases until complex angle turns are required. A 90 degree turn will be executed to check the accuracy and navigation performance before full automation tests can be performed.
+\textbf{Objectives:} A straight line test will be conducted in order to sync up the Virtual display to the real world motion. Once the distance and motion is similar angled turns will be conducted. These will first be simple turns with gradual angle increases until complex angle turns are required. A 90 degree turn will be executed to check the accuracy and navigation performance before full automation tests can be performed.
 
 \end{qb}
 
@@ -921,55 +921,107 @@ Necessary parts for the control system, or replacement parts, are delayed} & \mu
 
 \chapter{Budget Breakdown}
 \chaplabel{budgetApp}
-A detailed breakdown of the budget is provided in the following tables. \Tabref{expenditureCurrent} outlines current expenditure while \Tabref{expenditureFuture} summarises the expected expenditure for the remainder of the project. \Tabref{labourHours} provides a monthly breakdown of the hours spent on the project by each student and the associated costs. Salaries are calculated at the rate of \$26/hr, with other direct and indirect costs included. Direct costs incur an additional 30\% on top of salary for items such as superannuation, payroll tax, workcover, long service leave, etc. Indirect costs incur an additional 130\% on top of salary for items such as administration and tech support, infrastructure, rent, phone, internet, etc.
-\nohyphens{	% Stop hyphenation in table
-\begin{longtable}{L{0.20\textwidth} L{0.52\textwidth} L{0.18\textwidth}}
-\caption{Current expenditure as at 01-06-2016} \tablabel{expenditureCurrent}\\ \toprule
-\textbf{Subsystem} & \textbf{Item} & \textbf{Cost (\$)} \\ \midrule\endfirsthead 
-\caption[]{Current Expenditure (continued)}\\ \toprule
-\textbf{Subsystem} & \textbf{Item} & \textbf{Cost (\$)} \\ \midrule\endhead
-\textbf{Electronics} & 10 Ft Mic Lead & 19.95 \\
-& XLR/USB Converter Plug & 39.95\\
-& Wireless-N Network Adapter & 20.00\\
-& Wired Desktop (Keyboard + Mouse) & 19.00\\
-& Samsung 120GB SSD & 69.00\\ \midrule
-\multicolumn{2}{r}{\textbf{TOTAL}} & 167.90 \\ \bottomrule 
-\end{longtable}}
+A detailed breakdown of the budget is provided in the following tables. \Tabref{expenditureCurrent} outlines total project expenditure while \Tabref{labourHours} provides a monthly breakdown of the hours spent on the project by each student and the associated costs. Salaries are calculated at the rate of \$26/hr, with other direct and indirect costs included. Direct costs incur an additional 30\% on top of salary for items such as superannuation, payroll tax, workcover, long service leave, etc. Indirect costs incur an additional 130\% on top of salary for items such as administration and tech support, infrastructure, rent, phone, internet, etc.
 
 \nohyphens{	% Stop hyphenation in table
 \begin{longtable}{L{0.20\textwidth} L{0.52\textwidth} L{0.18\textwidth}}
-\caption{Projected expenditure as at 01-06-2016} \tablabel{expenditureFuture}\\ \toprule
+\caption{Project expenditure} \tablabel{expenditureCurrent}\\ \toprule
 \textbf{Subsystem} & \textbf{Item} & \textbf{Cost (\$)} \\ \midrule\endfirsthead 
-\caption[]{Projected Expenditure (continued)}\\ \toprule
+\caption[]{Current expenditure (continued)}\\ \toprule
 \textbf{Subsystem} & \textbf{Item} & \textbf{Cost (\$)} \\ \midrule\endhead
-\textbf{Structure} & Actuators (upgrade/replace) & 1,500 \\ 
-& Service/Oil Change & 200 \\
-& Sensor Mount & 340 \\ \midrule
-
-\textbf{Sensors} & Ground Penetrating Radar unit & Supplied by the DSTG \\
-& Metal Detector & 600\\ \midrule
-
-\textbf{Power} & Petrol & 300 \\
-& Batteries & 500 \\ \midrule
-
-\textbf{Electronics} & Computer Upgrades & 500 \\ 
-& 2 x GPS (H B Differential) & 450 \\ 
-& IMU & 50 \\ 
-& Microcontroller & 150 \\ 
-& 9 Axis Accelerometer, Gyro, Magnetometer & 50 \\ 
-& Licenses/Software & 100 \\ 
-& GPS and Control Board & 200 \\ 
-& Camera & 300 \\
-& Receiver/Transmitter & 300 \\
-& Test Mines & 100 \\
-& Misc Electronics & 350 \\ \midrule
-
-\multicolumn{2}{r}{\textbf{TOTAL}} & 5,990 \\ \bottomrule 
+\textbf{General} & Wireless-N network adapter &	20.00 \\
+\textbf{electronics} &	Wired desktop (keyboard + mouse) &	19.00 \\
+ &	Samsung 120GB SSD &	69.00 \\
+ &	USB Extension &	29.00 \\
+ &	3mm Heat Shrink &	1.18 \\
+ &	Electrical terminal &	5.95 \\
+ &	Electrical terminal &	5.95 \\
+ &	Heatshrink &	2.90 \\
+ &	Electrical terminals &	5.95 \\
+ &	2 x Cable ties &	9.96 \\
+ &	Header pin and male-female socket &	6.25 \\ \midrule
+\textbf{Platform} & Battery SNS40ZLS &	109.47 \\
+\textbf{replacement} &	4 x Housing 2.54mm 3 way &	1.56 \\
+\textbf{parts} &	2 x Housing 2.54mm 4 way &	1.00 \\
+ &	Header Pin 40 way &	0.64 \\
+ &	POT LIN 16mm 5k &	1.86 \\
+ &	14 x Contact for 4072-1x04h 10k Reel &	3.08 \\
+ &	4 x Micro SPDT 37mm lever &	15.09 \\
+ &	3 x Cable Rainbow Ribbon &	10.64 \\
+ &	GST from 20/07 &	3.51 \\
+ &	10A Fuses &	3.50 \\
+ &	Battery SNS40ZLS &	109.47 \\
+ &	Linear position resistive sensor 5kohm &	91.16 \\
+ &	nuts and bolts &	3.54 \\
+ &	2 x electrical terminal &	17.85 \\
+ &	Electrical cable 3 core &	5.80 \\ \midrule
+\textbf{Platform} & Bunting & 65.00 \\
+\textbf{testing} & Cable ties for bunting & 29.98 \\
+ &	Sunscreen & 17.99 \\
+ &	Warning flag & 6.67 \\ \midrule
+\textbf{Platform} & Arduino Mega &	91.35 \\
+\textbf{upgrade} & Proto shield extension Arduino &	7.77 \\
+\textbf{parts} & Arduino proto extension kit &	19.91 \\
+ & Remote control battery - 9.6V NiCd &	39.95 \\
+ & Switch mode dc/dc converter &	683.48 \\
+ & TTL to USB serial converter cable &	32.71 \\
+ & GST from 08/08.2016 &	81.74 \\
+ & Nuts bolts &	0.33 \\
+ & I2C logic converter &	6.50 \\
+ & 10DOF MPU6050 &	29.67 \\
+ & 10 x Ultrasonic sensor &	19.00 \\
+ & 3xArduino Mega &	50.40 \\
+ & USB AM BM Cable &	3.06 \\
+ & Transducer &	314.85 \\
+ & MAX232N + adaptor board &	16.80 \\
+ & GPS &	25.00 \\
+ & Nuts and bolts for transducer &	18.8 \\
+ & Emergency stops  &	177.47 \\
+ & Emergency stop wiring &	71.94 \\
+ & Petrol for quad bike	 & 13.79 \\
+ & Camera WIFI IP 720p &	169.00 \\ \midrule
+\textbf{Sensor} &  Structural pine 70x35 6m	 & 14.10 \\
+\textbf{mount} &  Steel RHS 25x25x1.6	 & 18.08 \\
+ & Nuts, bolts, washers	 & 16.63 \\
+ & 2 x Acrylic Sheet	 & 126.00 \\
+ & Nylon nuts and bolts	 & 14.74 \\
+ & Nylon washer	 & 9.92 \\
+ & Nylon thread and bolts & 	133.39 \\
+ & Spray paint & 	23.90 \\
+ & Sand paper & 	4.11 \\
+ & Sealant & 	18.88 \\
+ & Extension pole	 & 14.75 \\
+ & Wood putty	 & 6.95 \\
+ & 10 Ft Mic lead	 & 19.95 \\
+ & XLR/USB converter plug & 	39.95 \\ \midrule
+\textbf{Testing rig} & PVC pipe	 & 32.35 \\
+ & Adhesive velcro tape & 	28.00 \\
+ & lawn cart & 	119.00 \\
+ & Patty cases muffins for soil drying & 2.89 \\ \midrule
+\textbf{Travel} &  Petrol to/from DSTG	 & 32.10 \\
+ & Parking during quad bike transport	 & 12.00 \\
+ & Parking for meeting	 & 5.00 \\
+ & Parking during quad bike testing & 	5.00 \\ \midrule
+\textbf{Miscellaneous} &  Overleaf subscription	 & 6.76 \\
+ & Sharpie &	4.00 \\
+ & Labelling tape & 	4.98 \\
+ & Jerry Can 10L & 	19.99 \\
+ & Plier set with crimp ends & 	8.50 \\
+ & Wire stripping pliers	 & 29.98 \\
+ & Overleaf subscription & 	6.71 \\
+ & Gliffy & 16.79 \\
+ & Comms w/ CSIRO (post for dongle) & 	15.7 \\
+ & Overleaf subscription	 & 6.83 \\
+ & Tyre shine & 	4.99 \\
+ & Wireless clicker/presenter & 	79.00 \\
+ & Overleaf subscription & 	6.77 \\ \midrule
+\multicolumn{2}{r}{\textbf{TOTAL}} & 3416.16 \\ \bottomrule 
 \end{longtable}}
+
 
 \nohyphens{	% Stop hyphenation in table
 \begin{longtable}{L{0.22\textwidth-2\tabcolsep}*{5}{L{0.12\textwidth-2\tabcolsep}} L{0.13\textwidth-2\tabcolsep}}
-\caption{Breakdown of hours and costs (as at 01-06-2016)} \tablabel{labourHours}\\ \toprule
+\caption{Breakdown of hours and costs} \tablabel{labourHours}\\ \toprule
 \textbf{Team Member} & \textbf{Harrison} & \textbf{Jono} & \textbf{Peter} & \textbf{Racquel} & \textbf{Rahul} & \textbf{Total} \\ \midrule\endfirsthead 
 \caption[]{Breakdown of Hours and Cost (continued)}\\ \toprule
 \textbf{Team Member} & \textbf{Jono} & \textbf{Harrison} & \textbf{Peter} & \textbf{Racquel} & \textbf{Rahul} & \textbf{Total} \\ \midrule\endhead 
@@ -977,14 +1029,21 @@ A detailed breakdown of the budget is provided in the following tables. \Tabref{
 \textbf{February} & - & - & - & 1.5 & 8 & 9.5 \\ 
 \textbf{March} & 39.5 & 51.5 & 43 & 50.75 & 58 & 242.75 \\
 \textbf{April} & 41.25 & 33 & 33.5 & 37.75 & 39 & 184.5 \\ 
-\textbf{May} & 51.75 & 42.5 & 29.5 & 59.5 & 56.5 & 239.75 \\
-\textbf{Total} & 132.5 & 127 & 106 & 149.5 & 161.5 & 676.5 \\ \midrule
+\textbf{May} & 68.75 & 54.5  & 60.5 & 92 & 92 & 76.5 \\
+\textbf{June} & 23.5 & 1  & 1 & 3.25 & 4 & 32.75\\
+\textbf{July} & 44.5 &  65.5 & 49.5 & 45 & 44 & 248.5\\
+\textbf{August}  & 77.5 & 109.5  & 69 & 83 & 78.5 & 417.5 \\
+\textbf{September} & 73.5 & 86.5 & 71.5 & 83.5 & 75.5 & 390.5 \\
+\textbf{October} & 81.5 & 63.5 & 81.5 & 103.25 & 86.5 & 416.25 \\ \midrule
+
+
+\textbf{Total} & 450 & 465 & 409.5 & 500 & 470 & \textbf{2294.5} \\ \midrule
 \textbf{Wages} \\
-\textbf{Total (Salary)} & \$3445.00 & \$3302.50 & \$2756.00 & \$3887.00 & \$4199.00 & \$17589.00 \\
-\textbf{Total (Direct)} & \$1033.50 & \$990.60 & \$826.80 & \$1166.10 & \$1259.70 & \$5276.70 \\
-\textbf{Total (Indirect)} & \$4478.50 & \$4292.60 & \$3582.80 & \$5053.10 & \$5458.70 & \$18657.60 \\
-\textbf{Total Cost} & \$8957.00 & \$8585.20 & \$7165.60 & \$10106.20 & \$10917.40 & \$45731.40 \\ \midrule
-\multicolumn{6}{r}{\textbf{Total Labour}} & \$45731.40 \\ \bottomrule
+\textbf{Total (Salary)} & \$11,538	& \$11,923	& \$10,500	& \$12,821	& \$12,051	& \$58,833 \\
+\textbf{Total (Direct)} & \$3,462	& \$3,577	& \$3,150	& \$3,846	& \$3,615	& \$17,650 \\
+\textbf{Total (Indirect)} & \$15,000	& \$15,500	& \$13,650	& \$16,667	& \$15,667	& \$76,483 \\
+\textbf{Total Cost} & \$30,000	& \$31,000	& \$27,300	& \$33,333	& \$31,333	& \textbf{\$152,967} \\ \midrule
+\multicolumn{6}{r}{\textbf{Total Project Labour}} & \textbf{\$152,967.00} \\ \bottomrule
 \end{longtable}}
 
 \end{appendices}
