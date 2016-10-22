@@ -170,34 +170,16 @@ While bamboo is the best material to use for the sensor mount frame based on it'
 \nomenclature[A]{GFRP}{Glass Fibre Reinforced Polymer}%
 
 \subsection{Steering focal point}
-The sensors need to be mounted in a configuration that will keep individual sensor elements aligned, so that corresponding ground information can be collated and analysed correctly. This becomes more important when using a sensor array instead of line scan sensors. Under the assumption that the quad bike uses the Ackermann steering geometry, i.e. each wheel has it's own pivot during turns, we can use the simplified, 2-wheel model to assess the location of the sensors relative to the quad bike. The simplified model provides the following geometric relationship,
-\begin{align}
-\tan(\delta) = \frac{L}{R}.
-\end{align}
-Here, $\delta$ is the steering angle, $L$ is the wheelbase and $R$ is the radius of the arc that the centre of the rear axle will follow. This simplification has been used to perform simulations on the sensor coverage and sensor element misalignment.
-%\nomenclature[S]{$L$}{Wheelbase}%
-%\nomenclature[S]{$R$}{Radius of rear axle arc}%
-Three simulations were conducted, with the steering axle and sensor position changed in each. The results are shown in \Figref{turnCoverage}, and are discussed below.
-
+The sensors need to be mounted in a configuration that will keep individual sensor elements aligned, so that corresponding ground information can be collated and analysed correctly. In the case of a sensor array, the mounting arrangement must also provide good sensor coverage, and ensure that the platform does not travel over unscanned area. In order to determine the best mounting location for the sensor mount, simulations were performed for front wheel and rear wheel steering (\Chapref{steeringSelection}). The results, presented in \Figref{turnCoverage}, show that rear wheel steering provides a tighter turning radius and better sensor coverage. Hence, the sensors will be mounted to the rear of the quad bike, which will be driven in reverse to provide real wheel steering capabilites. 
 \begin{figure}[ht]
 \centerline{
 \begin{tabular}{ccc}
-\subfloat[Trial 1]{\includegraphics[width=0.3\textwidth]{3-ConceptDesign/Detector_Coverage1.png}}
-& \subfloat[Trial 2]{\includegraphics[width=0.3\textwidth]{3-ConceptDesign/Detector_Coverage2.png}}
-& \subfloat[Trial 3]{\includegraphics[width=0.3\textwidth]{3-ConceptDesign/Detector_Coverage3.png}}\\
+\subfloat[Front wheel steering]{\includegraphics[width=0.3\textwidth]{3-ConceptDesign/Detector_Coverage1.png}}
+& \subfloat[Rear wheel steering]{\includegraphics[width=0.3\textwidth]{3-ConceptDesign/Detector_Coverage2.png}}
 \end{tabular}}
 \caption{Sensor coverage simulations} 
 \figlabel{turnCoverage}
 \end{figure}
-
-\begin{itemize}
-\item \textbf{Trial 1}: In first trial, represented in \Figref{turnCoverage} (a), front wheel steering is used with the sensor mount in front of the platform. The turning wheels are 1.5 metres in front of the focal point of the turn, and the sensor array is 0.5 metres in front of the turning wheels. It is evident from the figure that the coverage area does not form a tight loop, and that this area does not include the path of the vehicle. This is critical as it will mean the quad bike will be passing over ground that has not been scanned by the sensors.
-\item \textbf{Trial 2}: In the second trial, represented in \Figref{turnCoverage}(b), rear wheel steering is used (i.e. the quad bike is using front wheel steering in reverse) with the sensor mount at the front of the platform relative to the direction of travel (i.e. to the rear relative to the actual quad bike geometry). The turning wheels are 1.5 metres behind the focal point of the turn, and the sensor array is placed 0.5 metres in front of the focal axle. This trial shows a much tighter scanning loop than the previous test, and the path of the quad bike is entirely within the scanned area, which is the ideal case.
-\item \textbf{Trial 3}: The third trial, represented in \Figref{turnCoverage} (c), shows front wheel steering with the sensor mount placed behind the front wheels. The turning wheels are 1.5 metres in front of the focal axle as in Trial 1, but the sensing array is 1.5 metres behind the turning wheels, or between the two axles of the vehicle. Under this arrangement, an identical scanning path to Trial 2 is achieved using front-wheel steering, however this is not very useful since the wheels will pass over the region to be scanned before sensors.
-\end{itemize}
-
-This result can be demonstrated theoretically by using the geometric bicycle model \parencite{snider2009}. Referring to \Figref{geometricBicycleModel}, the turning radius of the rear wheel is $R$ and the turning radius of the front wheel is $\sqrt{R^2 + L^2}$, which is greater than $R$. If the sensor array was some distance $q$ in front of the front wheels, its turning radius would be $\sqrt{R^2 + [L+q]^2}$, greater yet again. However, if the sensing array was an equal distance $q$ behind the rear wheels (or front wheels if this was a rear steering arrangement) then the turning radius of the sensors would be $\sqrt{R^2 + q^2}$. From this it can be seen that to minimise the effective turning radius then $q$ should be minimised, i.e. rear wheel steering should be used. To achieve this, the sensor arrays will be mounted at the rear of the quad bike, which will be driven in reverse. 
-%\nomenclature[S]{$q$}{Sensor array distance from turning wheels}%
 
 \subsection{Initial designs}
 Knowing the basic sensor requirements, the selected material for the mount, and the mounting location on the quad bike, preliminary designs for sensor mount were developed. 
@@ -213,7 +195,54 @@ There are three support points at the rear of the quad bike to which the mount c
 
 A multi-beam structure is used rather than a single cantilever in order to reduce mass and improve torsional rigidity. The main beam rests on the tow hitch, and is made of wood. The two diagonal supports could also be made of wood, however metal supports provides a more rigid frame. The total length of the frame is 1.5 m, which allows enough length for the metal detector and GPR to be mounted with the required minimum proximity. 
 
-\textcolor{red}{Add details about the perspex case for the MD, different concepts for mounting the MD, design for GPR attachment. Nylon rods allow height of MD to be adjusted, same with a telescopic rod for the GPR. Wooden supports add torsional stiffness, preventing MD from moving as much compared to nylon rods alone. }
+The GPR came with a small attachment which could be fixed to the antenna heads (\Figref{GPRmount} (a)). This attachment had a threaded head, allowing it to screw into a standard diameter broom or mop handle. In order to operate the GPR as close to the ground as possible, it was decided that a telescopic arm should be used, which could be used to maintain contact between the GPR head and the ground at all times. To prevent damage from occuring to the GPR in case it hit an obstacle, the arm would be installed on a rotating section.
+
+\begin{figure}[ht]
+\centerline{
+\begin{tabular}{cc}
+\subfloat[GPR attachment]{\includegraphics[height=.4\textwidth]{3-ConceptDesign/GPRmount2.jpg}}
+& \subfloat[Telescopic arm and GPR attachment]{\includegraphics[height=.4\textwidth]{3-ConceptDesign/GPRmount.PNG}}
+\end{tabular}}
+\caption{Attachment of the GPR to the sensor mount}
+\figlabel{GPRmount}
+\end{figure}
+
+It was decided to encase the metal detector between two sheets of Perspex to protect the 
+Also allows for the metal detector to be mounted more easily
+Different concepts were developed for how to mount the metal detector. 
+Designs 1 through 3
+
+\begin{figure}[ht]
+\includegraphics[width=.5\textwidth]{3-ConceptDesign/MD.PNG}
+\centering
+\caption{Metal detector with Perspex covers}
+\figlabel{MD}
+\end{figure}
+
+\begin{table}[ht]
+\centering
+\caption{test}
+\tablabel{test}
+\begin{tabular}{r *5c}
+    \multicolumn{1}{r}{}  & \mcrot{1}{l}{45}{Design 1} & \mcrot{1}{l}{45}{Design 2} & \mcrot{1}{l}{45}{Design 3} & \mcrot{1}{l}{45}{Design 4}\\ \toprule 
+    Payload & 8 & 7 & 8 & 8\\ 
+    Terrain traversing & 9 & 9 & 9 & 9\\ 
+    Operational speed and acceleration & 8 & 7 & 10 & 8\\ 
+    Manoeuvrability and controllability & 7 & 6 & 9 & 7\\ 
+    Cost and availability & 6 & 5 & 4 & 10\\ 
+    Ease of automation & 4 & 4 & 5 & 8\\ 
+    Ease of transportation & 7 & 7 & 5 & 7\\ \midrule
+    \textbf{Total} & 70\% & 64\% & 71\% & 81\%\\ \bottomrule
+\end{tabular}
+\end{table}
+
+\textcolor{red}{Add details about the perspex case for the MD, different concepts for mounting the MD. Nylon rods allow height of MD to be adjusted. Wooden supports add torsional stiffness, preventing MD from moving as much compared to nylon rods alone. }
+
+The processes required in the construction the sensor mount consisted of wood work and metal work. Wooden dowels were used to join the sections together near the metal detector as no metallic objects were allowed near it. Supports for the metal detector were made out of four nylon rods that connect to horizontal wooden supports. Two acrylic boards were made to encase the metal detector to act as both a safety protector and a mounting device for the nylon rods. As the sensor was a loaned piece of equipment, no modifications or damages were allowed  resulting in the need for the acrylic case. The requirement for variation in the height of the sensor was satisfied by the use of the nylon rods, the length and subsequently the height of the sensor off the ground could be altered by varying the length of the rods and supports. Another benefit to using the nylon rods is that in the case that the quad bike were to hit something, the metal detector would not break, instead the nylon rods would shear resulting in no damage to the sensor.
+ shows the completed manufactured frame with the sensors attached. 
+
+
+
 
 \begin{figure}[ht]
 \centerline{
@@ -227,12 +256,9 @@ A multi-beam structure is used rather than a single cantilever in order to reduc
 \figlabel{MDdesigns}
 \end{figure}
 
-\begin{figure}[ht]
-\includegraphics[width=.5\textwidth]{3-ConceptDesign/MD.PNG}
-\centering
-\caption{Metal detector with Perspex covers}
-\figlabel{MD}
-\end{figure}
+
+
+
 
 \section{Subsystem integration}
 \textcolor{red}{Introduction for the section}

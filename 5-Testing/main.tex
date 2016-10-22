@@ -28,7 +28,7 @@ The purpose of sensor testing was to confirm that the algorithm produced in the 
 \Figref{testlane} shows the schematic of the test grid that landmines and clutter objects were buried. The target objects were scanned forwards from the APM to the AT and back six times to produce 12 sets of data. 
 
 \begin{figure}[ht]
-\includegraphics[width=0.6\textwidth]{5-Testing/testlane.png}
+\includegraphics[width=0.8\textwidth]{5-Testing/testlane.png}
 \centering
 \caption[Schematic of test grid]{Schematic of the test grid where landmines and clutter objects were buried}
 \figlabel{testlane}
@@ -210,10 +210,15 @@ The time required for the brake actuator to go from the chosen zero brake positi
 
 During testing, it was found that the throttle response was much faster in operational response and did benefit in the braking distance. Strategic braking locations were implemented into the navigation software to ensure that the path traversed was accurate. However, if the quad bike were to detect a landmine, there would be no time for the sensors and the throttle to slow the bike down in time. An overshoot of the desired stopping point was approximately 1 meter (see \secref{liveplatformnavigation}).
 
-The brake speed and thus actuator choice were insufficient for the required task and only proved useful in holding the position of the bike during navigation manoeuvres. With only engine braking, the quad was found to coast to a stop from operating speeds in 1.2 m. With the brakes activating, the quad bike was able to come to a complete stop in 1 meter. This exceeds the platform requirements resulting in the need for a faster brake actuator. A deluxe rod actuator type FA-HF-100-12-9" from Firgelli Automations is the recommended part for any future use. It provides similar dynamic force capabilities, 444 N compared with 578 N, and much faster actuator speeds, 76 mm/s compared with 12 mm/s. This actuator would take 0.4 seconds to engage the brake from 0 to 100\% intensity. At an operational speed of 5 km/hr the quad bike would stop in 0.5 meters.
+The brake speed and thus actuator choice were insufficient for the required task and only proved useful in holding the position of the bike during navigation manoeuvres. With only engine braking, the quad was found to coast to a stop from operating speeds in 1.2 m. With the brakes activating, the quad bike was able to come to a complete stop in 1 meter. This exceeds the platform requirements resulting in the need for a faster brake actuator. A deluxe rod actuator type FA-HF-100-12-9" from Firgelli Automations is the recommended part for any future use. It provides similar dynamic force capabilities, 444 N compared with 578 N, and much faster actuator speeds, 76 mm/s compared with 12 mm/s. This actuator would take 0.4 seconds to engage the brake from 0 to 100\% intensity. At an operational speed of 5 km/hr the quad bike would stop in 0.5 meters meeting the platform requirements.
 
 \subsection{Gear testing}
-The ability to control what gear the quad bike is in was essential to the control and navigation of the project. 36 testing cases were identified for the gear actuator setup. The actuator could lie in one of nine possible positions (\Figref{gearPositions}) which were identified based on the system set-up and had three possible final positions to move to, reverse, neutral and forwards as well as a null option for no actuator movement. 
+The ability to control what gear the quad bike is in was essential to the control and navigation of the project. The test objectives associated with the gears are to:
+\begin{enumerate}
+\item Determine the location of neutral, drive and reverse and determine all test cases associated with them
+\item Determine the linear potentiometer locations for best control and the engage zones and over extended zones for each gear
+\end{enumerate}
+36 testing cases were identified for the gear actuator setup. The actuator could lie in one of nine possible positions shown in \Figref{gearPositions}, which were identified based on the system set-up and had three possible final positions to move to, reverse, neutral and forwards as well as a null option for no actuator movement. 
 \begin{figure}[ht]
 \includegraphics[width=0.6\textwidth]{5-Testing/gearDiagram.png}
 \centering
@@ -221,9 +226,16 @@ The ability to control what gear the quad bike is in was essential to the contro
 \figlabel{gearPositions}
 \end{figure}
 \Chapref{gearTable} shows the final truth table. The gear actuator completed each of the 36 test cases. A number of safety checks were also implemented into the movement. The gear actuator should not move when the quad bike is in motion or when the throttle is engaged. This is to ensure that control of the quad bike gearing system is maintained at all times.  A check in the software was implemented to achieve this. Testing of the system resulted in fine tuning requirements of the gear position sensors. Initial tests resulted in the gear not mechanically being inserted even if it displayed it had on the quad bike display. This resulted in gearbox cogs grinding and the quad bike lurching forwards when the gear caught. Further tests lead to the adjustments in the Quad bike idle throttle position. Due to the idle being set too high, the centrifugal clutch would engage before the gear was properly selected leading to more gearbox grinding. Proper idle speeds resulted in smooth gear changes with no lurching or gearbox grinding.
+completion of the gear tests allow for the reliable control over the gears selected and thus the direction the quad bike is able to travel. This satisfies the platform requirements for forwards and reverse travel..
 
 \subsection{Steering testing}
-The steering of the quad bike was achieved through the use of a stepper motor. Upon power up, the position of the wheels would be the zero position and movement to the left or right was dictated by the angle sent to the stepper motor. From the user manual for the quad bike the lock out angle for the steering was 24 degrees, a limit for the steering angle was placed at 23 degrees to ensure no accidental structural damage occurred.
+The steering of the quad bike was achieved through the use of a stepper motor. The test objectives for the steering systems include:
+\begin{enumerate}
+\item Determine the functionality and control of the steering system 
+\item Determine the safe maximum steering angles
+\item Turn radius for the platform and navigation software
+\end{enumerate}
+Upon power up, the position of the wheels would be the zero position and movement to the left or right was dictated by the angle sent to the stepper motor. From the user manual for the quad bike the lock out angle for the steering was 24 degrees, a limit for the steering angle was placed at 23 degrees to ensure no accidental structural damage occurred due to over turning the wheel as the stepper motor had enough torque to damage components.
 
 Initial tests found that when the quad bike was on the support stand with the wheels free, the steering behaved as expected. However, when a resistive load was applied in the direction of the steering angle, the stepper motor would stop and reset. This would result in an incomplete steering angle as well as a new off centre zero position being selected by the stepper motor.  It was found that the required power for the stepper motor to operate to the required torque was 440 W whereas the power supply in the quad bike was only able to supply 44 W. This meant that under moderate loads the power supply couldn't supply the required current and failed. Replacement of the power supply with one of the correct power requirements resulted in steering angle control under operational loads.
 
@@ -234,19 +246,26 @@ The accurate turning radius for the platform was required for the navigation sof
 \tablabel{turnRadiusTests}
 \begin{tabular}{ll}
 \toprule
-Test & Turn circle radius \\ \midrule
+Test & Turn circle radius (m) \\ \midrule
 Manual forwards & 2.7 \\
 Manual reverse & 3.2 \\
 Powered forwards & 3.0 \\
 Powered reverse & 3.5 \\ \bottomrule
 \end{tabular}
 \end{table}
+completion of the steering tests allowed for repeatable directional control over the platform, both remotely and through the navigation software. This satisfies the platform constraint to have a controllable platform.  
 
 \subsection{Throttle testing}
-The throttle is controlled via a rotational servo. Initial approximation of the throttle travel had the servo with zero throttle and maximum throttle at servo positions 75 and 150 respectively. With the engine warmed up, incremental increases resulted in an actual throttle response range to be calculated. Due to the circular sweep of the servo arm and some cable play, the minimum throttle position before a throttle response was found to be 97 and a maximum throttle position of 110 was chosen for the servo. This number was chosen due to the wheel speed in both forwards and reverse gears varying due to gearing and so the maximum servo position would be required for cruise speed in both directions of motion. A higher servo position than this would never be required for the chosen operating scenario.
+The throttle is controlled via a rotational servo. the objectives for the throttle testing include:
+\begin{enumerate}
+\item Required servo travel for throttle response and forward motion of the quad bike
+\item Servo position for operational speed of 5 km/h
+\end{enumerate}
+Initial approximation of the throttle travel had the servo with zero throttle and maximum throttle at servo positions 75 and 150 respectively. With the engine warmed up, incremental increases resulted in an actual throttle response range to be calculated. Due to the circular sweep of the servo arm and some cable play, the minimum throttle position before a throttle response was found to be 97 and a maximum throttle position of 110 was chosen for the servo. This number was chosen due to the wheel speed in both forwards and reverse gears varying due to gearing and so the maximum servo position would be required for cruise speed in both directions of motion. A higher servo position than this would never be required for the chosen operating scenario.
 
 live tests on the ground found that the added load on the drive-train only resulted in the quad bike moving forward when the throttle was set to 70\% of the selected range of motion. once the quad bike started moving forwards and at operational speeds, a throttle of 60\% was required to maintain the speed. Different terrains would offer different drag coefficients on the wheels leading to different throttle responses to overcome the initial drag to get the quad bike in motion.
 
+Accurate control of the throttle allows for the speed of the platform to be controlled. The throttle can be used to accelerate the quad bike forwards as well as reduce it's speed. The required operational speed was achieved satisfying the platform requirement for an operational speed of 5 km/h. 
 \section{Positioning systems testing}
 Knowing the error distribution accurately is an important part of the Kalman Filter and is why it is able to output a very reliable position estimate. Each positioning system was tested and their errors analysed to be used in with Kalman Filter. 
 \subsection{GPS}
