@@ -57,12 +57,12 @@
 \usepackage[intoc]{nomencl}	% Nomenclature
 \usepackage{multicol}		% To split nomenclature into 2 columns
 \makenomenclature			
-\usepackage{etoolbox}		% Sort nomenclature into sections as well
-\renewcommand\nomgroup[1]{%
-\item[\bfseries
-\ifstrequal{#1}{A}{Acronyms}{ 	% First section of nomenclature 	
-\ifstrequal{#1}{S}{Symbols}{	% Second section
-{}}}]}
+% \usepackage{etoolbox}		% Sort nomenclature into sections as well
+% \renewcommand\nomgroup[1]{%
+% \item[\bfseries
+% \ifstrequal{#1}{A}{Acronyms}{ 	% First section of nomenclature 	
+% \ifstrequal{#1}{S}{Symbols}{	% Second section
+% {}}}]}
 
 \usepackage{bookmark}	 % For changing PDF bookmark settings
 \bookmarksetup{numbered} % Numbered bookmarks for sections	

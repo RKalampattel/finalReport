@@ -136,12 +136,7 @@ To allow for complex polygonal zones to be entered by the user, the original use
 \centering
 \caption{Output of preliminary waypoint generation algorithm} \figlabel{wayPointGeneration}
 \end{figure}
-The linescan algorithm searches for the nearest corner from the nearest convex polygon and begins plotting successive alternating scanlines through the polygon. After a convex polygon has been completely covered, the linescan algorithm connects to the next nearest corner of the next nearest polygon and the process continues. This system allows for multiple user defined regions to be connected and autonomously scanned in a single pass. Due to the way the region subdivision takes place the only radius of curvatures present are either zero (corner), or infinite (straight line) shown in \Figref{curvatures}.
-\begin{figure}[ht]
-\includegraphics[width=0.6\textwidth]{4-DetailedDesign/radiusOfCurvatures.png}
-\centering
-\caption{Radii of curvatures present in region subdivision \textcolor{red}{Maz didn't like this}} \figlabel{curvatures}
-\end{figure}
+The linescan algorithm searches for the nearest corner from the nearest convex polygon and begins plotting successive alternating scanlines through the polygon. After a convex polygon has been completely covered, the linescan algorithm connects to the next nearest corner of the next nearest polygon and the process continues. This system allows for multiple user defined regions to be connected and autonomously scanned in a single pass. Due to the way the region subdivision takes place the only radius of curvatures present are either zero (corner), or infinite (straight line).
 For low curvature path following Pure Pursuit is used (\secref{lowcurvefollowing}). Low curvature is defined as any path with a radius of curvature greater than that of the minimum turn radius of the quad bike, ie. a radius of curvature greater than 3.14 meters. The quad bike's maximum steering angle of 24 degrees restricts it from making any turn sharper than this. For a radius of curvature of zero, the pure pursuit method breaks down due to turn angle limitations on the quad bike and another turning method is required.
 
 \subsection{Low curvature path following}
@@ -191,9 +186,9 @@ The geometry of the simple turn is shown in \Figref{simpleTurnGeometry} where th
 \caption{Simple turn geometry} \figlabel{simpleTurnGeometry}
 \end{figure} 
 From \Figref{simpleTurnGeometry} we get:
-\begin{align*}
+\begin{align}
 d = R \tan{\frac{\alpha}{2}}\\
-\end{align*}
+\end{align}
 To minimise $d$, the turn radius, $R$, should be minimised. To minimise the turn radius the turn should be executed at maximum turn angle, or with $\delta$ equal to 24\degree. Mapping waypoints along the simple turn is covered further in \secref{pathsubdivision}.
 
 Geometry for the N-point turn is very similar to that of the simple turn and is shown in \Figref{nPointTurnGeometry}. Again, the solid bold line and dashed bold line represent the user defined path and the modified region of the path, respectively. The grey box is the quad bike position and the grey dashed lines are the scanned swathe from the sensor suite.
@@ -230,7 +225,7 @@ The goal of the path subdivision step is to provide intermediate, or 'goal', way
 \end{enumerate}
 Straight line segments are subdivided through linear interpolation and adding intermediate waypoints at some user defined distance. In the Virtual Platform, and for testing, a distance of 0.2 meters is used.
 
-For each of the turns, the algorithm to deduce the locations of the modified path is a fast, vector based process. For more detail on the algorithms used to achieve this see \chapref{pathSubdivisionDetail}. The final result of the subdivision process is shown in \Figref{pathSubdivisionBeforeAfter}.
+For each of the turns, the algorithm to deduce the locations of the modified path is a fast, vector based process. For more detail on the algorithms used to achieve this see \Chapref{pathSubdivisionDetail}. The final result of the subdivision process is shown in \Figref{pathSubdivisionBeforeAfter}.
 \begin{figure}[ht]
 \centerline{
 \begin{tabular}{cc}
@@ -246,7 +241,7 @@ For each of the turns, the algorithm to deduce the locations of the modified pat
 The requirements for the positioning system were set primarily by the virtual platform (see \secref{detailedVP}). Two requirements were defined for the design, low positional drift and high accuracy. The drift is the speed at which the cartesian position moves relative to the real quad bike position and accuracy is the distance error of the positioning system from the real quad position. The maximum allowable drift for the system was defined as 0.2 m/s, speeds exceeding this resulted in irregular steering motor fluctuations either side of the desired steering angle. The minimum allowable accuracy for the position was defined as 0.5 m as set in the project specifications.
 
 To satisfy these characteristics an Extended Kalman Filter (EKF) was employed to fuse the data from two positional sources, a GPS and IMU, and quad bike kinematic equations. It is capable of taking in to account the noise and inaccuracies from multiple measurements to produce an output which is likely to be more accurate than each of the individual readings. The EKF is defined as follows:
-\begin{align*}
+\begin{align}
 \shortintertext{Prediction Equations:}
 &\bar{\mu_t} = g(u_t, \mu_{t-1}) + \delta_t\\
 &\bar{\Sigma_t} = G_t\Sigma_tG_t^T + R_t\\
@@ -255,42 +250,42 @@ To satisfy these characteristics an Extended Kalman Filter (EKF) was employed to
 &K_t = \bar{\Sigma_t}H_t^T(H_t\bar{\Sigma_t}H_t^T + Q_t)^{-1}\\
 &\mu_t = \bar{\mu_t} + K_t(z_t-h(\bar{\mu_t}))\\
 &\Sigma_t = (I - K_tH_t)\bar{\Sigma_t}
-\end{align*}
-\textcolor{red}{\textbf{Label equations}} Where the state vector, $\mu_t$, holds the positional information ($x, y, \theta$) in a 3x1 matrix. The EKF is calculated in two steps, a prediction step and an update step. The prediction step uses kinematic equations to update the position of the quad bike based on physical observations. In the case of the quad bike, readings of the velocity, steering angle and time-step are taken, then geometry is used to calculate where its updated position would be. The update step then uses information obtained through sensors to correct for any error that may be present in the prediction step. This is achieved by modelling positions as a Gaussian distribution and weighting them according to their reliability. Gaussian distributions are shown as covariance matrices, $R_t$ for the prediction step and $Q_t$ for the update step, and the weighting is the Kalman Gain, $K_t$. The predicted covariance matrix, $\Sigma_t$, can then be determined. As we know the starting position and heading of the quad bike through user input, $\Sigma_t$ is initialised as a 3x3 zero matrix.
+\end{align}
+Where the state vector, $\mu_t$, holds the positional information ($x, y, \theta$) in a 3x1 matrix. The EKF is calculated in two steps, a prediction step and an update step. The prediction step uses kinematic equations to update the position of the quad bike based on physical observations. In the case of the quad bike, readings of the velocity, steering angle and time-step are taken, then geometry is used to calculate where its updated position would be. The update step then uses information obtained through sensors to correct for any error that may be present in the prediction step. This is achieved by modelling positions as a Gaussian distribution and weighting them according to their reliability. Gaussian distributions are shown as covariance matrices, $R_t$ for the prediction step and $Q_t$ for the update step, and the weighting is the Kalman Gain, $K_t$. The predicted covariance matrix, $\Sigma_t$, can then be determined. As we know the starting position and heading of the quad bike through user input, $\Sigma_t$ is initialised as a 3x3 zero matrix.
 
 The geometry of the kinematic equations used are shown in \Figref{quadKinematics}. From the geometry we get:
-\begin{align*}
-&R = \frac{L}{tan\ \delta}\\
+\begin{align}
+&R = \frac{L}{\tan\ \delta}\\
 &\phi = \frac{V\Delta t}{R}\\
-&y_q = Rsin\phi\\
-&x_q = R(1-cos\phi)
+&y_q = R\sin\phi\\
+&x_q = R(1-\cos\phi)
 \shortintertext{where $R$ is the turn radius, $L$ the wheelbase, $\delta$ the steer angle, $V$ the velocity, $\Delta t$ the time step, and ($x_q, y_q$) is the local change in position. Then in the global frame we have:}
-&x_G = y_qsin\theta + x_qcos\theta\\
-&y_G = y_qcos\theta + x_qsin\theta\\
+&x_G = y_q\sin\theta + x_q\cos\theta\\
+&y_G = y_q\cos\theta + x_q\sin\theta\\
 &\theta = \theta + \phi
-\end{align*}
+\end{align}
 \begin{figure}[ht]
 \includegraphics[width=0.5\textwidth]{4-DetailedDesign/quadbikeKinematics.png}
 \centering
-\caption{quad bike Kinematics} \figlabel{quadKinematics}
+\caption{Quad bike kinematics} \figlabel{quadKinematics}
 \end{figure} 
 so the prediction equation for $\bar{\mu_t},\ g(u_t,\ \mu_{t-1})$ becomes:
-\[
-g(u_t, \mu_{t-1}) =
+\begin{align}
+g(u_t, \mu_{t-1}) &=
 \begin{bmatrix}
-	x_G + y_qsin\theta + x_qcos\theta\\
-    y_G + y_qcos\theta + x_qsin\theta\\
+	x_G + y_q\sin\theta + x_q\cos\theta\\
+    y_G + y_q\cos\theta + x_q\sin\theta\\
     \theta + \phi
-\end{bmatrix}
-\textrm{, } G = \frac{\partial g_i}{\partial x_j} =
+\end{bmatrix},\\
+G = \frac{\partial g_i}{\partial x_j} &=
 \begin{bmatrix}
     1	&	0	&	y_qcos\theta - x_qsin\theta\\
     0	&	1	&	-y_qsin\theta - x_qcos\theta\\
     0	&	0	&	1
 \end{bmatrix}
-\]
+\end{align}
 This needs to be recalculated at each prediction step as well as it's Jacobin, $G$. The process noise for the prediction, $\delta_t$, is represented by a Gaussian distribution with covariance $R$.
-\[
+\begin{align}
 R =
 \begin{bmatrix}
     \sigma_x^2	&	0	&	0\\
@@ -303,28 +298,28 @@ R =
     0	&	(0.025 \times V\Delta t)^2	&	0\\
     0	&	0	&	(0.97 \times V\Delta t)^2
 \end{bmatrix}
-\]
+\end{align}
 Where $\sigma_x, \sigma_y, \textrm{and } \sigma_\theta$ are based on the accuracy of readings given by the velocity and steer angle sensors on the quad bike. Testing (see \secref{testingwheelencoder}) showed the error in distance, ($\sigma_x, \sigma_y$), to consistently vary within 0.5 m for every 20 m travelled, or 0.025 m/m. Since the heading is calculated based on the distance travelled and the turn angle, the error is also dependent on these factors. The steering motor is accurate to 1 degree of the true value due to initialisation and the error is maximum when at full lock due to the trigonometric function present in the turn angle equation below. The difference in turn angle at full lock when a 1 degree error is present is then:
-\begin{align*}
-&\Delta\phi = \frac{V\Delta t}{\frac{L}{tan\ 24}} - \frac{V\Delta t}{\frac{L}{tan\ 23}} = \frac{V\Delta t}{2.87} - \frac{V\Delta t}{3.02} = 0.017V\Delta t = 0.97\ \degree/m
-\end{align*}
+\begin{align}
+&\Delta\phi = \frac{V\Delta t}{\frac{L}{\tan\ 24}} - \frac{V\Delta t}{\frac{L}{tan\ 23}} = \frac{V\Delta t}{2.87} - \frac{V\Delta t}{3.02} = 0.017V\Delta t = 0.97\ \degree/m
+\end{align}
 Positional and angular data from the GPS and angular data from the IMU are observed. In the case of the GPS, the EKF inputs are the observation matrix and its Jacobian:
-\[
-h(\mu_t) = \mu_t = 
+\begin{align}
+h(\mu_t) = \mu_t &= 
 \begin{bmatrix}
     x_{gps}\\
     y_{gps}\\
     \theta_{gps}
-\end{bmatrix}
-\textrm{, } H = \frac{\partial h_i}{\partial x_j} = 
+\end{bmatrix}\\
+H = \frac{\partial h_i}{\partial x_j} &= 
 \begin{bmatrix}
     1	&	0	&	0\\
     0	&	1	&	0\\
     0	&	0	&	1
 \end{bmatrix}
-\]
-And an observation error modeled by a Gaussian distribution with covariance matrix $Q$:
-\[
+\end{align}
+And an observation error modelled by a Gaussian distribution with covariance matrix $Q$:
+\begin{align}
 Q = 
 \begin{bmatrix}
     \sigma_x^2	&	0	&	0\\
@@ -337,22 +332,22 @@ Q =
     0	&	0.4^2	&	0\\
     0	&	0	&	20^2
 \end{bmatrix}
-\]
+\end{align}
 \textcolor{red}{\textbf{label equations}} As the GPS drifts when stationary, positional data from this sensor is only used when the platform is at cruising speed, or when travelling in a forwards direction at 5 km/hr. Experimental data showed the GPS to be accurate within 0.4 m at this speed, and therefore the calculated heading accurate within ~20 degrees when measuring between subsequent points. This on its own is not accurate enough as it exceeds the desired positional accuracy.  
 
 Therefore, the IMU is also used to correct the heading. As only one element of the state vector is being updated the matrix math is set up slightly differently. Experimental data shows the IMU has an error of approximately 2 degrees per 360 degrees travelled.
-\[
-h(\mu_t) = \mu_t = 
+\begin{align}
+h(\mu_t) = \mu_t &= 
 \begin{bmatrix}
     \theta + \Delta \theta_{imu}
-\end{bmatrix}
-\textrm{, } H = \frac{\partial h_i}{\partial x_j} = 
+\end{bmatrix}\\
+H = \frac{\partial h_i}{\partial x_j} &= 
 \begin{bmatrix}
     0	&	0	&	1
 \end{bmatrix}
-\]
+\end{align}
 And an observation error modeled by a Gaussian distribution with covariance matrix $Q$:
-\[
+\begin{align}
 Q = 
 \begin{bmatrix}
     \sigma_\theta^2
@@ -361,7 +356,7 @@ Q =
 \begin{bmatrix}
     (\frac{2}{360}\Delta \theta_{imu})^2
 \end{bmatrix}
-\]
+\end{align}
 With the inputs calculated a new estimate covariance, $\Sigma_t$, and position estimate, $\mu_t$, is outputted to be used in the next iteration of the algorithm. 
 
 \section{Automation}
@@ -477,7 +472,7 @@ The processes required in the construction the sensor mount consisted of wood wo
 
 The installation of the GPR had to fulfil the requirements outlined for the correct operation of the sensor. The main requirement being the operating distance off the ground. A telescoping mounting arm was utilised whereby any changes in the slope of the terrain would allow for the GPR head to maintain within contact with the ground satisfying the sensors operating requirement. This was attached in line with the central metal detector panel through the use of a PVC pipe to reduce misalignment that would be present during turns. With the pipe being fixed to the frame using silicon glue, the flexibility of the join would ensure that the GPR would not get damaged if it were to hit a object, as the join would flex and bend instead of the load being felt by the sensor.  
   
-\subsubsection{Quad bike Vibration testing}
+\subsubsection{Quad bike vibration testing}
 Accelerometers were used to measure the amount of vibration present on the quad bike and the sensor frame during operation. Measurements from inside the storage compartment and the end of the frame were taken through a variation of throttle positions. \Figref{Vibrationtest} shows the vibrational frequencies experienced by the frame due to the quad bike vibrations. It can be seen that there is a peak in vibrational frequency at roughly 15 Hz which corresponds to the calculated fundamental frequency for the frame. Figure XX shows the vibrational frequency for the quad bike that excites the frame. Due to the accelerometer    
 
 \begin{figure}[ht]

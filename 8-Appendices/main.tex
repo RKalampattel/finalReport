@@ -292,6 +292,36 @@ While bamboo is the best material to use for the sensor mount frame based on los
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\chapter{Steering Selection}
+\chaplabel{steeringSelection}
+Under the assumption that the quad bike uses the Ackermann steering geometry, i.e. each wheel has it's own pivot during turns, the simplified, 2-wheel model can be used to assess the location of the sensors relative to the quad bike. The simplified model provides the following geometric relationship,
+\begin{align}
+\tan(\delta) = \frac{L}{R}.
+\end{align}
+Here, $\delta$ is the steering angle, $L$ is the wheelbase and $R$ is the radius of the arc that the centre of the rear axle will follow. This simplification has been used to perform simulations on the sensor coverage and sensor element misalignment.
+%\nomenclature[S]{$L$}{Wheelbase}%
+%\nomenclature[S]{$R$}{Radius of rear axle arc}%
+Three simulations were conducted, with the steering axle and sensor position changed in each. The results are shown in Figure D.1, and are discussed below.
+
+\begin{figure}[ht]
+\centerline{
+\begin{tabular}{ccc}
+\subfloat[Trial 1]{\includegraphics[width=0.3\textwidth]{3-ConceptDesign/Detector_Coverage1.png}}
+& \subfloat[Trial 2]{\includegraphics[width=0.3\textwidth]{3-ConceptDesign/Detector_Coverage2.png}}
+& \subfloat[Trial 3]{\includegraphics[width=0.3\textwidth]{3-ConceptDesign/Detector_Coverage3.png}}\\
+\end{tabular}}
+\caption*{\textbf{Figure D.1:} Sensor coverage simulations} 
+\end{figure}
+
+\begin{itemize}
+\item \textbf{Trial 1}: In first trial, represented in Figure D.1 (a), front wheel steering is used with the sensor mount in front of the platform. The turning wheels are 1.5 metres in front of the focal point of the turn, and the sensor array is 0.5 metres in front of the turning wheels. It is evident from the figure that the coverage area does not form a tight loop, and that this area does not include the path of the vehicle. This is critical as it will mean the quad bike will be passing over ground that has not been scanned by the sensors.
+\item \textbf{Trial 2}: In the second trial, represented in Figure D.1 (b), rear wheel steering is used (i.e. the quad bike is using front wheel steering in reverse) with the sensor mount at the front of the platform relative to the direction of travel (i.e. to the rear relative to the actual quad bike geometry). The turning wheels are 1.5 metres behind the focal point of the turn, and the sensor array is placed 0.5 metres in front of the focal axle. This trial shows a much tighter scanning loop than the previous test, and the path of the quad bike is entirely within the scanned area, which is the ideal case.
+\item \textbf{Trial 3}: The third trial, represented in Figure D.1 (c), shows front wheel steering with the sensor mount placed behind the front wheels. The turning wheels are 1.5 metres in front of the focal axle as in Trial 1, but the sensing array is 1.5 metres behind the turning wheels, or between the two axles of the vehicle. Under this arrangement, an identical scanning path to Trial 2 is achieved using front-wheel steering, however this is not very useful since the wheels will pass over the region to be scanned before sensors.
+\end{itemize}
+
+This result can be demonstrated theoretically by using the geometric bicycle model \parencite{snider2009}. Referring to \Figref{geometricBicycleModel}, the turning radius of the rear wheel is $R$ and the turning radius of the front wheel is $\sqrt{R^2 + L^2}$, which is greater than $R$. If the sensor array was some distance $q$ in front of the front wheels, its turning radius would be $\sqrt{R^2 + [L+q]^2}$, greater yet again. However, if the sensing array was an equal distance $q$ behind the rear wheels (or front wheels if this was a rear steering arrangement) then the turning radius of the sensors would be $\sqrt{R^2 + q^2}$. From this it can be seen that to minimise the effective turning radius then $q$ should be minimised, i.e. rear wheel steering should be used. 
+
+
 \chapter{Path Subdivision Detail}
 \chaplabel{pathSubdivisionDetail}
 The path subdivision algorithm cycles through the user or region defined path completing two stages of subdivision at each point.
@@ -300,9 +330,9 @@ The path subdivision algorithm cycles through the user or region defined path co
 \item If there is a following line segment, conduct a turn and align with it
 \end{enumerate}
 For the point $P_1 = (x_1, y_1)$, we first subdivide the line segment to the next point $P_2 = (x_2, y_2)$, shown in step 2 of \Figref{simpleTurnProgression}. This is done by doing a linear interpolation between the two points to find a series of intermediate waypoints $P_i = (x_i, y_i)$:
-\begin{align*}
+\begin{align}
 P_i = |P_2 - P_1| \times k \times j
-\end{align*}
+\end{align}
 where $k$ is the distance between intermediate waypoints and j is incremented from 0 to completion of the line segment.
 \begin{figure}[ht]
 \centering
@@ -311,32 +341,34 @@ where $k$ is the distance between intermediate waypoints and j is incremented fr
 \figlabel{simpleTurnProgression}
 \end{figure}
 For a simple turn, a number of intermediate points from the first line subdivision are removed up to a distance $d$ from the turn point, $P_2$. Where
-\begin{align*}
+\begin{align}
 d = R \tan \frac{\phi}{2}
-\end{align*}
+\end{align}
 from \secref{turningspecifiedangle}. The centre point of the turn circle can then be found based on the last intermediate waypoint, $P_i$, and a vector perpendicular to the current path segment with a length equal to the turn radius, 3.14m. The vector is then incrementally rotated around $P_c$ to give the correct distance between waypoints. The required change in rotation angle at each increment is given by the following formula:
-\begin{align*}
-\Delta angle = \frac{distance\ between\ turn\ waypoints}{turn\ radius} = \frac{0.2}{3.14} = 0.064\ rads
-\end{align*}
+\begin{align}
+\Delta \textrm{angle} = \frac{\textrm{distance between turn waypoints}}{\textrm{turn radius}} = \frac{0.2}{3.14} = 0.064\ \textrm{rads}
+\end{align}
 Incrementing stops once the vector has been rotated by a total angle equal to $\phi$. The subdivision process then continues from stage 1, by linearly subdividing the path from $P_2$ to $P_3$.
 
 In the event of a large turn angle where an N-point turn is required, only stage 2 of the subdivision process is changed. Once the linear interpolation of waypoints is complete, some waypoints are either added or removed to the end of the line segment to aid in the alignment of the turn with the next line segment. 
 \begin{figure}[ht]
 \centering
 \includegraphics[width=0.9\textwidth]{8-Appendices/nPointTurnProgression.png}
-\caption[Simple turn progression]{N-point turn progression}
+\caption[N-point turn progression]{N-point turn progression}
 \figlabel{nPointTurnProgression}
 \end{figure}
-The distance added or removed, $\Delta h$, is based on the turn angle and is found from the geometrically determined template, \Tabref{npointTurnTemplate}, shown below.
+The distance added or removed, $\Delta h$, is based on the turn angle and is found from the geometrically determined template, Table E.1, shown below.
 \begin{table} [ht]
 \centering
-\begin{tabular} {r | c c c c c c c c}
-Turn point & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\ \hline
+\caption*{\textbf{Table E.1:} N-point turn template}
+\begin{tabular} {r c c c c c c c c}
+\toprule
+Turn point & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\ \midrule
 Heading (\degree) & 0 & 26.7 & 60.5 & 77.3 & 95.6 & 113.9 & 130.8 & 180 \\
-$\Delta h$ required (m) & 0 & 1.46 & 0.09 & 0.44 & 0.37 & 0.11 & 0.62 & -1.18 \\
+$\Delta h$ required (m) & 0 & 1.46 & 0.09 & 0.44 & 0.37 & 0.11 & 0.62 & -1.18 \\ \bottomrule
 \end{tabular}
 \end{table}
-Similar to the simple turn, the centre point, $P_c$, of the turn arc is be found based on the turn radius, $R$, and is perpendicular to the current line segment. Arc points are added by incrementing the vector by the angle, $\Delta angle$. Incrementing stops once the vector has been rotated by a total angle equal to the difference between the current turn point and the next turn point, in the case of \Figref{nPointTurnProgression} part 4, we are at the first turn point so the vector is rotated, $(26.7 - 0)\degree = 26.7\degree$, in total. If at this point the desired turn angle has not been reached, additional arcs are added to the path in the same fashion as just described. Stage 1 is then executed again for the next straight line segment.
+Similar to the simple turn, the centre point, $P_c$, of the turn arc is be found based on the turn radius, $R$, and is perpendicular to the current line segment. Arc points are added by incrementing the vector by $\Delta \textrm{angle}$. Incrementing stops once the vector has been rotated by a total angle equal to the difference between the current turn point and the next turn point, in the case of \Figref{nPointTurnProgression} part 4, we are at the first turn point so the vector is rotated, $(26.7 - 0)\degree = 26.7\degree$, in total. If at this point the desired turn angle has not been reached, additional arcs are added to the path in the same fashion as just described. Stage 1 is then executed again for the next straight line segment.
 
 \chapter{Arduino Code Chart}
 \chaplabel{arduinoCodeChart}
@@ -455,56 +487,50 @@ The tests will be divided into subsystems of the quad bike to ensure that indivi
 % Use this counter for quad bike
 \begin{qb}
 \textbf{Identify and confirm function of electronic components}\\
-\textbf{Objective:} Test that all quad bike electronics are functioning. Identify, replace, and record any broken devices and upgrade any obsolete systems. Determine, label, and record all subsystem electronic pins for future reference.
+\textbf{Objective:} Test that all quad bike electronics are functioning. Identify, replace, and record any broken devices and upgrade any obsolete systems. Determine, label, and record all subsystem electronic pins for future reference in the event that they are removed and replaced. Correctly working electronics will allow for more reliable operation of the platform.
 
 \end{qb}
 
 %\item Confirm the startup and shutdown procedure 
 \begin{qb}
 \textbf{Confirm the startup and shutdown procedure}\\
-\textbf{Objective:} Test that the Quad bike is able to be started and that the engine runs smoothly and continuously before turning it off through both remote software and a local physical kill switch.
+\textbf{Objective:} Test that the Quad bike is able to be started and that the engine runs smoothly and continuously before turning it off. All emergency stops, both physical and electronic will be tested to ensure that they turn off the quad bike as required. This is needed for the safety of people in close proximity to the platform in the event of a malfunction.  
 
 \end{qb}
 
 \begin{qb}
 \textbf{Determine functionality of the steering actuation}\\
-\textbf{Objective:} Test steering actuation and control. Determine if stepper motor, or limiting switches are adequate. Test controllability and speed of wheel movement as well as maximum turn angles in each direction.
+\textbf{Objective:} Test steering actuation and control. Determine if stepper motor, or limiting switches are adequate. Test controllability and speed of wheel movement as well as maximum turn angles in each direction. Accurate knowledge of the steering motion will allow for more accurate navigation and control. Knowing the exact steering angles and if the motions are repeatable is important for the navigational software as it will have effects on the position. 
 
 \end{qb}
 
 \begin{qb}
 \textbf{Determine functionality of the brake actuation}\\
-\textbf{Objective:} Test brake actuation to ensure that it is functioning correctly. Determine if a faster brake actuator is needed to meet platform stopping requirements. Conduct stationary tests before commencing dynamic tests up to operational speeds.
+\textbf{Objective:} Test brake actuation to ensure that it is functioning correctly. Determine if a faster brake actuator is needed to meet platform stopping requirements. Conduct stationary tests before commencing dynamic tests up to operational speeds. The brake is important to the control and navigation of the platform. Braking authority will allow for tighter manoeuvres and bring the platform to a stop before rolling over a detected landmine. 
 
 \end{qb}
 
 \begin{qb}
 \textbf{Determine functionality of the throttle actuation}\\
-\textbf{Objective:} Test throttle actuation to ensure that the actuator is working correctly. First test in neutral and increase engine throttle remotely, then conduct straight line tests at slow speeds.
+\textbf{Objective:} Test throttle actuation to ensure that the actuator is working correctly. First test in neutral and increase engine throttle remotely, then conduct straight line tests at slow speeds. The required throttle ranges for forwards and reverse motion will be required. Accurate throttle positioning will ensure the quad bike is able to operate at a constant and repeatable speed. Control over the throttle will allow for the platform to come to a stop even without brakes.
 
 \end{qb}
 
 \begin{qb}
 \textbf{Determine functionality of the gear actuation}\\
-\textbf{Objective:} Test gear actuator and that the  correct gear is being selected.
+\textbf{Objective:} Test gear actuator and that the  correct gear is being selected. Find the limiting range of motion defined by the linear potentiometers so that the gear selecting mechanism is not damaged by the actuator. This will allow for forwards and reverse motion to be achievable as defined in the platform and navigation requirements.  
 
 \end{qb}
 
 \begin{qb}
 \textbf{Identify and evaluate GPS output units}\\
-\textbf{Objective:} Test GPS and evaluate output units and location accuracy for use in the central computer. 
-
-\end{qb}
-
-\begin{qb}
-\textbf{Identify and evaluate GPS output units}\\
-\textbf{Objective:} Test GPS and evaluate output units and location accuracy for use in the central computer. 
+\textbf{Objective:} Test GPS and evaluate output units and location accuracy for use in the central computer. Test GPS data for a stationary object to find the spread of the points and compare to the spread of data for a moving object. This will allow for the development of a more accurate positioning system through the use of a Kalmen filter.
 
 \end{qb}
 
 \begin{qb}
 \textbf{Determine functionality and accuracy of the wheel encoder}\\
-\textbf{Objective:} Check that wheel encoder is working correctly and that it is accurate and corresponds with electronic output on quad bike display unit.
+\textbf{Objective:} Check that wheel encoder is working correctly and that it is accurate and corresponds with electronic output on quad bike display unit. Check that the speed and subsequent distances travelled calculated through the wheel encoder are accurate and repeatable. The accuracy of the wheel encoder has large effects on the of the navigation and positioning systems. Knowing the exact speed and distances travelled are important to the completion of the project as they have effects on the automation. 
 
 \end{qb}
 %\item Determine functionality of the steering actuation
@@ -524,27 +550,14 @@ Testing of the system as a whole is required to carried out in order to determin
 \todo[inline]{Peter, please add further details in the objective section}
 
 \begin{qb}
-\textbf{Determine required throttle percentage for ground motion}\\
-\textbf{Objective:} 
+\textbf{Determine required throttle percentages for ground motion and operational speed}\\
+\textbf{Objective:} Find the throttle percentages required to get the quad bike moving forwards and maintain a constant speed of 5 km/h. Gradually increase the throttle by 5\% increments until it starts moving forwards. Increase throttle until the quad bike is maintaining a constant speed of 5 km/h forwards. These will be the throttle ranges for motion. This is important to the navigation and potion software as accurate knowledge of the control systems for the quad bike is necessary for automation. 
 
 \end{qb}
 
-%\item Determine throttle motions required for operational speed
-\begin{qb}
-\textbf{ Determine throttle motions required for operational speed}\\
-\textbf{Objective:} 
-
-\end{qb}
-%\item Determine braking delay from activation to actual brake intensity being experienced 
 \begin{qb}
 \textbf{Determine braking delay from activation to actual brake intensity being experienced}\\
-\textbf{Objective:} 
-
-\end{qb}
-%\item Determine braking distance
-\begin{qb}
-\textbf{Determine braking distance}\\
-\textbf{Objective:} 
+\textbf{Objective:} Determine the brake delay in actuation from the brake command being sent, to the quad bike experiencing actual braking force. Determine the use case for the brakes for the navigation software and the times when it will be required.
 
 \end{qb}
 
@@ -557,7 +570,7 @@ Testing of the system as a whole is required to carried out in order to determin
 %\item Test remote control functions 
 \begin{qb}
 \textbf{Test remote control functions}\\
-\textbf{Objectives:}
+\textbf{Objectives:}The ability to control the platform remotely will lead to easy implementation of automation and navigation software. This will require command inputs from a remote tablet and the quad bike outputs will be measured. Each subsystems will be tested individually to ensure their correct functionality before live tests on the ground. Tests with the virtual platform will also be completed to check that the correct commands are being sent to the quad bike.  
 \end{qb}
 %\end{enumerate}
 
@@ -585,8 +598,6 @@ Testing of the navigation software is the final step. This incorporates all the 
 
 \end{qb}
 
-
-
 % \end{enumerate}
 
 \subsubsection{Ground penetrating radar}
@@ -595,36 +606,35 @@ The ground penetrating radar’s characteristics and data generated will verify 
 % \item Identify the GPR frequency used to produce the optimum strength and quality of signal 
 \begin{gpr}
 \textbf{Identify GPR frequency to be used}\\
-Confirm which of the three GPR frequency heads to use between 800 MHz, 1.4 GHz and 2 GHz. Test is also to confirm that the resolution quality changes depending on the frequency of the signal. 
+\textbf{Objectives:} Confirm which of the three GPR frequency heads to use between 800 MHz, 1.4 GHz and 2 GHz. Test is also to confirm that the resolution quality changes depending on the frequency of the signal. 
 \end{gpr}
-
 % \item Identify the signals generated by different types of materials
 \begin{gpr}
 \textbf{Identify the signals generated by different types of materials}\\
-Confirm that different materials affect the amplitude of signals reflected by the object to the GPR. Confirm the signatures of the replica landmines and clutter objects.
+\textbf{Objectives:} Confirm that different materials affect the amplitude of signals reflected by the object to the GPR. Confirm the signatures of the replica landmines and clutter objects.
 \end{gpr}
 
 % \item Identify the depth limit at which the GPR can detect an object
 \begin{gpr}
 \textbf{Test objects at different depths}\\
-Confirm the sensitivity of signals received based on target depth. Confirm for three different increasing depths.
+\textbf{Objectives:} Confirm the sensitivity of signals received based on target depth. Confirm for three different increasing depths.
 \end{gpr}
 % \item Identify how object data signals change with soil types
 \begin{gpr}
 \textbf{Identify how object data signals change with soil types}\\
-Confirm that for each different types of soil, the signal strength (resolution) reflected changes and penetration ability may be hindered. 
+\textbf{Objectives:} Confirm that for each different types of soil, the signal strength (resolution) reflected changes and penetration ability may be hindered. 
 \end{gpr}
 
 \begin{gpr}
 \textbf{Confirms functionality of GPR signal processing algorithm}\\
-The data from the GPR is processed using the designed algorithm and stored in the database to define output metrics. 
+\textbf{Objectives:} The data from the GPR is processed using the designed algorithm and stored in the database to define output metrics. 
 \end{gpr}
 
 % \item Identify how environmental conditions affect signals 
 % \end{enumerate}
 
 \medskip\noindent
-The tests will be completed outdoors with the GPR head and scanned over the objects. Manual scanning will be completed to ensure consistent speed over the objects. 
+The tests will be completed outdoors with the GPR head and scanned over the objects. Manual scanning will be completed to ensure consistent speed over the objects. Further details of the test environment will be completed in the 
 
 \medskip\noindent
 Input parameters will be identified for each test case to provide consistency in data produced. These parameters include, and are not limited to: the initial settings as set by the SIROPULSE II program as defined in the user manual, different types of objects, type of soil and depths targets are buried.
@@ -733,14 +743,22 @@ The people responsible for the tests are the project safety officer, the enginee
 \section{Test procedures}
 Every test case listed for each system and their relevant procedures are outlined in a separate testing procedures document.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Sensor Test Results}
-\chaplabel{sensorResults}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
 \chapter{Gear Actuator Truth Table}
-\textcolor{red}{Add description of the gear actuator truth table}
+
+A risk assessment of the gear actuation system revealed that there was a high risk of significant damage being caused to components on the quad bike in the event that the actuator was allowed to extend beyond operational limits. These limits could not be firmly restricted with mechanical guards, and the existing system allowed for limits to be set in software by interpreting the position of the gear actuator by reading the positions of two linear potentiometers. 
+
+Due to the high consequence of failure identified in the risk assessment, a state system was determined to be required to mitigate this risk. Under this scheme, each cycle of the code loop would update the control signals sent to the gear actuator based on the desired position and the current position as described by the potentiometers. This system is very robust against programmer error, as there is only a single position in the code where the input to the actuator is permitted to be changed. It also ensures that the actuator is continually checked to ensure that it is not accidentally left engaged without checking for over extension.
+
+The truth table presented below details the actions that this state based system should take, based on all possible permutations of the inputs. Development of a truth table permits fast development and debugging of any issues, and was a crucial component in mitigating the risk of operating the gear actuator.
+
+
+%\textcolor{red}{Add description of the gear actuator truth table}
 \chaplabel{gearTable}
 \includepdf[pages={1-}]{8-Appendices/gearTruthTable.pdf}
+
+
 
 \chapter{Work Breakdown Structure}
 \chaplabel{WBS}
@@ -856,15 +874,15 @@ The application software allows an operator to remotely view the progress of the
 
 \chapter{Gantt Chart}
 \chaplabel{ganttChart}
-The Gantt chart provides an overview of the timeline for the entire project. Major tasks are listed, as well as key milestones and deliverables. Tasks are assigned to team members, and progress on tasks is monitored at weekly meetings. The Gantt chart that was provided with the project charter, and the most up-to-date version of the Gantt chart, are both included on the following pages.
+The Gantt chart provides an overview of the timeline for the entire project. Major tasks are listed, as well as key milestones and deliverables. Tasks are assigned to team members, and progress on tasks is monitored at weekly meetings. Three Gantt charts are included in this appendix, the Gantt chart provided with the project charter, the Gantt chart provided with the preliminary report, and the most up-to-date version of the Gantt chart.
 \includepdf[pages={1-},landscape]{8-Appendices/oldGantt.pdf}
 \includepdf[pages={1-},landscape]{8-Appendices/newGantt.pdf}
+\includepdf[pages={1-},landscape]{8-Appendices/finalGantt.pdf}
 
 \chapter{Safety Documents}
 \chaplabel{riskAss}
 As part of the formal risk management for the project, a risk assessment must be carried out using the RMSS system, and a safe operating  procedure (SOP) must be developed. Both of these items, as discussed in \secref{safety}, are attached on the following pages.
-\includepdf{8-Appendices/residualRiskMatrix.pdf}
-\includepdf[pages={1,3},landscape]{8-Appendices/riskRegister.pdf}
+\includepdf[pages={1-},landscape]{8-Appendices/riskRegister.pdf}
 \includepdf[pages={1-}]{8-Appendices/SOP.pdf}
 
 \chapter{Risks of Project Failure}
@@ -1020,7 +1038,7 @@ A detailed breakdown of the budget is provided in the following tables. \Tabref{
 
 
 \nohyphens{	% Stop hyphenation in table
-\begin{longtable}{L{0.22\textwidth-2\tabcolsep}*{5}{L{0.12\textwidth-2\tabcolsep}} L{0.13\textwidth-2\tabcolsep}}
+\begin{longtable}{L{0.2\textwidth-2\tabcolsep}*{5}{L{0.13\textwidth-2\tabcolsep}} L{0.15\textwidth-2\tabcolsep}}
 \caption{Breakdown of hours and costs} \tablabel{labourHours}\\ \toprule
 \textbf{Team Member} & \textbf{Harrison} & \textbf{Jono} & \textbf{Peter} & \textbf{Racquel} & \textbf{Rahul} & \textbf{Total} \\ \midrule\endfirsthead 
 \caption[]{Breakdown of Hours and Cost (continued)}\\ \toprule
