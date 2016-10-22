@@ -136,19 +136,19 @@ During scanning of an area, whenever the platform reaches a boundary, it will be
 
 \subsection{Positioning}
 The positioning system is used to determine the location of the quad bike for navigation, and to send that data to the operator's handheld device when a landmine is detected. Real time positioning in remote locations and accuracy to within 0.5 m is required from the system to meet the needs of the scenario of operation. A number of options were looked at when designing the positioning system including Local Positioning Systems (LPS), Global Positioning Systems (GPS), and dead reckoning techniques.
-\nomenclature[A]{GPS}{Global Positioning System}%
-\nomenclature[A]{LPS}{Local Positioning System}%
+\nomenclature{GPS}{Global Positioning System}%
+\nomenclature{LPS}{Local Positioning System}%
 
 LPS use three or more signalling beacons of known location to determine a position through triangulation. These systems can be highly accurate, however they require the signalling beacons to be stationed near the area of interest. Transporting and setting up at least three signalling beacons is a time consuming process and is particularly inefficient when numerous areas of interest are required to be scanned. Since personnel are needed to place the beacons in potentially dangerous area, this method was not considered any further. 
 
 Similar to LPS, GPS measurements are very accurate. However, due to the distance between receivers and a number of linked effects, the positional data is very noisy, providing location reliably within only 4 metres. Better accuracy can be achieved by using correction techniques, such as Real Time Kinematics (RTK), which can provide sub-centimetre accuracy. Similar to LPS, correction methods like RTK require base locations within 15 kilometres of the GPS and can take many seconds to receive a fix, both of which make it difficult to achieve real time positioning in remote areas.
-\nomenclature[A]{RTK}{Real Time Kinematics}%
+\nomenclature{RTK}{Real Time Kinematics}%
 
 Dead reckoning techniques calculate the current position by advancing a previous position, based on a known speed and heading over some time step. These techniques are highly prone to cumulative error known as drift. A widely used application of dead reckoning is in Inertial Measurement Units (IMU), where accelerometers and gyroscopes are used to determine linear and rotational accelerations and thus have information to update position. This method is able to provide positional data in real time, however over longer time periods the accuracy becomes unreliable.
-\nomenclature[A]{IMU}{Inertial Measurement Unit}%
+\nomenclature{IMU}{Inertial Measurement Unit}%
 
 To correct for drift from dead reckoning techniques, GPS aided Inertial Navigation Systems (INS) can be used. Accurate but noisy data from a GPS is constantly fed into an estimation algorithm alongside a smooth, but error accumulating position to correct for the drift. Kalman Filtering is one such technique which is used to combine information from various sensors to provide a much more reliable estimate of position.
-\nomenclature[A]{INS}{Inertial Navigation System}%
+\nomenclature{INS}{Inertial Navigation System}%
 
 \section{Sensor mount}
 \seclabel{sensormount}
@@ -166,8 +166,8 @@ The main requirement for the mount was that a non-metallic material was used, to
 
 While bamboo is the best material to use for the sensor mount frame based on it's vibrational characteristics and stiffness alone, it is difficult to obtain in Australia in structural form. Wood is the next best option, being very easy to work with and readily available. GFRP has a similar stiffness to wood but with worse damping properties and a higher density. On the other hand, CFRP has a much better stiffness however it sacrifices damping properties and density. The two composites are also more difficult to work with, and are more expensive. Hence, the best material to use for the sensor mount is wood. In order to meet the stiffness requirements, structural grade timber will be used. 
  
-\nomenclature[A]{CFRP}{Carbon Fibre Reinforced Polymer}%
-\nomenclature[A]{GFRP}{Glass Fibre Reinforced Polymer}%
+\nomenclature{CFRP}{Carbon Fibre Reinforced Polymer}%
+\nomenclature{GFRP}{Glass Fibre Reinforced Polymer}%
 
 \subsection{Steering focal point}
 The sensors need to be mounted in a configuration that will keep individual sensor elements aligned, so that corresponding ground information can be collated and analysed correctly. In the case of a sensor array, the mounting arrangement must also provide good sensor coverage, and ensure that the platform does not travel over unscanned area. In order to determine the best mounting location for the sensor mount, simulations were performed for front wheel and rear wheel steering (\Chapref{steeringSelection}). The results, presented in \Figref{turnCoverage}, show that rear wheel steering provides a tighter turning radius and better sensor coverage. Hence, the sensors will be mounted to the rear of the quad bike, which will be driven in reverse to provide real wheel steering capabilites. 
