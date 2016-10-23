@@ -19,7 +19,7 @@ The result of this was improved reliability in positioning of both the steering 
 New linear potentiometers were also installed for the gear selector to replace damaged units, returning functionality to this system. 
 The DragonBoard control unit was replaced with a more modern Arduino microcontroller, and the entire system was rewired. 
 This provided the capability for connection of the newer GPS and inertial sensors, and allowed more rapid development of the new control software.
-All subsystems were tested independently, and after the development of the tablet application simultaneous tests were successfully conducted resulting in full remote controllability.
+All subsystems were tested independently, and after the development of the tablet application simultaneous tests were successfully conducted, resulting in full remote controllability.
 
  
 % Necessary systems for control, such as throttle, steering, gear and brake actuation, and communication will be implemented on the platform. Each system will be tested separately to ensure that it functions correctly, meets the project requirements, and is safe to operate remotely. Once all systems are operating independently, simultaneous operation shall be conducted with the aim to maintain controllability of the platform at all instances. Successful completion of this objective, once the platform is able to be operated remotely, is the first step towards full platform automation.   
@@ -32,7 +32,7 @@ The resulting system was a navigation system that could successfully follow a de
 
 \item \textbf{Automatic traversal of a user defined path or region}\\ 
 The developed software allows the operator to specify the path of the quad bike in two ways, either by selecting waypoints which define a path, or by selecting points which define the boundaries of a region. If the latter is chosen, the navigation software subdivides the region and generates a path to scan the area systematically. 
-This delivered system is intuitive for an operator to use and allows for a path to be defined quickly. The tablet device also allows the operator to visualise the path the system will attempt to take on the map view, allowing for changes to be made if necessary. All features of the previous requirement work as expected when using user-defined paths. 
+This delivered system is intuitive for an operator to use and allows for a path to be defined quickly. The tablet device also allows the operator to visualise the path the system will attempt to take on the map view, allowing for changes to be made if necessary. All features of the previous objective work as expected when using user-defined paths. 
 % In real world scenarios, it is important for the operator to be able to specify the path of the platform as they wish. Initially, single waypoint navigation will be implemented, allowing an operator to instruct the platform to travel from one predefined point to another before coming to a stop. Once this is achieved, the operator will be able to define waypoints that enclose a region. The platform will then subdivide the region and generate its own path to traverse. Software will again be tested in a virtual environment before being implemented into the real platform. Completion of this objective will extend the navigational capabilities of the platform, and make it easier for an operator to define a mission. 
 
 \item \textbf{Modification of an existing platform to accommodate landmine detection sensors}\\ 
@@ -48,16 +48,16 @@ Initial tests with sensors were used to identify metrics that could characterise
 \subsection{Extended objectives}
 \begin{enumerate}
 \item \textbf{Development of a tablet application that allows for communication with the platform and sensor systems}\\ 
-A tablet application has been developed for an android system. The primary focus during development of this system has been on maximising the ease-of-use of this device, which has resulted in an interface with large, intuitive buttons and only a few essential controls provided to the operator. 
+A tablet application has been developed for an Android operating system. The primary focus during development of this application has been maximising the ease-of-use of this device, which has resulted in an interface with large, intuitive buttons and only a few essential controls provided to the operator. 
 A map view provides feedback to the operator about the current platform position, as well as allowing a simple method of defining and confirming the paths sent to the navigation system.
-This system was used as the primary control device during testing and has such demonstrated its effectiveness in operating the remote platform both under manual control and for initiating automated navigations. 
+This system was used as the primary control device during testing, and as such demonstrated its effectiveness in operating the remote platform both under manual control and for initiating automated navigations. 
 
 % Rather than receiving information on a computer, a portable handheld device such as a tablet can be used. A dedicated application will be developed, allowing for even an unskilled operator to carry out a complex mission. The operator will be able to control and monitor the progress of the platform in real time, and once an object is detected by the sensor system, the operator will also be notified. A GPS coordinate will be assigned to the object, and based on the returned confidence interval, the operator can make an informed decision about how to proceed.
 
 
 \item \textbf{Provision of a live video feed to the operator}\\ 
 A camera has been purchased and installed on the quad bike, enabling a live video feed to be seen by operator, however this is currently only possible using a third party application, not the tablet application.
-This is due to constraints on the codecs that are capable of being decoded for live video streams using the native android system. The remote tablet application currently supports viewing of live video streams that are H.264 AVC compliant, however the video codec used by the purchased video camera is not entirely compliant with this codec specification, contrary to the claims made on the packaging which affirm full compliance.
+This is due to constraints on the codecs that are capable of being decoded for live video streams using the native Android system. The remote tablet application currently supports viewing of live video streams that are H.264 AVC compliant, however the video codec used by the purchased video camera is not entirely compliant with this codec specification, contrary to the claims made on the packaging which affirm full compliance.
 % A live video feed allows for an operator to have a better understanding of the operating conditions. A camera will be installed on the platform, and the output will be integrated with the developed tablet application.  This will allow the operator to detect and respond appropriately to unknown obstacles in the search area. 
 
 \item \textbf{Physical marking of landmine locations by the platform at the time of detection}\\ 
@@ -81,7 +81,7 @@ A major topic of future work could also be done to adapt the systems developed t
 
 \section{Conclusion}
 An automated device for landmine detection was designed and implemented as part of a research agreement with the DSTG. 
-The project vision was based on technologies sought by the DSTG, and by the current unavailability of an effective automated mine detection system in both the military and humanitarian spaces, and sought to remedy some of the shortcomings in this technology space evident from literature.\\
+The project vision was based on technologies sought by the DSTG, and was motivated by the current unavailability of an effective automated landmine detection system in both the military and humanitarian spaces, and sought to remedy some of the shortcomings in this technology space evident from literature.\\
 
 An existing quad bike from a previous university project was chosen to form the basis for the automated vehicle, and preliminary evaluation showed a number of features which required replacement or modification to permit automation. 
 A metal detector panel and a GPR were provided by the DSTG to allow mine detection capability. 
@@ -92,7 +92,7 @@ Testing did identify a number of project areas which are candidates for improvem
 Management of the project ensured that team members were committing a consistent contribution to the tasks required, and that results were delivered well within the project budget with minimal waste. 
 A review of time management has shown that the team reacted effectively to changes in project scope and revised schedules.
 
-The project achieved successful delivery of the majority of the project objectives, and partial completion of the remainder as well as a selection of the extension objectives. Areas have been identified which could be completed as future work to finalise the existing project objectives, as well as the additional work required to develop the system into a commercial reality.\\
+The project achieved successful delivery of the majority of the project objectives, and partial completion of the remainder as well as a selection of the extension objectives. Areas have been identified which could be completed as future work to finalise the existing project objectives, as well as the additional work required to develop the system into a commercially viable proposition.\\
 
 The authors have developed an autonomous platform for landmine detection, and successfully demonstrated its feasibility. The challenges associated with this process, and the methods used to overcome these challenges, have been outlined in this report. It is hoped that this information will be beneficial in developing the next generation of autonomous landmine detection platforms.  
 

@@ -28,8 +28,6 @@ Navigation tests were conducted with the quad bike to fine tune all electronic c
 
 Primary objectives that were achieved for the project can be broken down into software, platform, hardware, and sensor systems. for the platform and hardware, the objectives achieved were the modification of a platform for automation, remote operation of a platform, and the design and build of a sensor mount to adhere to the sensor requirements. For the software objectives, achievements included; development of a virtual platform, wireless communication and information display in real time on a hand held device, and automation and navigation of a platform. For the sensors, the achieved objectives include algorithm development for landmine detection, reduction in false positives, landmine identification and classification, and clutter screening. The objectives that were unable to be completed were the implementation of a physical landmine marker and the installation of a live feed camera, however progress was made.
 
-\todo[inline]{Add something about how the project goals have changed since the beginning of the project, possible put the old goals in an appendix}
-
 \section{Stakeholders}
 
 The stakeholders of the project remain largely the same as in the project charter, except the DSTG is now listed as a project partner and sponsor. \Tabref{stakeholders} shows all contributing members, and describes the roles they fulfil in the project.  
@@ -60,22 +58,27 @@ DSTG & Project Partner and Sponsor & Supports the project and project members in
 Minor stakeholders include, but are not limited to, the mechanical and electrical engineering workshop staff, School of Mechanical Engineering administration staff, honours project coordinator and others as deemed necessary by the project members. Communication between all stakeholders includes, but is not limited to, email, mobile messages, phone calls, and social media. %Added because we missed it last time. 
 
 \section{Work breakdown structure and Gantt chart}
-The Work Breakdown Structure and Gantt chart were modified from the preliminary report as necessary due to the increase in project workload and objectives as the project advanced. The time line for the GPR data acquisition and software development had to be postponed due to a faulty electrical component that rendered the system inoperable. A replacement part took a long period of time to source, however, progress was not hindered by the set back. The final versions for the work breakdown structure and Gantt chart are attached in \textcolor{red}{attach the new wbs and gantt chart} 
- \Chapref{WBS,ganttChart} respectively.  
-\textcolor{red}{Check that WBS is OK, go back and add more details to Gantt chart regarding deliverables such as the seminars, poster, final report}
+The Work Breakdown Structure and Gantt chart were modified from the preliminary report as necessary due to the increase in project workload and objectives as the project advanced. The time line for the GPR data acquisition and software development had to be postponed due to a faulty electrical component that rendered the system inoperable. A replacement part took a long period of time to source, however, progress was not hindered by the set back. The final versions for the work breakdown structure and Gantt chart are attached in \Chapref{WBS,ganttChart} respectively.  
+
 
 \section{Risk management}
-This section deals with the management of the various risks associated with the project. In \secref{safety}, safety risks are identified through a formal risk assessment. In \secref{risk}, risks to project failure are listed, and the consequences, controls and potential recovery methods are discussed. 
+This section deals with the management of the various risks associated with the project. In \secref{safety}, safety risks are identified through a formal risk assessment. In \secref{risk}, project difficulties are described. An extensive list of risks to project failure, as well as consequences, controls and potential recovery methods, are presented in \Chapref{riskFailureApp}. 
 
 \subsection{Safety risks}
 \seclabel{safety}
-\textcolor{red}{Need to update this section}
-Safety risks refer to those hazards that may adversely affect a person involved in the operation of the landmine detection platform. After performing a formal risk assessment (\Chapref{riskAss}), two safety risks were identified:
-\begin{enumerate}
-\item Risk of being caught between moving parts of a machine. This risk exists because motors and actuators are present on the quad bike, and may act as pinch points. However, the likelihood of someone interacting with the platform during operation is low, hence the residual risk is low.
-\item Risk of being struck by a vehicle. This risk exists because the quad bike has the potential to behave unpredictably during testing, or become uncontrollable. Again, the likelihood of this occurring is low, and in the even that it does, controls have been put in place (emergency stop and remote kill switch). As a result, the residual risk is low.
-\end{enumerate}
-In order to minimise the likelihood of risks, a SOP has been developed (\Chapref{riskAss}). This document MUST be consulted before operating the quad bike. 
+Safety risks refer to those hazards that may adversely affect a person involved in the operation of the landmine detection platform. After performing a formal risk assessment, a number of hazards were identified, as listed below with the risk level in brackets:
+\begin{itemize}
+\item Caught between moving machinery (Low)
+\item Caught on rotating parts (Low)
+\item Contact with chemicals, fumes or gas (Low)
+\item Contact with electricity or potential for electric shock (Medium)
+\item Contact with hot object or friction burn (Medium)
+\item Entangled on moving machinery (Low)
+\item Exposure to noise (Low)
+\item Exposure to non-ionising radiation (Low)
+\item Struck by vehicle (Medium)
+\end{itemize}
+These hazards, as well as control measures, are described further in \Chapref{riskAss}. In order to minimise the likelihood of risks, several SOPs were developed. The latest iteration of the SOP, covering external activities using the quad bike with the sensor suite mounted, is also presented in \Chapref{riskAss}. This document MUST be consulted before operating the quad bike. 
 \nomenclature{SOP}{Safe Operating Procedure}% 
 
 \subsection{Project difficulties}% Risks of project failure}

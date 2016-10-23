@@ -26,22 +26,22 @@ As discussed in the literature review, there are three primary levels of sensor 
 
 To be able to implement decision level sensor fusion, a decision needs to be made with each sensor regarding whether or not the target is a landmine. This decision, along with a confidence interval, can be passed onto the sensor fusion algorithm as shown in \Figref{fusion}, which makes the final decision based on a weighted evaluation of the data it has received. In order for each sensor to make a decision, metrics need to be identified which can be used to characterise targets. As a result, preliminary tests were carried with both sets of sensors to find such metrics.
 
+\subsection{Metal detector output}
+Initial tests with the metal detector were performed indoors. In the first set of tests, horizontal sweeps were made over a number of small metal samples as shown in \Figref{samples}. These were placed on the floor, with the distance to the metal detector being kept constant at 32 cm. 
+
+\Figref{metals} shows the results obtained from the second channel of the metal detector plotted in Matlab, corresponding to the received signal at the centre of the metal detector panel. The four lines in each plot correspond to the four frequency signals, while the axes represent the real and imaginary components of the voltage signal. It can be seen that for different metals, the magnitude and phase angle of the signal vary, as discussed in the literature review. 
+
 \begin{figure}[ht]
 \includegraphics[width=\textwidth]{3-ConceptDesign/fusion.PNG}
 \centering
 \caption{Integration of signal processing and sensor fusion algorithms} \figlabel{fusion}
 \end{figure}
 
-\subsection{Metal detector output}
-Initial tests with the metal detector were performed indoors. In the first set of tests, horizontal sweeps were made over a number of small metal samples as shown in \Figref{samples}. These were placed on the floor, with the distance to the metal detector being kept constant at 32 cm. 
-
 \begin{figure}[ht]
 \includegraphics[width=0.8\textwidth]{3-ConceptDesign/samples.jpg}
 \centering
 \caption{Metal samples used for evaluation of metal detector outputs} \figlabel{samples}
 \end{figure}
-
-\Figref{metals} shows the results obtained from the second channel of the metal detector plotted in Matlab, corresponding to the received signal at the centre of the metal detector panel. The four lines in each plot correspond to the four frequency signals, while the axes represent the real and imaginary components of the voltage signal. It can be seen that for different metals, the magnitude and phase angle of the signal vary, as discussed in the literature review. 
 
 \begin{figure}[htp]
 \includegraphics[width=\textwidth]{3-ConceptDesign/metals.PNG}
@@ -179,24 +179,7 @@ A multi-beam structure is used rather than a single cantilever in order to reduc
 
 The GPR came with a small attachment which could be fixed to the antenna heads, shown in \Figref{GPRmount} (a). This attachment had a threaded head, allowing it to screw into a standard diameter broom or mop handle. In order to operate the GPR as close to the ground as possible, it was decided that a telescopic arm should be used, which could maintain contact between the GPR head and the ground at all times. To prevent damage from occurring to the GPR in case it hit an obstacle, the arm would be attached to a rotating PVC section. This design is shown in \Figref{GPRmount} (b).
 
-\begin{figure}[ht]
-\centerline{
-\begin{tabular}{cc}
-\subfloat[GPR attachment]{\includegraphics[height=.4\textwidth]{3-ConceptDesign/GPRmount2.jpg}}
-& \subfloat[Telescopic arm and GPR attachment]{\includegraphics[height=.4\textwidth]{3-ConceptDesign/GPRmount.PNG}}
-\end{tabular}}
-\caption{Attachment of the GPR to the sensor mount}
-\figlabel{GPRmount}
-\end{figure}
-
 A decision was made to encase the metal detector between two sheets of Perspex, since the foam body of the metal detector was susceptible to damage. This also allowed the metal detector to be mounted more easily, since holes could be put through the Perspex. The metal detector assembly is shown in \Figref{MD}.
-
-\begin{figure}[ht]
-\includegraphics[width=.5\textwidth]{3-ConceptDesign/MD.PNG}
-\centering
-\caption{Metal detector with Perspex covers}
-\figlabel{MD}
-\end{figure}
 
 There were several design requirements for the attachment of the metal detector panel, which are listed below. 
 
@@ -207,9 +190,28 @@ There were several design requirements for the attachment of the metal detector 
 \item Ground clearance: The chosen design must be able to maintain a low ground clearance. Preference is given to a design in which this height can be varied to suit the terrain conditions. 
 \item Aesthetics: The design must be aesthetically pleasing. 
 \end{itemize}
+
 Four different design concepts were developed, shown in \Figref{MDdesigns}.
 
 \begin{figure}[ht]
+\centerline{
+\begin{tabular}{cc}
+\subfloat[GPR attachment]{\includegraphics[height=.4\textwidth]{3-ConceptDesign/GPRmount2.jpg}}
+& \subfloat[Telescopic arm and GPR attachment]{\includegraphics[height=.4\textwidth]{3-ConceptDesign/GPRmount.PNG}}
+\end{tabular}}
+\caption{Attachment of the GPR to the sensor mount}
+\figlabel{GPRmount}
+\end{figure}
+\begin{figure}[ht]
+\includegraphics[width=.45\textwidth]{3-ConceptDesign/MD.PNG}
+\centering
+\caption{Metal detector with Perspex covers}
+\figlabel{MD}
+\end{figure}
+
+
+
+\begin{figure}[!ht]
 \centerline{
 \begin{tabular}{cc}
 \subfloat[Design 1]{\includegraphics[height=0.4\textwidth]{3-ConceptDesign/square.PNG}}

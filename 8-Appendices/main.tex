@@ -320,7 +320,7 @@ Under the assumption that the quad bike uses the Ackermann steering geometry, i.
 Here, $\delta$ is the steering angle, $L$ is the wheelbase and $R$ is the radius of the arc that the centre of the rear axle will follow. This simplification has been used to perform simulations on the sensor coverage and sensor element misalignment.
 %\nomenclature[S]{$L$}{Wheelbase}%
 %\nomenclature[S]{$R$}{Radius of rear axle arc}%
-Three simulations were conducted, with the steering axle and sensor position changed in each. The results are shown in Figure D.1, and are discussed below.
+Three simulations were conducted, with the steering axle and sensor position changed in each. The results are shown in Figure E.1, and are discussed below.
 
 \begin{figure}[ht]
 \centerline{
@@ -329,13 +329,13 @@ Three simulations were conducted, with the steering axle and sensor position cha
 & \subfloat[Trial 2]{\includegraphics[width=0.3\textwidth]{3-ConceptDesign/Detector_Coverage2.png}}
 & \subfloat[Trial 3]{\includegraphics[width=0.3\textwidth]{3-ConceptDesign/Detector_Coverage3.png}}\\
 \end{tabular}}
-\caption*{\textbf{Figure D.1:} Sensor coverage simulations} 
+\caption*{\textbf{Figure E.1:} Sensor coverage simulations} 
 \end{figure}
 
 \begin{itemize}
-\item \textbf{Trial 1}: In first trial, represented in Figure D.1 (a), front wheel steering is used with the sensor mount in front of the platform. The turning wheels are 1.5 metres in front of the focal point of the turn, and the sensor array is 0.5 metres in front of the turning wheels. It is evident from the figure that the coverage area does not form a tight loop, and that this area does not include the path of the vehicle. This is critical as it will mean the quad bike will be passing over ground that has not been scanned by the sensors.
-\item \textbf{Trial 2}: In the second trial, represented in Figure D.1 (b), rear wheel steering is used (i.e. the quad bike is using front wheel steering in reverse) with the sensor mount at the front of the platform relative to the direction of travel (i.e. to the rear relative to the actual quad bike geometry). The turning wheels are 1.5 metres behind the focal point of the turn, and the sensor array is placed 0.5 metres in front of the focal axle. This trial shows a much tighter scanning loop than the previous test, and the path of the quad bike is entirely within the scanned area, which is the ideal case.
-\item \textbf{Trial 3}: The third trial, represented in Figure D.1 (c), shows front wheel steering with the sensor mount placed behind the front wheels. The turning wheels are 1.5 metres in front of the focal axle as in Trial 1, but the sensing array is 1.5 metres behind the turning wheels, or between the two axles of the vehicle. Under this arrangement, an identical scanning path to Trial 2 is achieved using front-wheel steering, however this is not very useful since the wheels will pass over the region to be scanned before sensors.
+\item \textbf{Trial 1}: In first trial, represented in Figure E.1 (a), front wheel steering is used with the sensor mount in front of the platform. The turning wheels are 1.5 metres in front of the focal point of the turn, and the sensor array is 0.5 metres in front of the turning wheels. It is evident from the figure that the coverage area does not form a tight loop, and that this area does not include the path of the vehicle. This is critical as it will mean the quad bike will be passing over ground that has not been scanned by the sensors.
+\item \textbf{Trial 2}: In the second trial, represented in Figure E.1 (b), rear wheel steering is used (i.e. the quad bike is using front wheel steering in reverse) with the sensor mount at the front of the platform relative to the direction of travel (i.e. to the rear relative to the actual quad bike geometry). The turning wheels are 1.5 metres behind the focal point of the turn, and the sensor array is placed 0.5 metres in front of the focal axle. This trial shows a much tighter scanning loop than the previous test, and the path of the quad bike is entirely within the scanned area, which is the ideal case.
+\item \textbf{Trial 3}: The third trial, represented in Figure E.1 (c), shows front wheel steering with the sensor mount placed behind the front wheels. The turning wheels are 1.5 metres in front of the focal axle as in Trial 1, but the sensing array is 1.5 metres behind the turning wheels, or between the two axles of the vehicle. Under this arrangement, an identical scanning path to Trial 2 is achieved using front-wheel steering, however this is not very useful since the wheels will pass over the region to be scanned before sensors.
 \end{itemize}
 
 This result can be demonstrated theoretically by using the geometric bicycle model \parencite{snider2009}. Referring to \Figref{geometricBicycleModel}, the turning radius of the rear wheel is $R$ and the turning radius of the front wheel is $\sqrt{R^2 + L^2}$, which is greater than $R$. If the sensor array was some distance $q$ in front of the front wheels, its turning radius would be $\sqrt{R^2 + [L+q]^2}$, greater yet again. However, if the sensing array was an equal distance $q$ behind the rear wheels (or front wheels if this was a rear steering arrangement) then the turning radius of the sensors would be $\sqrt{R^2 + q^2}$. From this it can be seen that to minimise the effective turning radius then $q$ should be minimised, i.e. rear wheel steering should be used. 
@@ -376,11 +376,11 @@ In the event of a large turn angle where an N-point turn is required, only stage
 \caption[N-point turn progression]{N-point turn progression}
 \figlabel{nPointTurnProgression}
 \end{figure}
-The distance added or removed, $\Delta h$, is based on the turn angle and is found from the geometrically determined template, Table E.1, shown below.
+The distance added or removed, $\Delta h$, is based on the turn angle and is found from the geometrically determined template, Table F.1, shown below.
 \begin{table} [ht]
 \centering
-\caption*{\textbf{Table E.1:} N-point turn template}
-\begin{tabular} {r c c c c c c c c}
+\caption*{\textbf{Table F.1:} N-point turn template}
+\begin{tabular} {c c c c c c c c c}
 \toprule
 Turn point & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\ \midrule
 Heading (\degree) & 0 & 26.7 & 60.5 & 77.3 & 95.6 & 113.9 & 130.8 & 180 \\
@@ -527,7 +527,7 @@ Both methods were used to find the vibrational modes for three different configu
 \centering
 \caption[Theoretical vibration results using Rayleigh and Dunkerly methods]{Theoretical vibration results using Rayleigh and Dunkerly methods for a 35 x 70 x 1500 mm beam in different configurations }
 \tablabel{theoreticalvibestable}
-\begin{tabular} {r c c}
+\begin{tabular} {c c c}
 \toprule
 Configuration & f Dunkerly (Hz) & f Rayleigh (Hz)  \\ \midrule
 Cantilever (1.9kg self weight) & 22.2097 & 34.0655  \\
@@ -538,15 +538,15 @@ Cantilever (1.9kg self weight , 5kg end load) & 6.4427 & 6.8844 \\ \bottomrule
 
 A cantilever beam of self weight was analysed in ANSYS. The transverse vertical fundamental frequency was found to be 27.707 HZ which lies between the frequency ranges found from using the Dunkerly and Rayleigh methods. This validates that the FEA model is working correctly and can be used to model the sensor mount accurately.
 
-The modes for the sensor mount were found to be 17.89 Hz. The addition of the cross member supports add stiffness to the frame resulting in the increased frequency over a standard cantilever beam. The vertical supports act to reduce the length of the cantilever beam further increasing the fundamental frequency. The deflections caused to the frame due to the fundamental frequency was 32.805 mm as can be seen in \Figref{Finalframeansys2}. 
+The modes for the sensor mount were found to be 17.89 Hz. The addition of the cross member supports add stiffness to the frame resulting in the increased frequency over a standard cantilever beam. The vertical supports act to reduce the length of the cantilever beam further increasing the fundamental frequency.
+
+The addition of the metal detector to the frame resulted in fundamental frequencies of 14.486 Hz, 14.814 Hz and 24.321 Hz, resulting in a maximum deflection of 11.977 mm, as seen in Figure H.1. The addition of the weight of the metal detector acts to dampen the fundamental frequency as expected. This same damping can be seen from the theoretical results for the cantilever beam with the added end weight.
 
 \begin{figure}[ht]
 \includegraphics[width=0.7\textwidth]{4-DetailedDesign/vibrations.PNG}
 \centering
-\caption{Sensor mount vibrational analysis} \figlabel{Finalframeansys2}
+\caption*{\textbf{Figure H.1:} Sensor mount vibrational analysis}
 \end{figure} 
-
-The addition of the metal detector to the frame resulted in fundamental frequencies of 13.647, 14.573 and 31.913 Hz with a maximum deflection of 9.9417 mm. The addition of the weight of the metal detector acts to dampen the fundamental frequency as expected. This same damping can be seen from the theoretical results for the cantilever beam with the added end weight.
 
 Variations in sensor arrangements that could be installed would result in different fundamental frequencies due to the changing damping effects. This can be accounted for by increasing of decreasing the length of the frame to change the fundamental frequency to one that is desired. The frame design can be tuned to a specific fundamental frequency through the alteration of its design and end weight.   
 
@@ -623,16 +623,16 @@ This minimises the complexity of the control device’s software and the complex
 
 \nohyphens{	% Stop hyphenation in table
 \begin{longtable}{ L{0.25\textwidth} L{0.65\textwidth}}
-\caption[Packet Structure]{Breakdown of the example packet.}\tablabel{implconstraints}\\ \toprule
+\caption[Subsystem outline]{Outline of software subsystems}\tablabel{implconstraints}\\ \toprule
 \textbf{Subsystem} & \textbf{Hardware constraints} \\ \midrule\endfirsthead 
-\caption[]{Stakeholders of the project (continued).}\\ \toprule
+\caption[]{Outline of software subsystems (continued)}\\ \toprule
 \textbf{Subsystem} & \textbf{Hardware constraints} \\  \midrule\endhead
 
-Heading &  ASCII SOH byte, indicating the start of a new transmission packet \\
-Packet ID & ID\_QUAD\_SPEED, indicating that this packet contains the current speed of the quad bike \\
-Packet Length & Packet contains a single float as data \\
-Data & An IEEE 754 floating point number, specifying the value 1.1f. This corresponds to a quad bike speed of 1.1 m/s. \\
-Terminus & Terminating character indicating the receipt of the full packet. \\
+% Heading &  ASCII SOH byte, indicating the start of a new transmission packet \\
+% Packet ID & ID\_QUAD\_SPEED, indicating that this packet contains the current speed of the quad bike \\
+% Packet Length & Packet contains a single float as data \\
+% Data & An IEEE 754 floating point number, specifying the value 1.1f. This corresponds to a quad bike speed of 1.1 m/s. \\
+% Terminus & Terminating character indicating the receipt of the full packet. \\ \midrule
 
 
 Automation Control &
@@ -801,10 +801,10 @@ A typical valid packet will be of the following format:\\
 0x 01 52 01 3F 8C CC CD 17\\
 
 This format is explained in the \Tabref{packetBreakdown} below.
-
+\newpage
 \nohyphens{	% Stop hyphenation in table
 \begin{longtable}{L{0.2\textwidth} L{0.25\textwidth} L{0.45\textwidth}}
-\caption[Packet Structure]{Breakdown of the example packet.}\tablabel{packetBreakdown}\\ \toprule
+\caption[Packet Structure]{Breakdown of the example packet}\tablabel{packetBreakdown}\\ \toprule
 \textbf{Item} & \textbf{Hexadecimal} & \textbf{Interpretation}\\ \midrule\endfirsthead 
 \caption[]{Stakeholders of the project (continued).}\\ \toprule
 \textbf{Item} & \textbf{Hexadecimal} & \textbf{Interpretation}\\  \midrule\endhead
