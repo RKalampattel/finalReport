@@ -22,9 +22,9 @@ Despite the fact that line scan sensors were used, it was assumed that the scann
 Two of the key challenges to be addressed in analysing the output from the sensors were sensor fusion and signal processing. The first of these relates to how the data from the separate sensors can be consolidated to provide a single meaningful result, while the second involves processing the output from the sensors to allow an operator to identify targets. 
 
 \subsection{Sensor fusion}
-As discussed in the literature review, there are three primary levels of sensor fusion, decision level, feature level and data level \parencite{Yarovoy2009}. Of these, decision level sensor fusion was selected for the project as it offers the simplest and least computationally intensive solution, since the outputs from the sensors can be processed individually. This method also lends itself well to machine learning techniques, allowing a target to be identified based on correlations with a known dataset. The main disadvantage of this method is that it is not as robust as the other methods, however this was not expected to be an issue given the scope of the project. 
+As discussed in the literature review, there are three primary levels of sensor fusion, decision level, feature level and data level \parencite{Yarovoy2009}. Of these, decision level sensor fusion was selected for the project as it offers the simplest and least computationally intensive solution, since the outputs from the sensors can be processed individually. This method also lends itself well to machine learning techniques, allowing a target to be identified based on correlations with a known dataset. The main disadvantage of this method is that it is not as robust as the other methods, however this was not expected to be an issue given the limited scope of the project. 
 
-To be able to implement decision level sensor fusion, a decision needs to be made with each sensor regarding whether or not the target is a landmine. This decision, along with a confidence interval, can be passed onto the sensor fusion algorithm as shown in \Figref{fusion}, which assigns then makes the final decision based on a weighted evaluation of the data it has received. In order for each sensor to make a decision, metrics need to be identified which can be used to characterise targets. As a result, preliminary tests were carried with both sets of sensors to find such metrics.
+To be able to implement decision level sensor fusion, a decision needs to be made with each sensor regarding whether or not the target is a landmine. This decision, along with a confidence interval, can be passed onto the sensor fusion algorithm as shown in \Figref{fusion}, which makes the final decision based on a weighted evaluation of the data it has received. In order for each sensor to make a decision, metrics need to be identified which can be used to characterise targets. As a result, preliminary tests were carried with both sets of sensors to find such metrics.
 
 \begin{figure}[ht]
 \includegraphics[width=\textwidth]{3-ConceptDesign/fusion.PNG}
@@ -33,7 +33,7 @@ To be able to implement decision level sensor fusion, a decision needs to be mad
 \end{figure}
 
 \subsection{Metal detector output}
-Initial tests with the metal detector were performed indoors. In the first set of tests, horizontal sweeps were made over a number of small metal samples (\Figref{samples}) placed on the floor, with the distance to the metal detector being kept constant at 32 cm. 
+Initial tests with the metal detector were performed indoors. In the first set of tests, horizontal sweeps were made over a number of small metal samples as shown in \Figref{samples}. These were placed on the floor, with the distance to the metal detector being kept constant at 32 cm. 
 
 \begin{figure}[ht]
 \includegraphics[width=0.8\textwidth]{3-ConceptDesign/samples.jpg}
@@ -41,9 +41,9 @@ Initial tests with the metal detector were performed indoors. In the first set o
 \caption{Metal samples used for evaluation of metal detector outputs} \figlabel{samples}
 \end{figure}
 
-\Figref{metals} shows the results obtained from the second channel plotted in Matlab, corresponding to the received signal at the centre of the metal detector panel. The four lines in each plot correspond to the four frequency signals, while the axes represent the real and imaginary components of the voltage signal. It can be seen that for different metals, the magnitude and phase angle of the signal vary, as discussed in the literature review. 
+\Figref{metals} shows the results obtained from the second channel of the metal detector plotted in Matlab, corresponding to the received signal at the centre of the metal detector panel. The four lines in each plot correspond to the four frequency signals, while the axes represent the real and imaginary components of the voltage signal. It can be seen that for different metals, the magnitude and phase angle of the signal vary, as discussed in the literature review. 
 
-\begin{figure}[ht]
+\begin{figure}[htp]
 \includegraphics[width=\textwidth]{3-ConceptDesign/metals.PNG}
 \centering
 \caption{Phase plots for several different metal samples at 32 cm depth} \figlabel{metals}
@@ -51,7 +51,7 @@ Initial tests with the metal detector were performed indoors. In the first set o
 
 In the second set of tests, a single brass sample was scanned, with the distance to the metal detector changed between scans. The results are shown in \Figref{phaseDepths}, and while the phase angle does not vary with depth, the signal magnitude does. Based on on these tests,   it was concluded that the magnitude and phase angle of the signal would be suitable metrics for characterising objects; the phase angle can be used to identify the metal, while the magnitude provides information about the depth, size and material. Thus, the aim of the signal processing algorithm for the metal detector is to find these metrics given the metal detector input data. 
 
-\begin{figure}[ht]
+\begin{figure}[htp]
 \includegraphics[width=\textwidth]{3-ConceptDesign/phaseDepth.PNG}
 \centering
 \caption{Phase plots for a brass sample scanned at different depths} \figlabel{phaseDepths}
@@ -59,8 +59,7 @@ In the second set of tests, a single brass sample was scanned, with the distance
 
 \subsection{GPR output}
 Preliminary analysis of the GPR output could not be conducted at the same time as metal detector testing due to issues in operating the GPR. However, sample datasets were provided by the DSTG, and these were analysed in Matlab. \Figref{cans} shows the B-scans for an background scan, as well as a scan over two soft drink cans. 
-
-Unlike with the phase plots obtained from the metal detector, it was not as clear what metrics could be identified from the GPR data. To further aid in visualising the signal, the background was subtracted (\Figref{cansNoBG}). This made it easier to identify features in the scan, the size and position of which could be found easily. As a result, it was decided that metrics used for the GPR would be feature size and feature position.
+Unlike with the phase plots obtained from the metal detector, it was not as clear what metrics could be identified from the GPR data. To further aid in visualising the signal, the background was subtracted, as in \Figref{cansNoBG}. This made it easier to identify features in the scan, the size and position of which could be found easily. As a result, it was decided that metrics used for the GPR would be feature size and feature position.
 
 \begin{figure}[ht]
 \centerline{
@@ -68,7 +67,7 @@ Unlike with the phase plots obtained from the metal detector, it was not as clea
 \subfloat[]{\includegraphics[width=0.47\textwidth]{3-ConceptDesign/bg.PNG}}
 & \subfloat[]{\includegraphics[width=0.47\textwidth]{3-ConceptDesign/cans.PNG}}\\
 \end{tabular}}
-\caption[Background scan over two soft drink cans]{Background scan (a) and B-scan over two soft drink cans, circled in red (b)} 
+\caption[Background scan over two soft drink cans]{Background scan (a), and B-scan over two soft drink cans circled in red (b)} 
 \figlabel{cans}
 \end{figure}
 
@@ -100,14 +99,14 @@ The detailed platform selection process is outlined in \Chapref{platformSelectio
 \caption{DSTG autonomous quad bike} \figlabel{quadbike}
 \end{figure}
 
-The intended application for the quad bike was to autonomously drive through vineyards. In order to achieve this, a number of systems had to be modified, namely the steering, throttle, brake and gear change systems \parencite{scheiner2011}. The steering is controlled by an Animatics Smart Motor, connected to the steering column using a v-belt. A servo motor is to control the throttle, while a wheel speed encoder measures the vehicle's position. The linear actuator is used to control the brakes, with a strain gauge used to measure the braking intensity. Finally, two linear potentiometers are used to measure the position of a linear actuator in the gear system. A Dragon Board is used as the main controller, handling communications between all subsystems. 
+The intended application for the quad bike was to autonomously drive through vineyards. In order to achieve this, a number of systems had to be modified, namely the steering, throttle, brake and gear change systems \parencite{scheiner2011}. The steering is controlled by an Animatics Smart Motor, connected to the steering column using a v-belt. A servo motor is used to control the throttle, while a wheel speed encoder measures the vehicle's speed. A linear actuator is used to control the brakes, with a strain gauge used to measure the braking intensity. Finally, two linear potentiometers are used to measure the position of a linear actuator in the gear system. A Motorola DragonBoard is used as the main controller, handling communications between all subsystems. 
 
 \section{Automation and navigation}
-The navigation and automation systems are responsible for instructing the quad bike as to what path it should follow, which is achieved through the control of the various actuators. As stated in the scenario of operation, platform navigation will be primarily handled using waypoints. At the start of a mission, the operator will select waypoints that define either a path, or the boundaries of some region of interest. If a region is selected, it is broken down into a series of waypoints which, once connected, will form a path for the quad bike. In the alternate use case, the navigation system will operate based directly on waypoints created from a user defined path.
+The navigation and automation systems are responsible for instructing the quad bike as to what path it should follow, which is achieved through the control of various actuators. As stated in the scenario of operation, platform navigation will be primarily handled using waypoints. At the start of a mission, the operator will select waypoints that define either a path, or the boundaries of some region of interest. If a region is selected, it is broken down into a series of waypoints which, once connected, will form a path for the quad bike. In the alternate use case, the navigation system will operate based directly on waypoints created from a user defined path.
 
 \subsection{Path tracking}
 \seclabel{pathconcept}
-As the platform will be primarily performing two tasks, following a low curvature curve (straight line) and turning a specified angle, the navigation system will define the path using a 'piecewise linear path' discussed in \secref{pathTrackingLitReview}. \Textcite{snider2009} provides an empirical comparison of path following algorithms, shown in \Figref{trackingComparison}. Tracking methods are ranked by implementation difficulty, from least difficult to most difficult. \Textcite{snider2009} goes on to describe recommended applications for each method. Pure Pursuit is ideal in situations for slow driving and/or on discontinuous paths, the Stanley method for smooth highway driving and/or parking manoeuvres, the Kinematic model for smooth parking manoeuvres, and the Dynamic model for highway driving at speed. Based on the scenario of operation, which involves slow driving on discontinuous paths, the Pure Pursuit method is the most appropriate option, and will be used as the tracking method.
+As the platform will be primarily performing two tasks, following a low curvature curve such as a straight line and turning a specified angle, the navigation system will define the path using a ``piecewise linear path'' discussed in \secref{pathTrackingLitReview}. \Textcite{snider2009} provides an empirical comparison of path following algorithms, shown in \Figref{trackingComparison}. Tracking methods are ranked by implementation difficulty, from least difficult to most difficult. \Textcite{snider2009} goes on to describe recommended applications for each method. Pure Pursuit is ideal in situations for slow driving and/or on discontinuous paths, the Stanley method for smooth highway driving and/or parking manoeuvres, the Kinematic model for smooth parking manoeuvres, and the Dynamic model for highway driving at speed. Based on the scenario of operation, which involves slow driving on discontinuous paths, the Pure Pursuit method is the most appropriate option, and will be used as the tracking method.
 \begin{figure}[ht]
 \includegraphics[width = \textwidth]{3-ConceptDesign/pathTrackingSummary2.png}
 \centering
@@ -115,10 +114,10 @@ As the platform will be primarily performing two tasks, following a low curvatur
 \end{figure}
 
 \subsection{Performing turning manoeuvres}
-During scanning of an area, whenever the platform reaches a boundary, it will be required to turn some specified angle within a small area defined by the width of the 3 m sensor arrays. This prevents the platform from travelling over unscanned areas and potentially detonating a landmine. Alternatively, if the scan history for the surrounding region is available to the platform in the form of a map, a larger area may be available to conduct the turn. Due to there being little or no literature available on this unique topic, an adaptation of the simplified Ackermann model will be used in conjunction with the Stanley model, which excels for parking manoeuvres \parencite{snider2009}, to achieve the desired turn.
+During scanning of an area, whenever the platform reaches a boundary, it will be required to turn some specified angle within a small area defined by the width of the 3 m sensor arrays. This prevents the platform from travelling over unscanned areas and potentially detonating a landmine. Alternatively, if the scan history for the surrounding region is available to the platform in the form of a map, a larger area may be available to conduct the turn. Due to there being little or no literature available on this unique topic, an adaptation of the simplified Ackermann model was used in conjunction with the Stanley model, which excels for parking manoeuvres \parencite{snider2009}, to achieve the desired turn.
 
 \subsection{Positioning}
-The positioning system is used to determine the location of the quad bike for navigation, and to send that data to the operator's handheld device when a landmine is detected. Real time positioning in remote locations and accuracy to within 0.5 m is required from the system to meet the needs of the scenario of operation. A number of options were looked at when designing the positioning system including Local Positioning Systems (LPS), Global Positioning Systems (GPS), and dead reckoning techniques.
+The positioning system is used to determine the location of the quad bike for navigation, and to send that data to the operator when a landmine is detected. Real time positioning in remote locations and accuracy to within 0.5 m is required from the system to meet the needs of the scenario of operation. A number of options were looked at when designing the positioning system, including Local Positioning Systems (LPS), Global Positioning Systems (GPS), and dead reckoning techniques.
 \nomenclature{GPS}{Global Positioning System}%
 \nomenclature{LPS}{Local Positioning System}%
 
@@ -142,18 +141,18 @@ The design of the mount must satisfy two operating requirements for each sensor,
 
 Sensitivity tests with the AMDS metal detector panel found that metal objects at distances greater than 35 cm could not be detected, regardless of material or size. Based on this, a minimum proximity of 40 cm was specified. To maximise sensing depth, the metal detector should be placed as close to the ground as possible. However, resting the detector on the ground may result in damage if the platform vibrates excessively, or a small obstacle is encountered. Taking this into account, a maximum ground clearance of 5 cm was specified.
 
-Tests were also carried out with the SIRO-PULSE II GPR unit, resulting in negligible interference from nearby all objects. Thus, a minimum proximity was not specified for the GPR. In order to reduce the effect of the air-ground interface and other sources of interference, the GPR should operate as close to the ground as possible. If the wheel encoder on the GPR is to be used while in operation, the GPR must be in physical contact with the ground for the duration of scanning. Taking these factors into account, a maximum ground clearance of 1 cm was specified. 
+Tests were also carried out with the SIRO-PULSE II GPR unit, resulting in negligible interference from all nearby  objects. Thus, a minimum proximity was not specified for the GPR. In order to reduce the effect of the air-ground interface and other sources of interference, the GPR should operate as close to the ground as possible. If the wheel encoder on the GPR is to be used while in operation, the GPR must be in physical contact with the ground for the duration of scanning. Taking these factors into account, a maximum ground clearance of 1 cm was specified. 
 
 \subsection {Material selection}  
 The main requirement for the mount was that a non-metallic material was used to meet the constraints of the metal detector. Other considerations included good stiffness and vibrational characteristics, minimal mass, a low cost and good availability and workability. After a detailed material selection process, described in \Chapref{sensorMaterialsApp}, wood, bamboo, carbon fibre reinforced polymers (CFRP) and glass fibre reinforced polymers (GFRP) were found to be the most appropriate materials. 
 
-While bamboo is the best material to use for the sensor mount frame based on it's vibrational characteristics and stiffness alone, it is difficult to obtain in Australia in structural form. Wood is the next best option, being very easy to work with and readily available. GFRP has a similar stiffness to wood but with worse damping properties and a higher density. On the other hand, CFRP has a much better stiffness however it sacrifices damping properties and density. The two composites are also more difficult to work with, and are more expensive. Hence, the best material to use for the sensor mount is wood. In order to meet the stiffness requirements, a structural grade timber such as MGP10 will be used. 
+While bamboo is the best material to use for the sensor mount frame based on it's vibrational characteristics and stiffness alone, it is difficult to obtain in Australia in structural form. Wood is the next best option, being very easy to work with and readily available. GFRP has a similar stiffness to wood but with worse damping properties and a higher density. On the other hand, CFRP has a much better stiffness however it sacrifices damping properties and density. The two composites are also more difficult to work with, and are more expensive. Hence, the best material to use for the sensor mount is wood. In order to meet the stiffness requirements, the structural grade timber MGP10 was selected. 
  
 \nomenclature{CFRP}{Carbon Fibre Reinforced Polymer}%
 \nomenclature{GFRP}{Glass Fibre Reinforced Polymer}%
 
 \subsection{Steering focal point}
-The sensors need to be mounted in a configuration that will keep individual sensor elements aligned, so that corresponding ground information can be collated and analysed correctly. In the case of a sensor array, the mounting arrangement must also provide good sensor coverage, and ensure that the platform does not travel over unscanned area. In order to determine the best mounting location for the sensor mount, simulations were performed for front wheel and rear wheel steering (\Chapref{steeringSelection}). The results, presented in \Figref{turnCoverage}, show that rear wheel steering provides a tighter turning radius and better sensor coverage. Hence, the sensors will be mounted to the rear of the quad bike, which will be driven in reverse to provide real wheel steering capabilites. 
+The sensors need to be mounted in a configuration that will keep individual sensor elements aligned, so that corresponding ground information can be collated and analysed correctly. In the case of a sensor array, the mounting arrangement must also provide good sensor coverage, and ensure that the platform does not travel over unscanned area. In order to determine the best mounting location for the sensor mount, simulations were performed for front wheel and rear wheel steering, shown in \Chapref{steeringSelection}. The results, presented in \Figref{turnCoverage}, show that rear wheel steering provides a tighter turning radius and better sensor coverage. Hence, the sensors will be mounted to the rear of the quad bike, which will be driven in reverse to provide real wheel steering capabilites. 
 \begin{figure}[ht]
 \centerline{
 \begin{tabular}{ccc}
@@ -165,35 +164,35 @@ The sensors need to be mounted in a configuration that will keep individual sens
 \end{figure}
 
 \subsection{Initial designs}
-Knowing the basic sensor requirements, the selected material for the mount, and the mounting location on the quad bike, preliminary designs for sensor mount were developed. 
+Knowing the basic sensor requirements, the selected material for the mount, and the mounting location on the quad bike, preliminary designs for the sensor mount were developed. 
 
-There are three support points at the rear of the quad bike to which the mount can be attached, a tow hitch near the rear axle, and two metal brackets beneath the rear tray. The tow hitch has a level surface and is capable of supporting a vertical load of 14 kg, which means that a cantilever beam could be mounted on the tow hitch, but its weight would be limited. To fix this, diagonal support braces can be used, attached to the two metal brackets. Based on this geometry, a basic design for the sensor mount is shown in \Figref{basic}.
+There are three support points at the rear of the quad bike to which the mount can be attached, a tow hitch near the rear axle, and two metal brackets beneath the rear tray. The tow hitch has a level surface and is capable of supporting a vertical load of 14 kg, which means that a cantilever beam could be mounted on the tow hitch, but its weight would be limited. To fix this, diagonal support braces can be used, attached to the two metal brackets. Based on these constraints, a simple design for the sensor mount was developed as shown in \Figref{basic}.
 
 \begin{figure}[ht]
-\includegraphics[width=.65\textwidth]{3-ConceptDesign/basic.PNG}
+\includegraphics[width=.6\textwidth]{3-ConceptDesign/basic.PNG}
 \centering
-\caption[Basic sensor mount design]{Basic sensor mount design showing central wooden beam and metal supports}
+\caption[Basic sensor mount design]{Basic sensor mount design showing wooden frame and metal supports}
 \figlabel{basic}
 \end{figure}
 
 A multi-beam structure is used rather than a single cantilever in order to reduce mass and improve torsional rigidity. The main beam rests on the tow hitch, and is made of a structural grade timber. The two diagonal supports could also be made of wood, however a metal such as mild steel provides a more rigid frame. The total length of the frame is 1.5 m, which allows enough length for the metal detector and GPR to be mounted with the required minimum proximity. 
 
-The GPR came with a small attachment which could be fixed to the antenna heads (\Figref{GPRmount} (a)). This attachment had a threaded head, allowing it to screw into a standard diameter broom or mop handle. In order to operate the GPR as close to the ground as possible, it was decided that a telescopic arm should be used, which could be used to maintain contact between the GPR head and the ground at all times. To prevent damage from occurring to the GPR in case it hit an obstacle, the arm would be installed on a rotating section.
+The GPR came with a small attachment which could be fixed to the antenna heads, shown in \Figref{GPRmount} (a). This attachment had a threaded head, allowing it to screw into a standard diameter broom or mop handle. In order to operate the GPR as close to the ground as possible, it was decided that a telescopic arm should be used, which could maintain contact between the GPR head and the ground at all times. To prevent damage from occurring to the GPR in case it hit an obstacle, the arm would be attached to a rotating PVC section. This design is shown in \Figref{GPRmount} (b).
 
 \begin{figure}[ht]
 \centerline{
 \begin{tabular}{cc}
-\subfloat[GPR attachment]{\includegraphics[height=.35\textwidth]{3-ConceptDesign/GPRmount2.jpg}}
-& \subfloat[Telescopic arm and GPR attachment]{\includegraphics[height=.35\textwidth]{3-ConceptDesign/GPRmount.PNG}}
+\subfloat[GPR attachment]{\includegraphics[height=.4\textwidth]{3-ConceptDesign/GPRmount2.jpg}}
+& \subfloat[Telescopic arm and GPR attachment]{\includegraphics[height=.4\textwidth]{3-ConceptDesign/GPRmount.PNG}}
 \end{tabular}}
 \caption{Attachment of the GPR to the sensor mount}
 \figlabel{GPRmount}
 \end{figure}
 
-It was decided to encase the metal detector between two sheets of Perspex, since the foam body of the metal detector was susceptible to damage. This also allowed the metal detector to be mounted more easily, since holes could be put through the Perspex. The metal detector assembly is shown in \Figref{MD}.
+A decision was made to encase the metal detector between two sheets of Perspex, since the foam body of the metal detector was susceptible to damage. This also allowed the metal detector to be mounted more easily, since holes could be put through the Perspex. The metal detector assembly is shown in \Figref{MD}.
 
 \begin{figure}[ht]
-\includegraphics[width=.45\textwidth]{3-ConceptDesign/MD.PNG}
+\includegraphics[width=.5\textwidth]{3-ConceptDesign/MD.PNG}
 \centering
 \caption{Metal detector with Perspex covers}
 \figlabel{MD}
@@ -208,21 +207,21 @@ There were several design requirements for the attachment of the metal detector 
 \item Ground clearance: The chosen design must be able to maintain a low ground clearance. Preference is given to a design in which this height can be varied to suit the terrain conditions. 
 \item Aesthetics: The design must be aesthetically pleasing. 
 \end{itemize}
-
 Four different design concepts were developed, shown in \Figref{MDdesigns}.
+
 \begin{figure}[ht]
 \centerline{
 \begin{tabular}{cc}
-\subfloat[Design 1]{\includegraphics[height=0.35\textwidth]{3-ConceptDesign/square.PNG}}
-& \subfloat[Design 2]{\includegraphics[height=0.35\textwidth]{3-ConceptDesign/final.PNG}}\\
-\subfloat[Design 3]{\includegraphics[height=0.35\textwidth]{3-ConceptDesign/triangle.PNG}}
-& \subfloat[Design 4]{\includegraphics[height=0.35\textwidth]{3-ConceptDesign/cantilever.PNG}}
+\subfloat[Design 1]{\includegraphics[height=0.4\textwidth]{3-ConceptDesign/square.PNG}}
+& \subfloat[Design 2]{\includegraphics[height=0.4\textwidth]{3-ConceptDesign/final.PNG}}\\
+\subfloat[Design 3]{\includegraphics[height=0.4\textwidth]{3-ConceptDesign/triangle.PNG}}
+& \subfloat[Design 4]{\includegraphics[height=0.4\textwidth]{3-ConceptDesign/cantilever.PNG}}
 \end{tabular}}
-\caption{Concepts for attaching the metal detector the the sensor mount} 
+\caption{Concepts for attaching the metal detector to the sensor mount} 
 \figlabel{MDdesigns}
 \end{figure}
 
-Design 1 has four simple vertical supports, which can be fixed to the Persex sheets of the metal detector assembly. The wooden supports are connected to the body of the sensor mount through lap joints, providing strength and rigidity. Design 2 is similar to Design 1, however nylon rods are used to support the metal detector panel instead. This allows the height of the metal detector to be varied to suit the terrain conditions. Furthermore, if the sensor mount were to encounter an obstacle, the nylon rod would shear before damage occurred to the metal detector. Vertical supports are added to provide torsional stiffness, and nylon bolts and wooden cross pieces are used to hold the rods firmly in place. Design 3 is similar to Design 1, with diagonal supports connected to a flat end section. Design 4 has a cantilever-like structure, with a single cross beam used to attach to metal detector assembly at two points. All four designs were evaluated against the design requirements, the results of which are shown in \Tabref{MDmatrix}. Consequently, Design 2 was chosen for the final sensor mount concept, shown in \Figref{finalSensorFrameDesign}. 
+Design 1 has four simple vertical supports, which can be fixed to the Persex sheets of the metal detector assembly. The wooden supports are connected to the body of the sensor mount through lap joints, providing strength and rigidity. Design 2 is similar to Design 1, however nylon rods are used to support the metal detector panel instead. This allows the height of the metal detector to be varied to suit the terrain conditions. Furthermore, if the sensor mount were to encounter an obstacle, the nylon rod would shear before damage occurred to the metal detector. Vertical supports are added to provide torsional stiffness, and nylon bolts and wooden cross pieces are used to hold the rods firmly in place. Design 3 is similar to Design 1, with diagonal supports connected to a flat end section. Design 4 has a cantilever-like structure, with a single cross beam used to attach to the metal detector assembly at two points. All four designs were evaluated against the design requirements, the results of which are shown in the selection matrix in \Tabref{MDmatrix}. Consequently, Design 2 was chosen for the final sensor mount concept, shown in \Figref{finalSensorFrameDesign}. 
 
 \begin{table}[ht]
 \centering
@@ -240,14 +239,14 @@ Design 1 has four simple vertical supports, which can be fixed to the Persex she
 \end{table}
 
 \begin{figure}[ht]
-\includegraphics[width=0.55\textwidth]{3-ConceptDesign/finalDesign.PNG}
+\includegraphics[width=0.65\textwidth]{3-ConceptDesign/finalDesign.PNG}
 \centering
 \caption{Final sensor mount concept with metal detector and GPR attached} \figlabel{finalSensorFrameDesign}
 \end{figure} 
 
 
 \section{Subsystem integration}
-Suitable consideration must be made to ensure that the individually developed systems are capable of integrating effectively to form a single continuous system. At the concept stage of the design the interacting points at the boundary limits of these systems were identified. These include the boundaries between physical systems, and the virtual boundaries between software and electrical systems. Early identification of these interactions ensured that the integration components necessary were considered as part of the detailed design.
+Suitable consideration must be made to ensure that the individually developed systems are capable of integrating effectively to form a single continuous system. At the concept stage of the design, the interactions at the boundaries of these systems were identified. These include the boundaries between physical systems, and the virtual boundaries between software and electrical systems. Early identification of these interactions ensured that the integration components necessary were considered as part of the detailed design.
 
 \seclabel{conceptprojectdesign}
 
@@ -278,7 +277,7 @@ Suitable consideration must be made to ensure that the individually developed sy
 % Under this system, the project will use standard desktop computing equipment for the bulk of the software, to make use of its superior processing power and the rapid development it allows. This device will be the data handler and processor, and act as the 'central' software location for the project. Sensors and actuators that require low level I/O access will be connected to a secondary microcontroller, which will act independently to buffer inputs and outputs of the system, which can then be communicated to the primary computer over a serial communications connection. The project will not aim to develop any custom electronics boards and handle all signal amplification or processing in software.
 
 \subsection{Software architecture}
-The autonomous quad bike will be used as the platform on which the sensor mount and software subsytems will operate. To achieve the framework for overall automation of the platform the integration of the actuator electronics, navigation, sensors, signal processing and operator device is required. This framework is completed through the Central Hub as shown in \Figref{central} where dotted lines indicate implementations of the interfaces. The Central Hub will combine and read all the relevant processes and transmit the required information to the operator device. This enables all processes to be completed in parallel on independent threads, satisfying the deliverables as defined in \secref{primary}.
+The autonomous quad bike will be used as the platform on which the sensor mount and software subsytems will operate. To achieve the framework for overall automation of the platform, the integration of the actuator electronics, navigation, sensors, signal processing and operator device is required. This framework is completed through the Central Hub as shown in \Figref{central} where dotted lines indicate implementations of the interfaces. The Central Hub will combine and read all the relevant processes and transmit the required information to the operator device. This enables all processes to be completed in parallel on independent threads, satisfying the deliverables as defined in \secref{primary}.
 
 \begin{figure}[ht]
 \includegraphics[width=\textwidth]{3-ConceptDesign/fyp_structure.png}
@@ -287,41 +286,23 @@ The autonomous quad bike will be used as the platform on which the sensor mount 
 \figlabel{central}
 \end{figure}
 
-The landmine detection system as a whole requires at minimum two control devices: the control system on the remote platform, and the control device held by a remote operator. The various subsystems involved in the software design were considered when selecting these control devices, and the decision was made to place the majority of software base on the on the remote platform. Having the majority of software systems physically residing on the remote platform allows the vehicle to remain in control of all systems in the event of a communications loss, meaning that necessary actions to stop the vehicle can be made if a severance of communications is detected. Under this scheme, the operator device would act only as a remote terminal to relay data to the central processing system.
+The landmine detection system as a whole requires at minimum two control devices: the control system on the remote platform, and the control device held by a remote operator. The various subsystems involved in the software design were considered when selecting these control devices, and the decision was made to place the majority of the software base on the remote platform. Having the majority of software systems physically residing on the remote platform allows the vehicle to remain in control of all systems in the event of communications loss, meaning that necessary actions to stop the vehicle can be made if a severance of communications is detected. Under this scheme, the operator device would act only as a remote terminal to relay data to the central processing system.
 
 \subsection{Electronics}
-A conventional PC running a Windows XP operating system was chosen for the primary control device on the remote platform, as this was a requirement to interface with the supplied GPR and metal detector. The PC also allowed for maximum ease of development under a familiar operating environmental, and provided tools for fast debugging of code.
+A conventional PC running a Windows XP operating system was chosen for the primary control device on the remote platform, as this was a requirement to interface with the supplied GPR and metal detector. The PC also allowed for maximum ease of development under a familiar operating environment, and provided tools for fast debugging of code.
 
-The control device on the remote platform needed to provide low level I/O to support the sensors and actuators controlling the motion of the quad bike. This functionality is available through a conventional PC, however can be difficult to configure correctly and suffers from delay and buffering issues caused by thread switching. The options available were to retain the PC as the sole electronic controller, or to push the control of low level sensors and actuators to a microcontroller which was better suited to the task. The microcontroller was selected due to its low cost, high I/O flexibility and the ability to manage I/O at a consistent cycle rate. 
+The control device on the remote platform needed to provide low level input/output (I/O) to support the sensors and actuators controlling the motion of the quad bike. This functionality is available through a conventional PC, however can be difficult to configure correctly and suffers from delay and buffering issues caused by thread switching. The options available were to retain the PC as the sole electronic controller, or to push the control of low level sensors and actuators to a microcontroller which was better suited to the task. The microcontroller was selected due to its low cost, high I/O flexibility and the ability to manage I/O at a consistent cycle rate. 
 
 
 \subsection{Communications}
-Communications between electronics systems inevitably introduces latency in signals and so the relationships between electronics systems were chosen to minimise the amount of data that was required to be transmitted. This also minimises the possibility of the communications channel becoming saturated and blocking the transmission of important time critical signals, such as an emergency stop. Where possible, data will be retained within the bounds of a single controller and only transferred when absolutely required. The major communications interfaces in the control system are detailed in the diagram below.
+Communications between electronics systems inevitably introduces latency in signals and so the relationships between electronics systems were chosen to minimise the amount of data that was required to be transmitted. This also minimises the possibility of the communications channel becoming saturated and blocking the transmission of important time critical signals, such as an emergency stop. Where possible, data will be retained within the bounds of a single controller and only transferred when absolutely required. The major communications interfaces in the control system are detailed in \Figref{communications}.
+
+The output from the GPS unit is a series of registers which is reported to the Arduino at a rate of approximately 10 Hz. Some degree of processing is required to translate this data into a geographic position, which can be represented by only two numbers. To reduce communications overhead, the Arduino is responsible for performing this calculation and will only report the position to the PC when explicitly requested to. This limits the volume of data required to be transmitted, and can limit the rate at which the transmission is sent. As the PC is the central unit for all other systems, the PC also maintains control over all the communications interfaces and is responsible for initiating all communication traffic.
 
 \begin{figure}[ht]
-\includegraphics[width=0.75\textwidth]{3-ConceptDesign/communications.png}
+\includegraphics[width=0.8\textwidth]{3-ConceptDesign/communications.png}
 \centering
 \caption{Integration of automation, navigation, sensors and signal processing} 
 \figlabel{communications}
 \end{figure}
-
-An example of our minimal communications strategy is evident from the above figure. The output from the GPS unit is a series of registers which is reported to the Arduino at a rate of approximately 10 Hz. Some degree of processing is required to translate this block of data into a geographic position, which can be represented by only two numbers. To reduce communications overhead, the Arduino is responsible for performing this calculation and will only report the position to the PC when explicitly requested to. This limits the volume of data required to be transmitted, and can limit the rate at which the transmission is sent. As the PC is the central unit for all other systems, the PC also maintains control over all of the communications interfaces and is responsible for initiating all communication traffic.
-
 \end{document}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
