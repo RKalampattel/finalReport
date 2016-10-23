@@ -28,7 +28,7 @@ The goal of this project is to develop an autonomous platform for landmine detec
 \subsection{Primary objectives}
 \seclabel{primary}
 An autonomous platform must be produced to meet the project goal. 
-This platform should be capable of traversing the complex terrain expected in mine-afflicted areas, and therefore will need a degree of off-roading capability. 
+This platform should be capable of traversing the complex terrain expected in mine-afflicted areas. 
 To be fully autonomous, this platform must also be capable of being fully operated remotely or by computer software, under supervision of a remote operator. 
 The detection system must be capable of providing some feedback mechanism to allow the operator to sufficiently assess the situation to provide adequate supervision.
 
@@ -40,12 +40,12 @@ The remote platform must also be capable of being equipped with any necessary se
 The mounting of this equipment must also be capable of allowing the sensory equipment to operate effectively, isolated from noise, vibrations, and any other interfering signals. 
 The output from these sensors would then be used in conjunction by a software algorithm trained to identify landmines, to demonstrate the detection capacity of an object classifying multi-sensor system relative to naïve individual sensors.
 
-This project vision was used to produce a set of requirements for a delivered system which successfully fulfils the project goal, and will be used to determine acceptance of the project deliverables. 
-These requirements are formally defined as:
+This project vision was used to produce a set of objectives for a delivered system which successfully fulfils the project goal, and will be used to determine acceptance of the project deliverables. 
+These objectives are formally defined as:
 
 \begin{enumerate}
 \item \textbf{Selection and subsequent modification of an existing platform for control via a remote device}\\ 
-Modifications will be made to a commercially available vehicle with existing off-road capabilities to allow for remote, electronic control of all subsystems associated with vehicle motion. This will include actuator control of throttling, steering, braking and gear changing systems, or as determined as required to allow full control of motion of the selected platform.
+Modifications will be made to a commercially available vehicle to allow for remote, electronic control of all subsystems associated with vehicle motion. This will include actuator control of throttling, steering, braking and gear changing systems, or as determined as required to allow full control of motion of the selected platform.
 An existing platform will be modified rather than constructing a bespoke vehicle to restrict project scope and accommodate tight time constraints. 
 This requirement will be deemed completed once all mechanical or electrical systems on the platform deemed necessary for autonomous navigation can be reliably controlled by a remote electronic system, and with sufficient granularity of control to permit further development of autonomous systems. 
 Selection of the device is expected to be completed within one month of confirmation of the project budget, and modifications are expected to be completable within two months of platform selection. 
@@ -75,7 +75,7 @@ A software system will be developed which will be capable of processing real-tim
 The software will be required to use a metrics based system to attempt to classify detections as either mine or non-mine. 
 Acceptance criteria will be tested by live trials on test objects. 
 This requirement will be deemed to be completed once the detection software is capable of detecting subsurface objects using real-time data. 
-The classification software will be required to achieve 100\% correct classification of detected landmines while also achieving a false-positive identification rate of less than 100\%, demonstrating an improvement over a naïve object-detection-only system. 
+The classification software will be required to achieve 100\% correct classification of detected landmines while also achieving a false-positive identification rate of less than 100\%, demonstrating an improvement over a naive object-detection-only system. 
 The detection software must be able to achieve improved detection when using multiple sensors, or the classification software must be able to achieved reduced false classification, demonstrating the value of the multi-sensor system. 
 This requirement represents a highly experimental aspect of the project, and as such completion expectations will depend on the results of preliminary testing. 
 \end{enumerate}
@@ -120,7 +120,7 @@ Egypt and Iran are two such environments that are considered, both of which are 
 \seclabel{Egypt}
 
 
-Egypt is listed as the country most contaminated by landmines, with an area of roughly 25,000 square kilometres contaminated by anti-tank and anti-personnel mines \parencite{Rushfan2008}. The majority of these mines were placed during World War II and consist of high metal content anti-tank and anti-personnel mines \parencite{Khamis13}. %The main contaminated areas are along the North coast and the Sinai Peninsula. These areas represent 22\% of the total area of Egypt and consist predominantly of lithosols with large flat expanses of sandy land \parencite{Nahrawy2011}. Temperatures in excess of 50 degrees are common, making it difficult for demining personnel to operate for extended periods of time \parencite{Khamis13}. 
+Egypt is listed as the country most contaminated by landmines, with an area of roughly 25,000 square kilometres containing both anti-tank and anti-personnel mines \parencite{Rushfan2008}. The majority of these mines were placed during World War II and consist of high metal content anti-tank and anti-personnel mines \parencite{Khamis13}. %The main contaminated areas are along the North coast and the Sinai Peninsula. These areas represent 22\% of the total area of Egypt and consist predominantly of lithosols with large flat expanses of sandy land \parencite{Nahrawy2011}. Temperatures in excess of 50 degrees are common, making it difficult for demining personnel to operate for extended periods of time \parencite{Khamis13}. 
 %Over time, shifting sands allow these landmines to sink deeper to depths of up to 2 metres, beyond the range of most landmine detection techniques \parencite{Khamis13}. 
 %The chosen platform would then be required to travel over sandy terrains and over small obstacles such as rocks, with the sensors being able to detect landmines through sandy and loose soil to depth of up to 15 cm. 
 
@@ -147,25 +147,25 @@ A typical demining operation requires personnel to clear a path or area, ensurin
 
 \subsection{Performance specifications}
 \seclabel{performance}
-Knowing the basic operating environment and mission profile, performance specifications can be defined, encompassing the platform and sensor systems. The operating environments were utilised to determine the types of terrains, landmines and depths requirements for the project.   \textcolor{red}{In this section, explain more clearly how each performance specification satisfies the mission profile, and relates to the operating environment}
+Knowing the basic operating environment and mission profile, performance specifications can be defined, encompassing the platform and sensor systems. The operating environments were utilised to determine the types of terrains, landmines and depths requirements for the project while the mission profile was used to determine the platform requirements and necessary communication devices.   \textcolor{red}{In this section, explain more clearly how each performance specification satisfies the mission profile, and relates to the operating environment}
 
 \subsubsection{Platform}
 \seclabel{platform}
-In order to be able to autonomously navigate a region of interest and meet the objectives outlined earlier, the platform must meet the following requirements: 
+In order to be able to autonomously navigate a region of interest and meet the objectives outlined earlier, the platform must meet the following requirements as highlighted through the mission profile and operating environment: 
 \begin{itemize}
- \item Carry a total payload of 100 kg. A pair of metal detector and GPR arrays with their respective control boxes have an estimated gross weight of 80 kg. This allows 20 kg for any mounting structures,  electronics and computers. 
+ \item Carry a total payload of 100 kg. A pair of metal detector and GPR arrays with their respective control boxes have an estimated gross weight of 80 kg. This allows 20 kg for any mounting structures,  electronics and computers. This will allow for landmines to be detected by system.
  \item Travel off-road in regions with dry sandy soils and level unobstructed terrain with little to no vegetation as described in the operating environment.
-\item Travel in a straight line, both forwards and reverse, and perform turns while maintaining an operational speed of 5 km/h. \textcolor{red}{Relate this to the operating environment, or add these details there}
+\item Travel in a straight line, both forwards and reverse, and perform turns while maintaining an operational speed of 5 km/h. The landmine effected regions highlighted through the operating environment would require a platform that is able to manoeuvre and change directions.  \textcolor{red}{Relate this to the operating environment, or add these details there}
 \item Be manoeuvrable enough to navigate the region of interest, yet controllable enough that in case of an emergency, it can come to a complete stop from its operational speed in 1 m.
 \end{itemize}
 
 \subsubsection{Sensors}
 \seclabel{sensors} 
-The requirements for the sensor system are as listed below:
+The requirements for the sensor system are derived from the types of landmines described in the operating environment. These are as listed below:
 \begin{itemize}
 \item Detect high and low metal content anti-personnel and anti-tank mines as there are a large variety of landmines buried as discussed in the operating environment. \textcolor{red}{More details}
-\item Identify mines at depths of up to 15 cm at an operational speed of 5 km/h.
-\item Discriminate between different landmines and other objects, aiming to minimise the number of false positives detected.
+\item Identify mines at depths of up to 15 cm at an operational speed of 5 km/h as this is the required depth and speed of detection.
+\item Discriminate between different landmines and other objects, aiming to minimise the number of false positives detected as described by the project goal.
 \end{itemize}
 
 \section{Project scope}
@@ -177,7 +177,7 @@ The requirements for the sensor system are as listed below:
 %Constraints: Restrictions that limit what you can achieve, how and when you can achieve it, and how much achieving it can cost.
 %Assumptions: Statements about how you will address uncertain information as you conceive, plan, and perform your project.
 
-The aim of this project is to demonstrate the feasibility of a concept that incorporates an autonomous platform and a real time multisensor landmine detection system. It is not intended for the final design solution to be a commercially viable device that is ready to be deployed for the ADF. As of such, object avoidance and other high level automation processes will not be considered. Only horizontally placed landmines will be considered and the soil types readily available will be tested in. 
+The aim of this project is to demonstrate the feasibility of a concept that incorporates an autonomous platform and a real time multisensor landmine detection system. It is not intended for the final design solution to be a commercially viable device that is ready to be deployed for the ADF. As of such, object avoidance and other high level automation processes will not be considered. Only horizontally placed landmines will be considered and only soil types readily available will be tested in. 
 
 \textcolor{red}{\textbf{Need to add more things here, this is just the start.} Things that are outside of scope: objection avoidance, mine clearance, }
 \end{document}

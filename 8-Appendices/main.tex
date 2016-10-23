@@ -370,6 +370,127 @@ $\Delta h$ required (m) & 0 & 1.46 & 0.09 & 0.44 & 0.37 & 0.11 & 0.62 & -1.18 \\
 \end{table}
 Similar to the simple turn, the centre point, $P_c$, of the turn arc is be found based on the turn radius, $R$, and is perpendicular to the current line segment. Arc points are added by incrementing the vector by $\Delta \textrm{angle}$. Incrementing stops once the vector has been rotated by a total angle equal to the difference between the current turn point and the next turn point, in the case of \Figref{nPointTurnProgression} part 4, we are at the first turn point so the vector is rotated, $(26.7 - 0)\degree = 26.7\degree$, in total. If at this point the desired turn angle has not been reached, additional arcs are added to the path in the same fashion as just described. Stage 1 is then executed again for the next straight line segment.
 
+\chapter{Extended Kalman Filter Derivation}
+\chaplabel{positionDerivation}
+The Extended Kalman Filter (EKF) is defined as follows:
+\begin{align}
+\shortintertext{Prediction Equations:}
+&\bar{\mu_t} = g(u_t, \mu_{t-1}) + \delta_t\\
+&\bar{\Sigma_t} = G_t\Sigma_tG_t^T + R_t\\
+\shortintertext{Update Equations:}
+&z_t = h(\mu_t) + v_t\\
+&K_t = \bar{\Sigma_t}H_t^T(H_t\bar{\Sigma_t}H_t^T + Q_t)^{-1}\\
+&\mu_t = \bar{\mu_t} + K_t(z_t-h(\bar{\mu_t}))\\
+&\Sigma_t = (I - K_tH_t)\bar{\Sigma_t}
+\end{align}
+It is calculated in two steps, a prediction step and an update step. The prediction step uses kinematic equations to update the position of the quad bike based on physical observations. In the case of the quad bike, readings of the velocity, steering angle and time-step are taken, then geometry is used to calculate where its updated position would be. The update step then uses information obtained through sensors to correct for any error that may be present in the prediction step. This is achieved by modelling positions as a Gaussian distribution and weighting them according to their reliability. Gaussian distributions are shown as covariance matrices, $R_t$ for the prediction step and $Q_t$ for the update step, and the weighting is the Kalman Gain, $K_t$. The predicted covariance matrix, $\Sigma_t$, can then be determined. As we know the starting position and heading of the quad bike through user input, $\Sigma_t$ is initialised as a 3x3 zero matrix.
+
+The geometry of the kinematic equations used are shown in \Figref{quadKinematics}. From the geometry we get:
+\begin{align}
+&R = \frac{L}{\tan\ \delta}\\
+&\phi = \frac{V\Delta t}{R}\\
+&y_q = R\sin\phi\\
+&x_q = R(1-\cos\phi)
+\shortintertext{where $R$ is the turn radius, $L$ the wheelbase, $\delta$ the steer angle, $V$ the velocity, $\Delta t$ the time step, and ($x_q, y_q$) is the local change in position. Then in the global frame we have:}
+&x_G = y_q\sin\theta + x_q\cos\theta\\
+&y_G = y_q\cos\theta + x_q\sin\theta\\
+&\theta = \theta + \phi
+\end{align}
+\begin{figure}[ht]
+\includegraphics[width=0.5\textwidth]{4-DetailedDesign/quadbikeKinematics.png}
+\centering
+\caption{Quad bike kinematics} \figlabel{quadKinematics}
+\end{figure} 
+so the prediction equation for $\bar{\mu_t},\ g(u_t,\ \mu_{t-1})$ becomes:
+\begin{align}
+g(u_t, \mu_{t-1}) &=
+\begin{bmatrix}
+	x_G + y_q\sin\theta + x_q\cos\theta\\
+    y_G + y_q\cos\theta + x_q\sin\theta\\
+    \theta + \phi
+\end{bmatrix},\\
+G = \frac{\partial g_i}{\partial x_j} &=
+\begin{bmatrix}
+    1	&	0	&	y_qcos\theta - x_qsin\theta\\
+    0	&	1	&	-y_qsin\theta - x_qcos\theta\\
+    0	&	0	&	1
+\end{bmatrix}
+\end{align}
+This needs to be recalculated at each prediction step as well as it's Jacobin, $G$. The process noise for the prediction, $\delta_t$, is represented by a Gaussian distribution with covariance $R$.
+\begin{align}
+R =
+\begin{bmatrix}
+    \sigma_x^2	&	0	&	0\\
+    0	&	\sigma_y^2	&	0\\
+    0	&	0	&	\sigma_\theta^2
+\end{bmatrix}
+=
+\begin{bmatrix}
+    (0.025 \times V\Delta t)^2	&	0	&	0\\
+    0	&	(0.025 \times V\Delta t)^2	&	0\\
+    0	&	0	&	(0.97 \times V\Delta t)^2
+\end{bmatrix}
+\end{align}
+Where $\sigma_x, \sigma_y, \textrm{and } \sigma_\theta$ are based on the accuracy of readings given by the velocity and steer angle sensors on the quad bike. Testing (see \secref{testingwheelencoder}) showed the error in distance, ($\sigma_x, \sigma_y$), to consistently vary within 0.5 m for every 20 m travelled, or 0.025 m/m. Since the heading is calculated based on the distance travelled and the turn angle, the error is also dependent on these factors. The steering motor is accurate to 1 degree of the true value due to initialisation and the error is maximum when at full lock due to the trigonometric function present in the turn angle equation below. The difference in turn angle at full lock when a 1 degree error is present is then:
+\begin{align}
+&\Delta\phi = \frac{V\Delta t}{\frac{L}{\tan\ 24}} - \frac{V\Delta t}{\frac{L}{tan\ 23}} = \frac{V\Delta t}{2.87} - \frac{V\Delta t}{3.02} = 0.017V\Delta t = 0.97\ \degree/m
+\end{align}
+Positional and angular data from the GPS and angular data from the IMU are observed. In the case of the GPS, the EKF inputs are the observation matrix and its Jacobian:
+\begin{align}
+h(\mu_t) = 
+\begin{bmatrix}
+    x_{gps}\\
+    y_{gps}\\
+    \theta_{gps}
+\end{bmatrix}\\
+H = \frac{\partial h_i}{\partial x_j} &= 
+\begin{bmatrix}
+    1	&	0	&	0\\
+    0	&	1	&	0\\
+    0	&	0	&	1
+\end{bmatrix}
+\end{align}
+And an observation error modelled by a Gaussian distribution with covariance matrix $Q$:
+\begin{align}
+Q = 
+\begin{bmatrix}
+    \sigma_x^2	&	0	&	0\\
+    0	&	\sigma_y^2	&	0\\
+    0	&	0	&	\sigma_\theta^2
+\end{bmatrix}
+=
+\begin{bmatrix}
+    0.4^2	&	0	&	0\\
+    0	&	0.4^2	&	0\\
+    0	&	0	&	20^2
+\end{bmatrix}
+\end{align}
+As the GPS drifts when stationary, positional data from this sensor is only used when the platform is at cruising speed, or when travelling in a forwards direction at 5 km/hr. Experimental data showed the GPS to be accurate within 0.4 m at this speed, and therefore the calculated heading accurate within ~20 degrees when measuring between subsequent points. This on its own is not accurate enough as it exceeds the desired positional accuracy.  
+
+Therefore, the IMU is also used to correct the heading. As only one element of the state vector is being updated the matrix math is set up slightly differently. Experimental data shows the IMU has an error of approximately 2 degrees per 360 degrees travelled.
+\begin{align}
+h(\mu_t) = \mu_t &= 
+\begin{bmatrix}
+    \theta + \Delta \theta_{imu}
+\end{bmatrix}\\
+H = \frac{\partial h_i}{\partial x_j} &= 
+\begin{bmatrix}
+    0	&	0	&	1
+\end{bmatrix}
+\end{align}
+And an observation error modeled by a Gaussian distribution with covariance matrix $Q$:
+\begin{align}
+Q = 
+\begin{bmatrix}
+    \sigma_\theta^2
+\end{bmatrix}
+=
+\begin{bmatrix}
+    (\frac{2}{360}\Delta \theta_{imu})^2
+\end{bmatrix}
+\end{align}
+With the inputs calculated a new estimate covariance, $\Sigma_t$, and position estimate, $\mu_t$, is outputted to be used in the next iteration of the algorithm. 
+
 \chapter{Arduino Code Chart}
 \chaplabel{arduinoCodeChart}
 \begin{figure}[ht]
@@ -379,9 +500,98 @@ Similar to the simple turn, the centre point, $P_c$, of the turn arc is be found
 
 \chapter{Sensor Mount Vibrations Analysis}
 \chaplabel{sensorVibesApp}
+While it is difficult to model the vibrational modes of a beam exactly, approximate analytical solutions for lower order modes may be obtained using classical methods. Two such methods are the Rayleigh and Dunkerly methods. The Rayleigh method considers the energy balance at the location of each beam mass element. A solution for the modes can be obtained based on knowledge of the static deflection. In general, the Rayleigh method provides an upper limit for the fundamental frequency. The Dunkerly method considers a force balance along the beam, which leads to the result that the overall modes are a superposition of the modes of the individual elements. The Dunkerly method generally provides a lower limit for the fundamental frequency.
+\textcolor{red}{some references?}
+Both methods were used to find the vibrational modes for three different configurations. The first configuration is a simple cantilever with self weight, the second is a massless cantilever with an end-loading, while the third is a cantilever with self-weight and an end loading.  \Tabref{theoreticalvibestable} shows the results for each of the different configurations and methods.
+
+%\[
+%Cross section: 35 x 70 mm    	Length: 1.5 m
+%Density: 515 \frac{kg}{$m^3}   	Modulus of elasticity: 10.06 GPa 
+%End load mass: 5 kg 			Beam mass = 1.8926 kg (calculated)
+
+%\]
+
+\begin{table} [ht]
+\centering
+\caption[Theoretical vibration results using Rayleigh and Dunkerly methods]{Theoretical vibration results using Rayleigh and Dunkerly methods for a 35 x 70 x 1500 mm beam in different configurations }
+\tablabel{theoreticalvibestable}
+\begin{tabular} {r c c}
+\toprule
+Configuration & f Dunkerly (Hz) & f Rayleigh (Hz)  \\ \midrule
+Cantilever (1.9kg self weight) & 22.2097 & 34.0655  \\
+Cantilever (massless, 5kg end load) & 6.7321 & 6.7321 \\
+Cantilever (1.9kg self weight , 5kg end load) & 6.4427 & 6.8844 \\ \bottomrule
+\end{tabular}
+\end{table}
+
+A cantilever beam of self weight was analysed in ANSYS. The transverse vertical fundamental frequency was found to be 27.707 HZ which lies between the frequency ranges found from using the Dunkerly and Rayleigh methods. This validates that the FEA model is working correctly and can be used to model the sensor mount accurately.
+
+The modes for the sensor mount were found to be 17.89 Hz. The addition of the cross member supports add stiffness to the frame resulting in the increased frequency over a standard cantilever beam. The vertical supports act to reduce the length of the cantilever beam further increasing the fundamental frequency. The deflections caused to the frame due to the fundamental frequency was 32.805 mm as can be seen in \Figref{Finalframeansys2}. 
+
+\begin{figure}[ht]
+\includegraphics[width=0.7\textwidth]{4-DetailedDesign/vibrations.PNG}
+\centering
+\caption{Sensor mount vibrational analysis} \figlabel{Finalframeansys2}
+\end{figure} 
+
+The addition of the metal detector to the frame resulted in fundamental frequencies of 13.647, 14.573 and 31.913 Hz with a maximum deflection of 9.9417 mm. The addition of the weight of the metal detector acts to dampen the fundamental frequency as expected. This same damping can be seen from the theoretical results for the cantilever beam with the added end weight.
+
+Variations in sensor arrangements that could be installed would result in different fundamental frequencies due to the changing damping effects. This can be accounted for by increasing of decreasing the length of the frame to change the fundamental frequency to one that is desired. The frame design can be tuned to a specific fundamental frequency through the alteration of its design and end weight.   
+
 
 \chapter{Software Design Documents}
 \chaplabel{designDocs}
+
+
+\chapter{Communications Packet Formats}
+\chaplabel{packets}
+
+\begin{enumerate}
+\item 
+\textbf{Packet Identifier}\\
+\textit{1 unsigned byte} \\
+This will be a byte from the enumerator list included in the Packet.h file.
+the value of this ID will indicate to the receiver what the packet data is. This could be a command, or an indicator of what the data type is and where it should go to. The 
+\item
+\textbf{Packet Length}\\
+\textit{1 unsigned byte}\\
+Indicates the length of the float array
+				passed in this packet. Accepts values in the range 0 - 255. For packets carrying no data, this will be zero.
+\item
+\textbf{Packet Data}\\
+\textit{Between 0 and 1024 bytes, in increments of 4, interpretable as IEEE 754 floats (4 bytes per float)}\\
+An array of floats containing arbitrary data, length as specified. The way this data will be interpreted will be determined by the packet ID. This is detailed in the code documentation as to what data each packet ID is expected to carry. 
+\end{enumerate}
+
+A typical valid packet will be of the following format:\\
+
+0x \textcolor{blue}{01} 52 \textcolor{blue}{01} 3F 8C CC CD \textcolor{blue}{17}\\
+
+This format is explained in the \Tabref{packetBreakdown} below.
+
+\nohyphens{	% Stop hyphenation in table
+\begin{longtable}{L{0.2\textwidth} L{0.25\textwidth} L{0.45\textwidth}}
+\caption[Stakeholders]{Stakeholders of the project.}\tablabel{packetBreakdown}\\ \toprule
+\textbf{Item} & \textbf{Hexadecimal} & \textbf{Description}\\ \midrule\endfirsthead 
+\caption[]{Stakeholders of the project (continued).}\\ \toprule
+\textbf{Members} & \textbf{Roles} & \textbf{Description}\\ \midrule\endhead
+
+Peter Dawson & Project Manager, Document Manager & The project manager is responsible for the overall management of the project. Their tasks involve communicating with the supervisor, group members, project sponsor and other external parties. Additionally, they are responsible for assignment of tasks and chairing of meetings. The document manager is responsible for document collation and data backup. \\ \midrule
+
+Jonathan Targett & Technical Manager & The technical manager’s responsibility is the overall management of the technical aspects of the project. The technical aspects may include procurement mechanical resources, electronic resources and other materials for the project.\\ \midrule
+
+Rahul Kalampattel & Safety Manager & The safety manager is responsible for lloking after the safety aspects of the project. This includes conducting risk assessments, providing a safe operating procedure (SOP), overseeing the completion of such documents and liaising with the necessary third parties to provide relevant safety information.\\ \midrule
+
+Racquel Punu & Secretary, Test Manager & The secretary is responsible for the administrative requirements of the project, including producing meeting minutes, and submission of documents through MyUni. The test manager is responsible for overall management of any testing conducted on systems and their components as required.\\ \midrule
+
+Harrison Vince & Treasurer, Manufacturing Manager & The treasurer is responsible for managing finances within the project. The manufacturing manager is responsible for overseeing any manufacturing processes undertaken, and dealing with other design related issues.\\ \midrule
+
+Dr Maziar Arjomandi & Project Supervisor & Supervises student members and guides them accordingly.\\ \midrule
+
+DSTG & Project Partner and Sponsor & Supports the project and project members in providing expertise, loaning of equipment, and funding. A research agreement entitles the Project Partner to share in all knowledge gained over the course of the project.\\ \bottomrule
+
+\end{longtable}}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -473,7 +683,7 @@ In order for a successful test plan to be created, objectives are required. Thes
 The quad bike systems will be broken down into individual mechatronic subsystems for testing to identify if any components need replacing and the characteristics of the subsystem. The tests will encompass the steering, braking, throttle, gear selecting, wheel encoder, GPS, and engine systems to ensure correct operation.
 
 \medskip\noindent
-Initial testing will be conducted with the quad bike on its stand for its ease to work on, monourver as required and for the added safety as the hweels are not in contact with the ground. Independent tests on each subsystem will be conducted to determine their operational status, how best to control them, and how to control them autonomously. Once these are all completed for each subsystem, Whole system testing will commence whereby the quad bike is allowed to traverse a designated area under remote control. Autonomous testing will be conducted once all systems are able to be controlled and shut down remotely.
+Initial testing will be conducted with the quad bike on its stand for its ease to work on, manoeuvre as required and for the added safety as the wheels are not in contact with the ground. Independent tests on each subsystem will be conducted to determine their operational status, how best to control them, and how to control them autonomously. Once these are all completed for each subsystem, Whole system testing will commence whereby the quad bike is allowed to traverse a designated area under remote control. Autonomous testing will be conducted once all systems are able to be controlled and shut down remotely.
 
 \medskip\noindent
 The tests will be divided into subsystems of the quad bike to ensure that individual subsystems are functioning. This includes overall system start and shut-down, electronic components, steering, braking, throttle and actuating systems. The tests will be conducted at an overall system level in order to:
@@ -522,11 +732,6 @@ The tests will be divided into subsystems of the quad bike to ensure that indivi
 
 \end{qb}
 
-\begin{qb}
-\textbf{Identify and evaluate GPS output units}\\
-\textbf{Objective:} Test GPS and evaluate output units and location accuracy for use in the central computer. Test GPS data for a stationary object to find the spread of the points and compare to the spread of data for a moving object. This will allow for the development of a more accurate positioning system through the use of a Kalmen filter.
-
-\end{qb}
 
 \begin{qb}
 \textbf{Determine functionality and accuracy of the wheel encoder}\\
@@ -547,8 +752,6 @@ Testing of the system as a whole is required to carried out in order to determin
 
 %\begin{enumerate}
 %\item Determine required throttle percentage for ground motion
-\todo[inline]{Peter, please add further details in the objective section}
-
 \begin{qb}
 \textbf{Determine required throttle percentages for ground motion and operational speed}\\
 \textbf{Objective:} Find the throttle percentages required to get the quad bike moving forwards and maintain a constant speed of 5 km/h. Gradually increase the throttle by 5\% increments until it starts moving forwards. Increase throttle until the quad bike is maintaining a constant speed of 5 km/h forwards. These will be the throttle ranges for motion. This is important to the navigation and potion software as accurate knowledge of the control systems for the quad bike is necessary for automation. 
@@ -581,53 +784,54 @@ Testing of the navigation software is the final step. This incorporates all the 
 % \item Determine accuracy of positioning devices, required for orientation and distance travelled
 \begin{qb}
 \textbf{Determine accuracy of positioning devices, required for orientation and distance travelled}\\
-\textbf{Objectives:} 
+\textbf{Objectives:} For the GPS, a known path will be traversed and logged data compared with real coordinate data. A stationary test should also take place. From this, confirmation of accuracy and error data should be found. The IMU should be tested on both the quad bike while running and a non-vibrating surface. Time dependant drift and cumulative error should be measured.
 \end{qb}
 
 % \item Determine accuracy of virtual platform motions compared to real life motions of the quad bike
 \begin{qb}
-\textbf{Determine accuracy of virtual platform motions compared to real life motions of the quad bike}\\
-\textbf{Objectives:}
+\textbf{Determine accuracy of positioning system}\\
+\textbf{Objectives:} In both the virtual platform and actual positioning devices, the results of the Kalman Filter should be analysed. Information of interest includes accuracy, relative drift speed, and distance/time to stability.
 \end{qb}
 
 
 % \item Check the angle of turns and path following abilities of the platform when compared to desired performance. A straight line test will be conducted in order to sync up the Virtual display to the real world motion. Once the distance and motion is similar angled turns will be conducted. these will first be simple turns with gradual angle increases until complex angle turns are required. A 90 degree turn will be executed to check the accuracy and navigation performance before full automation tests can be performed. 
 \begin{qb}
 \textbf{Check the angle of turns and path following abilities of the platform when compared to desired performance.}\\
-\textbf{Objectives:} A straight line test will be conducted in order to sync up the Virtual display to the real world motion. Once the distance and motion is similar angled turns will be conducted. These will first be simple turns with gradual angle increases until complex angle turns are required. A 90 degree turn will be executed to check the accuracy and navigation performance before full automation tests can be performed.
+\textbf{Objectives:} A straight line test will be conducted in order to sync up the Virtual display to the real world motion. Once the distance and motion is similar angled turns will be conducted. These will first be simple turns with gradual angle increases until complex angle turns are required. A 90 degree turn will be executed to check the accuracy and navigation performance.
 
 \end{qb}
 
 % \end{enumerate}
 
 \subsubsection{Ground penetrating radar}
-The ground penetrating radar’s characteristics and data generated will verify the signals produced. The tests will be conducted at an overall system level in order to:
+
+The ground penetrating radar’s characteristics and data generated will verify  and compare the signals produced from changes in frequency, material type, soil properties and depth. The tests will be conducted at an overall system level in order to:
 % \begin{enumerate}
 % \item Identify the GPR frequency used to produce the optimum strength and quality of signal 
 \begin{gpr}
 \textbf{Identify GPR frequency to be used}\\
-\textbf{Objectives:} Confirm which of the three GPR frequency heads to use between 800 MHz, 1.4 GHz and 2 GHz. Test is also to confirm that the resolution quality changes depending on the frequency of the signal. 
+\textbf{Objectives:} Confirm which of the three GPR frequency heads to use between 800 MHz, 1.4 GHz and 2 GHz. The frequency is required to be selected to optimise the penetration depth and resolution of signals received by the GPR. 
 \end{gpr}
 % \item Identify the signals generated by different types of materials
 \begin{gpr}
 \textbf{Identify the signals generated by different types of materials}\\
-\textbf{Objectives:} Confirm that different materials affect the amplitude of signals reflected by the object to the GPR. Confirm the signatures of the replica landmines and clutter objects.
+\textbf{Objectives:} Confirm that different materials affect the amplitude of signals reflected by the object to the GPR. Identify the signatures of the replica (dummy) landmines and clutter objects. This is to be able to extract necessary features from the GPR data to use in designed algorithms. 
 \end{gpr}
 
 % \item Identify the depth limit at which the GPR can detect an object
 \begin{gpr}
 \textbf{Test objects at different depths}\\
-\textbf{Objectives:} Confirm the sensitivity of signals received based on target depth. Confirm for three different increasing depths.
+\textbf{Objectives:} Confirm the sensitivity of signals received based on target depth. This identifies how large or small the signals are for three different increasing depths to be able to calculate the output metrics as accurate as possible. 
 \end{gpr}
 % \item Identify how object data signals change with soil types
 \begin{gpr}
 \textbf{Identify how object data signals change with soil types}\\
-\textbf{Objectives:} Confirm that for each different types of soil, the signal strength (resolution) reflected changes and penetration ability may be hindered. 
+\textbf{Objectives:} Confirm that for each different types of soil,  the signal strength (resolution) reflected changes and penetration ability may be hindered. The effect of certain types of soil hinders the ability to extract the features accurately. 
 \end{gpr}
 
 \begin{gpr}
 \textbf{Confirms functionality of GPR signal processing algorithm}\\
-\textbf{Objectives:} The data from the GPR is processed using the designed algorithm and stored in the database to define output metrics. 
+\textbf{Objectives:} The data from the GPR is processed using the designed algorithm and stored in the database to define the output metrics such as feature width and feature depth. The test will enable further development of the algorithms designed. 
 \end{gpr}
 
 % \item Identify how environmental conditions affect signals 
@@ -640,38 +844,38 @@ The tests will be completed outdoors with the GPR head and scanned over the obje
 Input parameters will be identified for each test case to provide consistency in data produced. These parameters include, and are not limited to: the initial settings as set by the SIROPULSE II program as defined in the user manual, different types of objects, type of soil and depths targets are buried.
 
 \subsubsection{Metal detector panel}
-The data generated by the metal detector in different tests will be verified against results described in literature. The tests that will be conducted aim to:
+The data generated by the metal detector in different tests will be verified against results described in literature. These results will also be used to test the algorithms designed to extract phase angle and magnitude of the target. The tests that will be conducted aim to:
 % \begin{enumerate}
 % \item Identify the differences between signals for ferrous and non-ferrous objects
 \begin{mds}
 \textbf{Identify the differences between signals for ferrous and non-ferrous objects}\\
-\textbf{Objective:} Confirm that both ferromagnetic and non-ferromagnetic produce different phase plots.
+\textbf{Objective:} Confirm that both ferromagnetic and non-ferromagnetic produce different phase plots. These phase plots will provide more information to identify which materials have similar signatures to landmines. 
 
 \end{mds}
 
 \begin{mds}
-\textbf{Identify the objects}\\
-\textbf{Objective:} Confirm that both ferromagnetic and non-ferromagnetic produce different phase plots.
+\textbf{Identify the frequency to be used}\\
+\textbf{Objective:} Confirm which frequency to use out of the four provided by the metal detector. Certain frequencies produce a higher voltage magnitude for different types of targets.  
 
 \end{mds}
 
 % \item Identify the effect of target depth on detection 
 \begin{mds}
 \textbf{Identify the effect of target depth on detection}\\
-\textbf{Objective:} Confirm that different depths corresponds to a change in magnitude of the voltage flux detected). 
+\textbf{Objective:} Confirm that different depths corresponds to a change in magnitude of the voltage flux detected. Change in magnitude will assist in identification of the target object. 
 
 \end{mds}
 % \item Identify how signals change with soil types
 \begin{mds}
 \textbf{Identify how signals change with soil types}\\
-\textbf{Objective:} Observe how the amplitude of the signals and plots change when target depth is changed. 
+\textbf{Objective:} Observe the effect of the soil on the magnitude and phase plot of the signals. This helps to improve the algorithm for background signal removal.  
 
 \end{mds}
 % \item Identify how environmental conditions affect signals 
 % \item Confirm software program is working
 \begin{mds}
 \textbf{Confirms functionality of metal detector signal processing algorithm}\\
-\textbf{Objective:} The data from the metal detector is processed using the designed algorithm. This will enable confirmation of the output metrics and provide useful information for the database to be developed. 
+\textbf{Objective:} The data from the metal detector is processed using the designed algorithm. This will enable confirmation of the phase angle and magnitude and provide useful information for the database to be developed. Testing will enable improvement of the algorithm. 
 
 \end{mds}
 % \end{enumerate}
