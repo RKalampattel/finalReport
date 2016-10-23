@@ -127,8 +127,9 @@ To allow for complex polygonal zones to be entered by the user, the original use
 \caption{Output of preliminary waypoint generation algorithm} \figlabel{wayPointGeneration}
 \end{figure}
 
-The linescan algorithm searches for the nearest corner from the nearest convex polygon and begins plotting successive alternating scanlines through the polygon. After a convex polygon has been completely covered, the linescan algorithm connects to the next nearest corner of the next nearest polygon and the process continues. This system allows for multiple user defined regions to be connected and autonomously scanned in a single pass. Due to the way the region subdivision takes place the only radius of curvatures present are either zero (corner), or infinite (straight line).
-For low curvature path following Pure Pursuit is used (\secref{lowcurvefollowing}). Low curvature is defined as any path with a radius of curvature greater than that of the minimum turn radius of the quad bike, i.e. a radius of curvature greater than 3.14 metres. The quad bike's maximum steering angle of 24 degrees restricts it from making any turn sharper than this. For a radius of curvature of zero, the pure pursuit method breaks down due to a non-continuous path, and turn angle limitations on the quad bike so another turning method is required.
+The linescan algorithm searches for the nearest corner from the nearest convex polygon and begins plotting successive alternating scanlines through the polygon. After a convex polygon has been completely covered, the linescan algorithm connects to the next nearest corner of the next nearest polygon and the process continues. This system allows for multiple user defined regions to be connected and autonomously scanned in a single pass. Due to the way the region subdivision takes place, the only radius of curvatures present are either zero (in corners), or infinite (in straight lines).
+
+For low curvature path following, Pure Pursuit is used (\secref{lowcurvefollowing}). Low curvature is defined as any path with a radius of curvature greater than the minimum turn radius of the quad bike, i.e. a radius of curvature greater than 3.14 metres. The quad bike's maximum steering angle of 24 degrees restricts it from making any turn sharper than this. For a radius of curvature of zero, the Pure Pursuit method breaks down due to a non-continuous path and turn angle limitations on the quad bike, so another turning method is required.
 
 \subsection{Low curvature path following}
 \seclabel{lowcurvefollowing}
@@ -140,7 +141,7 @@ The low curvature path tracker works through determining a steer angle that conn
 \shortintertext{Then the steer angle, $\delta$, can be determined from the geometry shown in \Figref{geometricBicycleModel} where}
 R &= \frac{l_d}{2\sin(\alpha)},
 \shortintertext{and the pure pursuit controller is given as}
-\delta &= \tan^{-1}\Bigg(\frac{2L\sin(\alpha)}{l_d}\Bigg)
+\delta &= \tan^{-1}\Bigg(\frac{2L\sin(\alpha)}{l_d}\Bigg),
 \end{align}
 where $\alpha$ and thus $\delta$ will be functions of time and thus will be calculated in real time. The goal point is determined as a result of further path subdivision discussed in \secref{pathsubdivision}.
 \begin{figure}[ht]
@@ -151,7 +152,7 @@ where $\alpha$ and thus $\delta$ will be functions of time and thus will be calc
 
 \subsection{Turning the platform a specified angle}
 \seclabel{turningspecifiedangle}
-For the quad bike to not stray more than 0.5 meters from the path, as defined in the project requirements, turning procedures were incorporated at path points of zero radius of curvature. In these situations one of two methods were used to turn the angle, a simple turn, or an extended 3-point turn (N-point turn) to some number of required points, both shown in \Figref{turnTypes}. 
+For the quad bike to not stray more than 0.5 meters from the path, as defined in the scenario of operation, turning procedures were incorporated at path points of zero radius of curvature. In these situations, one of two methods were used to turn the angle, a simple turn, or an extended 3-point turn (N-point turn) to some number of required points, both shown in \Figref{turnTypes}. 
 
 \begin{figure}[ht]
 \centerline{
@@ -170,15 +171,15 @@ The turn type used at any point is determined by a user set threshold of angles.
 \item $\alpha \geqslant$ 40\degree: N-point turn
 \end{itemize}
 
-The geometry of the simple turn is shown in \Figref{simpleTurnGeometry} where the solid bold line and dashed bold line represent the user defined path and the modified region of the path, respectively. We can visually see that to reduce the deviation from the user defined path, d should be kept to a minimum.
+The geometry of the simple turn is shown in \Figref{simpleTurnGeometry}, where the solid bold line and dashed bold line represent the user defined path and the modified region of the path, respectively. We can visually see that to reduce the deviation from the user defined path, $d$ should be kept to a minimum.
 \begin{figure}[ht]
 \includegraphics[width=0.4\textwidth]{4-DetailedDesign/simpleTurnGeometry.png}
 \centering
 \caption{Simple turn geometry} \figlabel{simpleTurnGeometry}
 \end{figure} 
-From \Figref{simpleTurnGeometry} we get:
+From \Figref{simpleTurnGeometry} we get
 \begin{align}
-d = R \tan{\frac{\alpha}{2}}\\
+d = R \tan{\frac{\alpha}{2}}.
 \end{align}
 To minimise $d$, the turn radius, $R$, should be minimised. To minimise the turn radius the turn should be executed at maximum turn angle, or with $\delta$ equal to 24\degree. Mapping waypoints along the simple turn is covered further in \secref{pathsubdivision}.
 
@@ -193,7 +194,7 @@ Geometry for the N-point turn is very similar to that of the simple turn and is 
 \figlabel{nPointTurnGeometry}
 \end{figure}
 
-Throughout the N-point turn the quad bike must remain within the grey dashed lines else it would be traversing un-scanned terrain, risking the detonation of landmines. By analysing a 180 degree N-point turn in a 3 meter swathe, a template is constructed, and for any turn angles of less than 180 degrees the turn algorithm exits early, once the desired turn angle has been reached. The specific algorithms to achieve this are discussed further in \secref{pathsubdivision}. The template, shown in \Tabref{npointTurnTemplate}, matches each point in the turn with an angle corresponding to the angle at which the quad bike touches the edge of the swathe. In \Figref{nPointTurnGeometry}a, the quad bike is touching the edge of the swathe at position 1, 26.7\degree. Accumulative error here is not an issue as this is the ideal path that the quad bike would follow, and any quad bike deviation error is corrected for by aiming for the ideal path point.
+Throughout the N-point turn the quad bike must remain within the grey dashed lines else it would be traversing un-scanned terrain, risking the detonation of landmines. By analysing a 180 degree N-point turn in a 3 metre swathe, a template is constructed, and for any turn angles of less than 180 degrees the turn algorithm exits early, once the desired turn angle has been reached. The specific algorithms to achieve this are discussed further in \secref{pathsubdivision}. The template, shown in \Tabref{npointTurnTemplate}, matches each point in the turn with an angle corresponding to the angle at which the quad bike touches the edge of the swathe. In \Figref{nPointTurnGeometry} (a), the quad bike is touching the edge of the swathe at position 1, 26.7\degree. Accumulative error here is not an issue as this is the ideal path that the quad bike would follow, and any quad bike deviation error is corrected for by aiming for the ideal path point. At the completion of the turn, the quad bike is not guaranteed to line up with the next segment of the path. A distance, $\Delta h$ is added to the end of the previous line segment to correct for this. $\Delta h$ is also determined from ideal geometry, and in real time by interpolating from the template shown in \Tabref{npointTurnTemplate}.
 \begin{table} [ht]
 \centering
 \caption{N-point turn template}
@@ -205,11 +206,11 @@ Heading (\degree) & 0 & 26.7 & 60.5 & 77.3 & 95.6 & 113.9 & 130.8 & 180 \\
 $\Delta h$ required (m) & 0 & 1.46 & 0.09 & 0.44 & 0.37 & 0.11 & 0.62 & -1.18 \\ \bottomrule
 \end{tabular}
 \end{table}
-At the completion of the turn, the quad bike is not guaranteed to line up with the next segment of the path. A distance, $\Delta h$ is added to the end of the previous line segment to correct for this. $\Delta h$ is also determined from ideal geometry, and in real time by interpolating from the template shown in \Tabref{npointTurnTemplate}.
+
 
 \subsection{Path subdivision}
 \seclabel{pathsubdivision}
-The goal of the path subdivision step is to provide intermediate, or 'goal', waypoints for the quad bike to navigate towards. The subdivision is completed by cycling through the user defined path, constantly repeating a two step process: 
+The goal of the path subdivision step is to provide intermediate, or ``goal'', waypoints for the quad bike to navigate towards. The subdivision is completed by cycling through the user defined path, constantly repeating a two step process: 
 \begin{enumerate}
 \item Subdivide the straight line segment
 \item If there is a next line segment, conduct a turn and align with it
@@ -229,9 +230,10 @@ For each of the turns, the algorithm to deduce the locations of the modified pat
 
 \subsection{Positioning system}
 \seclabel{positioningSystem}
-The requirements for the positioning system were set primarily by the virtual platform (see \secref{detailedVP}). Two requirements were defined for the design, low positional drift and high accuracy. The drift is the speed at which the cartesian position moves relative to the real quad bike position and accuracy is the distance error of the positioning system from the real quad position. The maximum allowable drift for the system was defined as 0.2 m/s, speeds exceeding this resulted in irregular steering motor fluctuations either side of the desired steering angle. The minimum allowable accuracy for the position was defined as 0.5 m as set in the project specifications.
+The requirements for the positioning system were set primarily by the virtual platform, \secref{detailedVP}. Two requirements were defined for the design, low positional drift and high accuracy. The drift is the speed at which the cartesian position moves relative to the real quad bike position and accuracy is the distance error of the positioning system from the real quad position. The maximum allowable drift for the system was defined as 0.2 m/s, as speeds exceeding this resulted in irregular steering motor fluctuations on either side of the desired steering angle. The minimum allowable accuracy for the position was defined as 0.5 m as set in the scenario of operation.
 \nomenclature{EKF}{Extended Kalman Filter}
-To satisfy these characteristics an Extended Kalman Filter (EKF) was employed to fuse the data from two positional sources, a GPS and IMU, and quad bike kinematic equations. It is capable of taking in to account the noise and inaccuracies from multiple measurements to produce an output which is likely to be more accurate than each of the individual readings. The EKF is defined as follows:
+
+To satisfy these characteristics an Extended Kalman Filter (EKF) was employed to fuse the data from two positional sources, a GPS and IMU, and quad bike kinematic equations. The EKF is capable of taking into account the noise and inaccuracies from multiple measurements to produce an output which is likely to be more accurate than each of the individual readings. The EKF is defined as follows:
 \begin{align}
 \shortintertext{Prediction Equations:}
 &\bar{\mu_t} = g(u_t, \mu_{t-1}) + \delta_t\\
@@ -242,7 +244,7 @@ To satisfy these characteristics an Extended Kalman Filter (EKF) was employed to
 &\mu_t = \bar{\mu_t} + K_t(z_t-h(\bar{\mu_t}))\\
 &\Sigma_t = (I - K_tH_t)\bar{\Sigma_t}
 \end{align}
-Where the state vector, $\mu_t$, holds the positional information ($x, y, \theta$) in a 3x1 matrix, primarily determined from the kinematic function, $g(u_t, \mu_{t-1})$ with noise $\delta_t$. The error associated with the kinematic function, $\Sigma_t$, is found from the Jacobian of the kinematic function, $G$, and the covariance of the noise, $R_t$. Any observed information is given by some function of the true value, $h(\mu_t)$, with noise $v_t$. The Kalman Gain, $K_t$, is weighted based on the observation noise covariance, $Q_t$, the Jacobian of the observation, $H_t$, and the overall covariance, $\Sigma_t$. A new state estimate can then be calculated with its associated error. Further information and derivation of the equations used can be found in \Chapref{positionDerivation}. The final result is listed here:
+Here the state vector, $\mu_t$, holds the positional information ($x, y, \theta$) in a 3x1 matrix, primarily determined from the kinematic function, $g(u_t, \mu_{t-1})$ with noise $\delta_t$. The error associated with the kinematic function, $\Sigma_t$, is found from the Jacobian of the kinematic function, $G$, and the covariance of the noise, $R_t$. Any observed information is given by some function of the true value, $h(\mu_t)$, with noise $v_t$. The Kalman Gain, $K_t$, is weighted based on the observation noise covariance, $Q_t$, the Jacobian of the observation, $H_t$, and the overall covariance, $\Sigma_t$. A new state estimate can then be calculated with its associated error. Further information and derivation of the equations used can be found in \Chapref{positionDerivation}. The final result is listed here:
 \begin{align}
 \shortintertext{For the prediction step:}
 g(u_t, \mu_{t-1}) &=
@@ -334,38 +336,36 @@ Pure Pursuit is used as the path following algorithm to turn towards the next go
 
 Due to the mixture of navigation complexities three navigation states were employed, \textit{NAV\_STOP}, \textit{NAV\_CRUISE}, and \textit{NAV\_TURNINBOUND}. The quad bike performs different functions depending on the navigation state. If the current state is \textit{NAV\_STOP}, the quad bike applies the brakes and stops. This would be used in the case of an emergency or landmine detection. \textit{NAV\_CRUISE} is the basic Pure Pursuit algorithm; steer to the goal point and when within the given look-ahead distance, increment the path point.
 
-The navigation software is able to detect an inbound turn via the distances between the current and next path points. If the distance to the next path point is less than the distance to the current path point, we know a point in the N-point turn is approaching and the navigation state is changed to \textit{NAV\_TURNINBOUND}. When this is the case, the path point is not incremented until one of two possibilities occur; 1. the quad bike comes within a user specified radial tolerance of the point or 2. the quad bike is no longer converging on the point. For testing and in the virtual platform, a radial tolerance of 0.2 metres was used. When one of the two possibilities returns true, the navigation state is reset to \textit{NAV\_CRUISE}. The process starts again and if more points are present in the N-point turn, the navigation state will be set to \textit{NAV\_TURNINBOUND} once again. The direction of travel is determined based on the location of the goal point relative to the quad bike. If the goal point lies in front of the quad bike, the forwards gear is selected, and if the goal point is behind the quad bike, the reverse gear is selected.
+The navigation software is able to detect an inbound turn via the distances between the current and next path points. If the distance to the next path point is less than the distance to the current path point, it is known that a point in the N-point turn is approaching and the navigation state has changed to \textit{NAV\_TURNINBOUND}. When this is the case, the path point is not incremented until one of two possibilities occur: (i) the quad bike comes within a user specified radial tolerance of the point or (ii) the quad bike is no longer converging on the point. For testing and in the virtual platform, a radial tolerance of 0.2 metres was used. When one of the two possibilities returns true, the navigation state is reset to \textit{NAV\_CRUISE}. The process starts again and if more points are present in the N-point turn, the navigation state will be set to \textit{NAV\_TURNINBOUND} once again. The direction of travel is determined based on the location of the goal point relative to the quad bike. If the goal point lies in front of the quad bike, the forwards gear is selected, and if the goal point is behind the quad bike, the reverse gear is selected.
 
 \section{Sensor mount}
 %\subsubsection{Final sensor mount design}
-In order to ensure that the final design for the sensor mount would be able to meet all requirements for the sensor system, a structural analysis was conducted. A vibrational analysis was also performed, to ensure that the vibrational interference to the sensor system would be minimal. After manufacturing the sensor mount, further testing was done to verify the vibrational analysis.
+In order to ensure that the final design for the sensor mount would be able to meet all requirements for the sensor system, a structural analysis was conducted. A vibrational analysis was also performed to ensure that the vibrational interference to the sensor system would be minimal. After manufacturing the sensor mount, further testing was done to verify the vibrational analysis.
 %These tests were necessary to test for variations in ground clearances and vibrational interference from the Quad bike during operation. Testing for these were carried out using the Finite Element Analysis (FEA) method and engine run tests on the quad bike with attached accelerometers. FEA was used to test vibrational harmonics and load carrying ability of the frame when subject to operational conditions while engine run tests were used to test the vibrational frequency of the operating quad bike. 
 %The sensor mount, as described previously, is required to carry the sensory systems and mount them to the platform in a fashion that does not limit their functionality. The design process of the mount consisted of hand calculations followed, computer aided design and verification. 
 
 \subsection{Structural analysis}
 The sensor mount design was initially analysed using Finite Element Analysis (FEA).
 %The FEA methods discretises a geometry into a finite number of elements connected together via nodes. Boundary conditions, loads and constraints as well as material properties are subject to the design and depending on the analysis type, a result can be interpreted that can be used to alter and fine tune the design.  
-To properly and accurately model the frame, 3D elements were chosen to represent the geometry and a basic load test was conducted. This load test was conducted to ensure that the deflection of the mount when subject to the weight of the sensor systems would not interfere with the sensor requirements, and to check if the design was strong enough to support the weight.
+To properly and accurately model the frame, 3D elements were chosen to represent the geometry. A basic load test was conducted to ensure that the deflection of the mount when subject to the weight of the sensor systems would not interfere with the sensor requirements, and to check if the design was strong enough to support the weight.
 
-MGP10 structural pine was chosen as the material for the frame of the sensor mount, with a thickness of 70 x 35 mm selected to provide adequate support and minimise deflection over the length of the beam. The supports were chosen to be made from mild steel with square hollow sections of dimension 25 x 25 x 1.6 mm. The equivalent (von-Mises) stresses for both the frame and mild steel supports did not exceed their yield stresses of 10 MPa and 370 MPa respectively. \Figref{topframe} and \Figref{bottomframe} show the equivalent stresses experienced by the segmented parts under loading.
+MGP10 structural pine was chosen as the material for the frame of the sensor mount, with a thickness of 70 x 35 mm selected to provide adequate support and minimise deflection over the length of the beam. The supports were chosen to be made from mild steel with square hollow sections of dimension 25 x 25 x 1.6 mm. The equivalent (von-Mises) stresses for both the frame and mild steel supports did not exceed their yield stresses of 10 MPa and 370 MPa respectively. \Figref{topframe} and \Figref{bottomframe} show these equivalent stresses experienced by the segmented parts under loading.
 \nomenclature{FEA}{Finite Element Analysis}%
 \begin{figure}[ht]
-\includegraphics[width=0.7\textwidth]{4-DetailedDesign/topFrame.PNG}
+\includegraphics[width=0.6\textwidth]{4-DetailedDesign/topFrame.PNG}
 \centering
 \caption{Supports for sensor mount von-Mises stress} \figlabel{topframe}
 \end{figure}
 
-\begin{figure}[ht]
-\includegraphics[width=0.9\textwidth]{4-DetailedDesign/bottomFrame.PNG}
+Hand calculations were used to verify the results from FEA. An axial force of 334 MPa was calculated for the rear frame section and this corresponded to a force of 333.99 MPa from the FEA analysis, showing that the results from FEA mimicked the real world results closely. 
+\begin{figure}[!ht]
+\includegraphics[width=0.8\textwidth]{4-DetailedDesign/bottomFrame.PNG}
 \centering
 \caption{Structural pine frame von-Mises stress} \figlabel{bottomframe}
 \end{figure}
-
-Hand calculations were used to verify the results from FEA. An axial force of 334 MPa was calculated for the rear frame section and this corresponded to a force of 333.99 MPa from the FEA analysis, showing that the results from FEA mimicked the real world results closely. 
-
 %A vibrational analysis was conducted to ensure that no frequency disturbances would be experienced by the sensors from the quad bike engine during operation. The analysis was also used to find the frame vibrations to ensure that the operational frequencies did not result in harmonics that could lead to unacceptable deflections.
 \subsection{Vibrational analysis}
-The detailed vibrational analysis is presented in \Chapref{sensorVibesApp}. Hand calculations were initially used to verify the results of a simple FEA simulation. A more complex FEA simulation was then performed, in order to more closely model the actual sensor mount. The results of the final simulation are shown in \Figref{Finalframeansys}. 
+The detailed vibrational analysis is presented in \Chapref{sensorVibesApp}. Hand calculations were initially used to verify the results of a simple modal FEA simulation. A more complex FEA simulation was then performed, in order to more closely model the actual sensor mount. The results of the final simulation are shown in \Figref{Finalframeansys}. 
 
 \begin{figure}[ht]
 \includegraphics[width=0.7\textwidth]{4-DetailedDesign/vibrations.PNG}
@@ -373,20 +373,20 @@ The detailed vibrational analysis is presented in \Chapref{sensorVibesApp}. Hand
 \caption{Sensor mount vibrational analysis} \figlabel{Finalframeansys}
 \end{figure} 
 
-The fundamental mode frequencies of the mount were found to be 13.647 Hz, 14.573 Hz and 31.913 Hz, resulting in a maximum deflection of 9.942 mm. As seen in \Figref{Finalframeansys}, the metal detector panel is attached to the sensor mount in this simulation. 
+The fundamental mode frequencies of the mount were found to be 14.486 Hz, 14.814 Hz and 24.321 Hz, resulting in a maximum deflection of 11.977 mm. These are a result of transverse vertical and horizontal movements. As seen in \Figref{Finalframeansys}, the metal detector panel and GPR are attached to the sensor mount in this simulation, with the peak deflection occurring at the end of the mount as expected. 
 
 \subsection{Manufacturing}
-The construction of the sensor mount was completed by the authors. Initially, the wooden frame was assembled using MGP10 structural pine, with wooden dowels used to join sections rather than screws or nails due to the requirement to use non-metallic materials near the metal detector. The mild steel supports were cut to size and welded as required, completing the main part of the frame. The GPR attachment required a telescopic rod to be cut to size, and then fixed to a smaller PVC cylinder. For the metal detector attachment, nylon rods were initially purchased, and channels were routed in the vertical wooden support pieces to accommodate the rods. Finally, the metal detector was encased in two Perspex sheets. The completed design is shown in \Figref{ManufactoredFrame}, which shows the completed manufactured frame with the sensors attached. 
+The construction of the sensor mount was completed by the authors. Initially, the wooden frame was assembled using MGP10 structural pine, with wooden dowels used to join sections rather than screws or nails due to the requirement to use non-metallic materials near the metal detector. The mild steel supports were cut to size and welded as required, completing the main part of the frame. The GPR attachment required a telescopic rod to be cut to size, and then fixed to a smaller PVC cylinder. For the metal detector attachment, nylon rods were initially purchased, and channels were routed in the vertical wooden support pieces to accommodate the rods. Finally, the metal detector was encased in two Perspex sheets. The completed design is shown in \Figref{ManufactoredFrame}, which shows the mounted manufactured frame with the sensors attached. 
 \begin{figure}[!ht]
-\includegraphics[width=0.8\textwidth]{4-DetailedDesign/QuadBikeFinalFrame.jpg}
+\includegraphics[width=0.6\textwidth]{4-DetailedDesign/QuadBikeFinalFrame.jpg}
 \centering
 \caption{Manufactured and mounted frame with sensors attached} \figlabel{ManufactoredFrame}
 \end{figure}
 
 \subsection{Vibrations testing}
-After the construction of the sensor mount, testing was done to verify the results of the theoretical vibrational analysis. Accelerometers were used to measure the frequencies of vibrations present on the quad bike and the sensor mount during operation. \Figref{Vibrationtest} shows the vibrational frequencies experienced by the frame and quad bike with the engine running. When the engine is idling, \Figref{Vibrationtest} (a), peaks can be seen close to 17 and 34 Hz. These peaks are seen in the sensor mount, \Figref{Vibrationtest} (c), at a much reduced amplitude. When the engine is throttling at 50\%, the quad bike vibrations are at a much lower magnitude. These peaks are also not seen in the sensor mount. The key result is that no peaks are seen near the calculated resonance for the sensor mount, indicating that the sensor mount is sufficiently insulated from vibrations of the quad bike. 
+After the construction of the sensor mount, testing was done to verify the results of the earlier vibrational analysis. An accelerometer was used to measure the frequencies of vibrations present on the quad bike and the sensor mount during operation. \Figref{Vibrationtest} shows the Fourier transform of the accelerometer data. When the engine is idling, \Figref{Vibrationtest} (a), peaks can be seen for the quad bike close to 17 and 34 Hz. These peaks are also seen in the sensor mount, \Figref{Vibrationtest} (c), at a much reduced amplitude. When the engine is throttling at 50\%, the quad bike vibrations are at a much lower magnitude. These peaks are also not seen in the sensor mount. The key result is that while the engine is throttling, there are no peaks seen near the calculated resonance for the sensor mount, indicating that the sensor mount is sufficiently insulated from vibrations of the quad bike. 
 
-%Due to the accelerometer used only having a sampling rate of 100 Hz, the highest frequency that was able to be resolved was up to was 50 Hz. This results in no peaks for the quad bike vibrations as the fundamental vibrational mode was greater than 50 Hz. 
+A limitation of the performed tests was that the accelerometer used only had a sampling rate of 100 Hz, meaning that the highest frequency that was able to be resolved was 50 Hz. As a result, higher frequency modes above 50 Hz could not be identified. 
 
 \begin{figure}[ht]
 \centerline{
@@ -401,17 +401,17 @@ After the construction of the sensor mount, testing was done to verify the resul
 \end{figure}
 
 \section{Electronics}
-The electronics hardware to be used for the project will fit in the categories as described in the Conceptual Design. The custom electronics work pre-existing on the quad bike supplied by the DSTG meets the requirements for the COTS bespoke electronics, providing digital interfaces to the actuators and sensors attached to the platform. The need for replacement or improvement of any of these electronics will be determined after testing has been completed on the supplied vehicle and their performance has been evaluated.
+The custom electronics work pre-existing on the quad bike supplied by the DSTG met the requirements for the COTS bespoke electronics, providing digital interfaces to the actuators and sensors attached to the platform. The need for replacement or improvement of any of these electronics was to be determined after further testing has been completed on the supplied vehicle and their performance has been evaluated.
 
-As the electronics system does not have particularly strict requirements for part selection, and due to the COTS equipment being mostly interchangeable with little effect on appropriateness for the project, the electronics hardware has been chosen on a basis of what is most readily available to the project and most familiar to the project members. This choice reduces time spent in the design stage and allows for a rapid development process to commence as early as possible.
-\nomenclature[A]{COTS}{Commercial Off-The-Shelf}%
-The central processing hardware will be provided by a Windows based desktop computer supplied by the University of Adelaide. A Windows device has been chosen to be able to make use of the provided drivers for the GPR system which are only compatible with 32-bit Windows machines. The selected device has WiFi communications capabilities and dedicated serial communications ports, allowing easy communications to a microcontroller device providing low level I/O.
+
+\nomenclature{COTS}{Commercial Off-The-Shelf}%
+The central processing hardware was to be provided by a Windows based desktop computer supplied by the University of Adelaide. A Windows device was chosen to be able to make use of the provided drivers for the GPR system which are only compatible with 32-bit Windows machines. The selected device has WiFi communications capabilities and dedicated serial communications ports, allowing easy communications to a microcontroller device providing low level I/O.
 \nomenclature{I/O}{Input/Output}%
-The microcontroller selected is an Arduino Mega 2560 board, chosen for its cost, availability and fast development time. This board has considerable I/O capabilities that exceed the requirements for the project, but allow for future expansion of sensors and ensures that I/O limitations will not be a concern. The microcontroller will be connected to the desktop computer via the serial port as mentioned above.
+The microcontroller selected was an Arduino Mega 2560 board, chosen for its cost, availability and fast development time. This board has considerable I/O capabilities that exceed the requirements for the project, but allow for future expansion of sensors and ensures that I/O limitations will not be a concern. The microcontroller was connected to the desktop computer via the serial port as mentioned above.
 
 \section{Software}
 \seclabel{detailedSoftware}
-Due to the experimental nature of much of this project, and with the short timeframe available, it was anticipated that moving goalposts would have a significant impact on the development of this project. As project complexities could not be fully understood in the design stage, an Agile software development strategy was adopted. Under this routine, strict determinations of the software design were not detailed at the outset of development. The agile practice involves delivering incremental improvements to a working software and constantly assessing progress to identify software features that do not perform as anticipated or are more difficult than planned to implement.
+Due to the experimental nature of much of the project, and with the short timeframe available, it was anticipated that moving goalposts would have a significant impact on the development of this project. As project complexities could not be fully understood in the design stage, an Agile software development strategy was adopted. Under this routine, strict determinations of the software design were not detailed at the outset of development. The agile practice involves delivering incremental improvements to a working software and constantly assessing progress to identify software features that do not perform as anticipated or are more difficult than planned to implement.
 
 \subsection{Software architecture}
 \seclabel{detailedSoftwareArchitecture}
@@ -436,7 +436,7 @@ The virtual platform was designed to test software implementations for communica
 \caption[Virtual platform display window]{Virtual platform: graphical representation (top left), actuator states (top right), GPR output (bottom left), metal detector output (bottom right)} \figlabel{virtualPlatformPic}
 \end{figure}
 The user also has the option to display, on the graphical representation, the positional sensor data as seen in \Figref{virtualPlatformDataPic}. Note that the IMU heading is in the incorrect direction as the initialised heading is unknown.
-\begin{figure}[ht]
+\begin{figure}[!ht]
 \includegraphics[]{4-DetailedDesign/dataVisibleVirtualPlatform.PNG}
 \centering
 \caption[Virtual platform graphical representation]{Virtual platform graphical representation showing sensor data, GPS (blue), kinematic equations (red), Kalman Filtered (green), and IMU (pink). Purple is the goal waypoint.} \figlabel{virtualPlatformDataPic}
@@ -446,8 +446,15 @@ The virtual platform is initialised as soon as any waypoints are sent which can 
 \subsection{Tablet application}
 \seclabel{detailedTabletApp}
 The tablet application was designed to meet to project goal of allowing easy usage of the entire landmine detection system by an unskilled operator. To this end, the design of the UI is focussed towards providing the most user friendly interface possible, in preference to displaying the most informative data. The expectation is that an unskilled operator is unlikely to be able to form meaningful conclusions from an output displaying the unprocessed data, and as a result this information has been omitted from the design of the operator’s device. 
+\nomenclature{UI}{User Interface}%
+Key components of the UI, shown in \Figref{controlApp}, are the map display, and the controls pane. The map display is the primary method of displaying information about the system to the operator, and as a result is permanently shown in a prominent location. The emergency stop button is the only other UI item which is permanently available, which for safety reasons is always prominently displayed and readily accessible. The controls pane is split into three windows, which each correspond to a common control theme: manual controls, automation and navigation controls, and communications controls. These distinctions were made as it allows for the control buttons to be larger and more informative, and readily distinguishes clusters of controls which serve similar functions. 
 
-Key components of the UI are the map display, and the controls pane. The map display is the primary method of displaying information about the system to the operator, and as a result is permanently shown in a prominent location. The emergency stop button is the only other UI item which is permanently available, which for safety reasons is always prominently displayed and readily accessible. The controls pane is split into three windows, which each correspond to a common control theme – manual controls, automation and navigation controls, and communications controls. These distinctions were made as it allows for the control buttons to be larger and more informative, and readily distinguishes clusters of controls which serve similar functions. 
+\begin{figure}[ht]
+\includegraphics[width=\textwidth]{4-DetailedDesign/controlApp.PNG}
+\centering
+\caption[User interface of tablet application]{User interface of tablet application, showing map display, control pane and emergency stop}
+\figlabel{controlApp}
+\end{figure}
 
 The map display shows the current locations of all of the paths and zones defined on the tablet, as well as an indicator showing the current geographical location of the remote device. Under autonomous conditions, the map display will show a trail indicating the path which has been covered by the platform during the scan. Upon detection of an object, this will be displayed on the map showing location, and confidence of the detected object being a landmine. Above a certain confidence threshold, the remote platform will halt, and the operator will be prompted.
 
@@ -456,8 +463,6 @@ The communications tab provides all of the required interfaces to establish, mai
 The automation and navigation tab provides all of the controls for defining routes and zones on the tablet device, including synchronising these paths with the remote platform. The controls for initiating and pausing autonomous motion, as well as determining the current state of the autonomous systems, are displayed here.
 
 The manual control tab provides a joystick with which an operator can control the remote platform without needing to define a path. This provide remote control as required in the project objectives. It is anticipated that this will primarily be used for positioning the remote platform prior to commencing a scan, such as driving the platform off a trailer, or navigating a complex terrain. This tab also displays information about the current speed and heading of the remote platform. 
-
-
 
 \subsection{Communications}
 \seclabel{detailedComms}
