@@ -7,7 +7,7 @@
 
 \chapter{Benchmarking}
 \chaplabel{benchmarking}
-\textcolor{red}{If you have time, make this section broader (more benchmarking against platforms like the Husky, )} Before commencing the design process, benchmarking was conducted in order to gauge the capabilities of existing platforms and sensor equipment used for landmine detection. This gave an indication of the minimum requirements to be set for the project, and helped to better understand what challenges would need to be overcome.
+Before commencing the design process, benchmarking was conducted in order to gauge the capabilities of existing platforms and sensor equipment used for landmine detection. This gave an indication of the minimum requirements to be set for the project, and helped to better understand what challenges would need to be overcome.
 
 \section{Autonomous platforms for landmine detection}
 The use of a vehicle for landmine detection allows for larger areas to be scanned in a shorter period of time. Vehicles can also support greater loads than any human operator could, which means that more sensing equipment can be carried; this in turn increases sensing capability, and reduces the likelihood of false positives. If the vehicle can operate remotely or autonomously, the risk to human operators can be eliminated entirely. For these reasons, remotely controlled or autonomous platforms have become a popular tool for landmine detection. This section looks at several such platforms that are currently in operation or in development. 
@@ -27,7 +27,7 @@ In military scenarios, the key priority is to clear a path as quickly as possibl
 \end{figure}
  
 \subsubsection*{General Dynamics FORESIGHT RDV} 
-FORESIGHT is a multi-sensor landmine detection system, mounted on a vehicle that can be controlled remotely. The vehicle usually travels with a protection vehicle, which clears the the path ahead of surface-based devices, as well as mines just below the surface \parencite{canada2004}. The sensor suite consists of four independent systems, the data from which is fused to accurately detect a range of threats. A minimum metal detector array which is 3 m wide is used for the detection of metallic parts, even when the metal content is low. The 3 m GPR array with ultra-wide band capabilities (1-3 GHz) can detect larger mines at up to 30 cm below the soil surface. An infra-red camera with 8-14 micrometre wavelength is used to detect changes in soil density which occur when mines are buried \parencite{canada2004}. Finally, a thermal neutron activation detector directly detect explosives through measurements of the soil nitrogen level; this provides an added level of target confirmation \parencite{general2009}. The sensor suite can operate at a forwards speed of 3-4 km/h, and in the event that a detection is made with a sufficient confidence level, the onboard marking system is used to physically mark the threat location \parencite{canada2004}.
+FORESIGHT is a multi-sensor landmine detection system, mounted on a vehicle that can be controlled remotely. The vehicle usually travels with a protection vehicle, which clears the the path ahead of surface-based devices, as well as landmines just below the surface \parencite{canada2004}. The sensor suite consists of four independent systems, the data from which is fused to accurately detect a range of threats. A minimum metal detector array which is 3 m wide is used for the detection of metallic parts, even when the metal content is low. The 3 m GPR array with ultra-wide band capabilities (1-3 GHz) can detect larger landmines at up to 30 cm below the soil surface. An infra-red camera with 8-14 micrometre wavelength is used to detect changes in soil density which occur when landmines are buried \parencite{canada2004}. Finally, a thermal neutron activation detector directly detect explosives through measurements of the soil nitrogen level; this provides an added level of target confirmation \parencite{general2009}. The sensor suite can operate at a forwards speed of 3-4 km/h, and in the event that a detection is made with a sufficient confidence level, the onboard marking system is used to physically mark the threat location \parencite{canada2004}.
 
 \subsubsection*{NIITEK Minestalker} 
 Developed by the US Department of Defense and NIITEK for humanitarian demining, the Minestalker system was built to detect anti-tank mines at depths greater than 5 to 10 cm \parencite{laudato2014}. The system utilises a high performance 3.2 m VISOR GPR array and optional 3 m See-Deep metal detector array \parencite{niitek2015}. The sensors are mounted on a tractor vehicle which can be controlled remotely; the accompanying software system ensures that there is a high detection probability and a low number of false alarms. The system is a "user in the loop system", in the sense that the vehicle stops when a target is detected and waits for further instructions \parencite{laudato2014}. Targets are marked both physically and with GPS, with a 1 metre resolution. The vehicle itself can advance and detect threats in real time at up to 15 km/h \parencite{niitek2015}.
@@ -165,6 +165,25 @@ Another system is being developed to allow demining and reclamation of vast swat
 %The current challenges with landmine detection, including further elaboration of each signal processing methods are \textcolor{red}{reference literature review section}. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Sensor Specifications}
+\chaplabel{sensorApp}
+\section{AMDS metal detector panel}
+The AMDS is a metal detector panel produced by Minelab (\Figref{AMDS}). The device has three sets of transmitting coils and a single receiving coil, allowing for three channels of data to be recorded at once. Each channel operates at four frequencies, 1.5 kHz, 4.5 kHz, 13.5 kHz and 40.5 kHz, which means that in total up to 12 sets of data can be recorded simultaneously. This recorded data contains the real and imaginary parts of the voltage signal measured due to changes in magnetic flux in the target. The data is transferred to a computer through USB, where it can be seen in real-time using a LabVIEW virtual instrument called Dataspleen, or saved in CSV format. 
+
+\begin{figure}[ht]
+\includegraphics[width=0.6\textwidth]{3-ConceptDesign/AMDS.JPG}
+\centering
+\caption{AMDS metal detector panel with power supply and control unit} \figlabel{AMDS}
+\end{figure}
+
+\section{SIRO-PULSE II GPR unit}
+The SIRO-PULSE II is a handheld GPR unit developed by the CSIRO, originally intended for the inspection of buildings (\Figref{siro}). It is a pulsed radar that can operate in either bi-static or differential antenna configurations, producing three sets of data in total. The unit comes with three interchangeable antenna heads of frequencies 800 MHz, 1.4 GHz and 2 GHz, allowing the resolution and penetration characteristics of the radar to be varied. Data is transferred to a computer via USB, where it can be viewed in real-time with the accompanying SIROPULSEII software program. The program produces outputs of the frequency waveform over time, which are collected together to produce a B-scan in real time. 
+
+\begin{figure}[ht]
+\includegraphics[width=0.6\textwidth]{3-ConceptDesign/SiroPulse.JPG}
+\centering
+\caption{SIRO-PULSE II GPR unit with control unit and antenna heads} \figlabel{siro}
+\end{figure}
 
 \chapter{Platform Selection}
 \chaplabel{platformSelectionApp}
@@ -174,7 +193,7 @@ As stated in the concept design, the requirements for the platform are as follow
  \item Payload: The platform should be able to carry a total payload of 100 kg, and must allow for this payload to be mounted.
  \item Terrain traversing: The platform should be able to travel off-road in regions with dry sandy soils and level unobstructed terrain.
 \item  Operational speed and acceleration: The platform should be able travel in a straight line, both forwards and reverse, and perform turns while maintaining an operational speed of 5 km/h.
-\item Manoeuvrability and controllability: The platform should be manoeuvrable enough to navigate a region of interest, with a smaller turning angle preferred, yet controllable enough that in case of an emergency, it can come to a complete stop from its operational speed in 1 m.
+\item Manoeuvrability and controllability: The platform should be manoeuvrable enough to navigate a region of interest, with a smaller turning angle preferred, yet controllable enough that in case of an emergency, it can come to a complete stop from its operational speed before detonating a landmine.
 \item Cost and availability: The platform should have a reasonable cost given the project budget of \$16,500, ans should be available for use as early as possible. 
 \item Ease of automation: The platform should be sufficiently simple to automate, with a preference given to platforms that have the framework for automation already implemented. 
 \item Ease of transportation: The platform should be sufficiently easy to transport from a workshop to a testing locations using a ute or trailer.
@@ -491,17 +510,10 @@ Q =
 \end{align}
 With the inputs calculated a new estimate covariance, $\Sigma_t$, and position estimate, $\mu_t$, is outputted to be used in the next iteration of the algorithm. 
 
-\chapter{Arduino Code Chart}
-\chaplabel{arduinoCodeChart}
-\begin{figure}[ht]
-\centering
-\includegraphics[]{8-Appendices/arduinoDiagram.png}
-\end{figure}
-
 \chapter{Sensor Mount Vibrations Analysis}
 \chaplabel{sensorVibesApp}
-While it is difficult to model the vibrational modes of a beam exactly, approximate analytical solutions for lower order modes may be obtained using classical methods. Two such methods are the Rayleigh and Dunkerly methods. The Rayleigh method considers the energy balance at the location of each beam mass element. A solution for the modes can be obtained based on knowledge of the static deflection. In general, the Rayleigh method provides an upper limit for the fundamental frequency. The Dunkerly method considers a force balance along the beam, which leads to the result that the overall modes are a superposition of the modes of the individual elements. The Dunkerly method generally provides a lower limit for the fundamental frequency.
-\textcolor{red}{some references?}
+While it is difficult to model the vibrational modes of a beam exactly, approximate analytical solutions for lower order modes may be obtained using classical methods. Two such methods are the Rayleigh and Dunkerly methods. The Rayleigh method considers the energy balance at the location of each beam mass element. A solution for the modes can be obtained based on knowledge of the static deflection. In general, the Rayleigh method provides an upper limit for the fundamental frequency. The Dunkerly method considers a force balance along the beam, which leads to the result that the overall modes are a superposition of the modes of the individual elements. The Dunkerly method generally provides a lower limit for the fundamental frequency (Irvine 2013).
+
 Both methods were used to find the vibrational modes for three different configurations. The first configuration is a simple cantilever with self weight, the second is a massless cantilever with an end-loading, while the third is a cantilever with self-weight and an end loading.  \Tabref{theoreticalvibestable} shows the results for each of the different configurations and methods.
 
 %\[
@@ -543,7 +555,228 @@ Variations in sensor arrangements that could be installed would result in differ
 \chaplabel{designDocs}
 
 
-\chapter{Communications Packet Formats}
+\section{Software Requirements Specifications (SRS)}
+ 
+\subsection{Overall Description}
+\subsubsection{Product Perspective}
+The project described in this SRS is for a new self-contained robot system – an autonomous landmine detection and identification vehicle. 
+The purpose of the AMDIV is to allow an operator to remotely scan a large area for the presence of landmine-like features using an autonomous platform, and using on-board sensors and logic determine the likelihood of a suspicious object being a landmine. 
+The autonomous strategy eliminates the need for an operator to be placed at risk while surveying for landmines, and the on-board processing of sensor data will seek to reduce the rate of false-positive identifications. 
+The system must be capable of navigating autonomously while recording data. The user interaction with the system will be in a supervisory role.
+
+The project will make use of a Commercial Off-the-Shelf (COTS) hardware platform to provide basic movement, with sensors and actuators retrofitted to the platform to allow full control of all necessary items through the software system. 
+The sensing of landmines will be provided by a combination of a metal detecting sensor, loaned from the DSTG, and a Ground Penetrating Radar (GPR), also loaned from the DSTG. 
+These items will be treated as COTS parts.
+
+\subsubsection{Product Features}
+Main project requirements to provide outline of function for the automation system are derived from the main project goals, and the use cases envisaged for the project.
+\begin{itemize}
+\item Control of all functions on the mobile platform from a mobile device
+\item Diagnostic return of all parameters of the mobile platform to the mobile device
+\item Ability for the remote platform to be fully controlled (all actuators over all operating ranges) by software
+\item Ability for an operator to directly control the motion of the remote platform, in order to manually position the platform, and start/stop the engine on the platform
+\item Ability for an operator to define a search zone (remotely from the platform), and for the system to be able to develop a navigation strategy to effectively traverse the zone in a scanning manner
+\item Ability for the remote platform to autonomously navigate to a (predefined) waypoint
+\item Ability for the remote platform to autonomously follow a navigation strategy comprised of a set of pre-generated waypoints
+\item Ability for the remote platform to perform rudimentary collision avoidance manoeuvres (such as stopping) autonomously, in response to detection of obstacles
+\end{itemize}
+ 
+\subsubsection{User Classes and Characteristics}
+The user of this system will be an operator trained in the use of the delivered system, with the role of overseeing and managing the work of the vehicle during operation. 
+This training will incorporate instruction on how to use all User Interfaces (UI), how to perform all necessary actions to complete the product use cases using the UI, and instruction on the Safe Operating Procedures (SOP) of the vehicle. 
+The user will not be expected to have training or be capable of deciphering the meaning of any debug outputs, log messages or any other feedback not provided to user in a human-readable format through the UI.
+The user will also not necessarily be trained in the field of landmine detection, or the application of either metal detectors or GPR in the field of landmine detection. 
+The operator will not be expected to make discretionary decisions about the detection of landmines using raw output data from the metal detector or GPR units.
+\subsubsection{User Documentation}
+The system shall be delivered with a corresponding user manual made available in a human-readable format and covering all information necessary to understand how to operate the system and use all of the features provided. Limited information on the correct operating of the system may also be offered by the system UI. The user documentation should be detailed but will not necessarily be comprehensive and will not be intended as a replacement for proper training in the use of the delivered system.
+\subsubsection{Assumptions and Dependencies}
+It will be assumed that the hardware provided by the DSTG, the metal detectors and the GPR units, will be capable of performing to a level of precision that allows the requirements specified in this document to be achieved. 
+Particular requirements about confidence levels for detections will not be made, though it will be assumed that for the purposes of this project the delivered equipment achieves essentially 100\% detection of subsurface features. 
+The purpose of this project is then to provide higher confidence levels than previously obtainable using the existing detecting software.
+ 
+\subsection{Subsystem Outline}
+It is proposed that this level of control will be achieved through three independent (layered) systems to provide automation to the mobile platform, as shown in \Figref{auto_control}.
+In addition to these systems providing control to the vehicle a landmine detection system will also exist independently, coupled directly to the metal detectors and GPR. 
+The rectification of the received sensor data to a geographical position will be made using some link to the Navigation Control system.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.75\textwidth]{8-Appendices/bloop.PNG}
+
+\caption[Input and output responsibilities of software subsystems]{Input and output responsibilities of software subsystems, showing data access boundaries.} \figlabel{auto_control}
+\end{figure}
+
+Under this scheme, the automation control and the navigation control systems would exist on the remote platform, providing a high level of independence for the device and allowing the platform to retain all of its navigation controls in the event of a communications loss.
+
+The \textbf{Automatic Control} subsystem will provide access to the actuators and control of the physical aspects of the platform through software. The Automatic Control system will also provide abstraction of the motion controls of the platform to higher-level controllers. Under this scheme, the Automatic Control unit will respond to input signals such as cardinal directions, speeds, and distances, with the output being the physical motion of the platform. Diagnostic data such as throttle position, steering position and other status indicators should also be provided to other subsystems. \\
+
+The \textbf{Navigation Control} unit will provide software access to geolocation data from on-board sensors such as Global Positioning Systems (GPS), accelerometers and Inertial Measurement Units (IMU). The navigation unit will be responsible for virtually positioning the physical vehicle, receiving input on navigational manoeuvres, and providing an output which is interpretable by the Automatic Control unit.\\
+
+The \textbf{Operator Device} will provide high level control and feedback of the mobile platform. 
+The control device will act as a terminal device, or similar to a client in the client-server model. 
+As the platform is required to be autonomous and be capable of maintaining control in the event of telemetry loss, for safety reasons, the main processing for platform automated control will exist on the automated platform. 
+This also addressed potential latency issues caused by attempting to control real-time systems remotely.
+As such the tablet controller will send and receive limited data from the platform, allowing control of high level functions of the platform, and the receiving of data relevant to the operator. 
+This minimises the complexity of the control device’s software and the complexity of the project as a whole, centralising the control operations to the platform itself and limiting the amount of data needing to be passed between the devices.
+
+\subsubsection{Design and Implementation Constraints, and Operating Environment}
+
+\nohyphens{	% Stop hyphenation in table
+\begin{longtable}{ L{0.25\textwidth} L{0.65\textwidth}}
+\caption[Packet Structure]{Breakdown of the example packet.}\tablabel{implconstraints}\\ \toprule
+\textbf{Subsystem} & \textbf{Hardware constraints} \\ \midrule\endfirsthead 
+\caption[]{Stakeholders of the project (continued).}\\ \toprule
+\textbf{Subsystem} & \textbf{Hardware constraints} \\  \midrule\endhead
+
+Heading &  ASCII SOH byte, indicating the start of a new transmission packet \\
+Packet ID & ID\_QUAD\_SPEED, indicating that this packet contains the current speed of the quad bike \\
+Packet Length & Packet contains a single float as data \\
+Data & An IEEE 754 floating point number, specifying the value 1.1f. This corresponds to a quad bike speed of 1.1 m/s. \\
+Terminus & Terminating character indicating the receipt of the full packet. \\
+
+
+Automation Control &
+Must be capable of providing fast, quasi-real-time output to a series of I/O devices in order to control actuators. Direct access to I/O hardware will be required and operation on a system with minimal OS overhead and thread delay issues. Actual processing requirements are not computationally intensive.
+ 
+Operation on a small, purpose-built microcontroller with direct I/O access will be ideal due to the requirement for signal output and low OS overhead. Under this arrangement, the software would likely be written in C/C++ with communications to other software systems provided by a USB/Serial communications layer. However, due to the ease of generating the required control systems using higher level equipment such as MATLAB and Simulink, this may be the preferred option to complete the requirements adequately in the project timeframe. \\ \midrule
+
+Navigation Control &
+No strict requirements on speed of access to I/O devices due to the expected low update frequency (<100 Hz) of the navigational sensors. Needs to be responsive to input received wirelessly from operator device and so needs to be on an operating environment supporting this communications protocol. Applicable languages for this subsystem are C/C++ or Java, given proficiency of team members and language requirements of other systems likely executing on the same hardware environment a C/C++ solution is likely.\\ \midrule
+
+
+Operator Device &
+Requirement to be executable on a portable device. Due to openness of platform and ready availability, as well as large amounts of existing libraries for UI construction it is likely an Android tablet or phone will be used for the remote device. This will limit development to the Java language. Alternatively the operator device could be a Microsoft Windows tablet or portable computer, allowing development in C/C++.\\ \midrule
+
+Landmine Detection &
+Computationally intensive task requiring (relatively) powerful computing hardware. Also requires access to I/O devices with signals generated in the kHz range, which may potentially be beyond the capacity of GPIO with general computing hardware. Recommended use of audio processing equipment to overcome this barrier, which will require desktop computer or equivalent. Expected to be a large amount of data processing which could be parallelisable, and so a device with considerable graphics potential or at minimum multithreading is desired.
+Due to the volume of data expected to be processed memory management will be required to be handled in software and so the obvious choice of language is C/C++, to avoid the Garbage Collector in Java.\\
+
+\bottomrule
+
+\end{longtable}}
+ 
+
+ 
+\subsection{Performance Comparison}
+The project aim is to provide sensing accuracy greater than is available that with commercially available detection equipment, with an emphasis on reducing false-positive identification rate. The performance of the software system will be assessed by testing over a number of object types under a number of soil conditions. The performance will be acceptable if the system achieves 100\% detection of all landmines (that are feasibly detected using the sensors provided - feasibility to be determined by testing outside of the developed software systems), and if the system achieves a correct identification of a non-landmine object to demonstrate a capacity to reduce false-positives.\\
+As safety is a concern, due to the fact that the autonomous platform will be operating outside of range of a supervising operator who can intervene in the event of a software crash, a performance requirement is that the software on the device must be capable of operating continuously without experiencing a non-recoverable error for an extended time period. This extended time period will be defined as one hour, corresponding to the expected duration of a single scanning operation, and being a realistic target than can be tested during development of the software.
+
+\subsection{Requirements}
+ 
+\textbf{R00001: Establish a communications link}\\
+\textbf{Priority:} High.\\
+\textbf{Description}\\
+The system should be able to establish a persistent communications link allowing the upload and download of data packets between the operator device and the remote vehicle systems.\\
+\textbf{Rationale}\\
+Remote control of the vehicle is a key goal of the project (See Project Charter). As a result the establishment of a communications path between the operator and the vehicle is a high priority requirement. As the operator device is expected to be constantly sending and receiving data, a persistent link is appropriate. Persistent communications is also a safety requirement to provide full telemetry.\\
+\textbf{Acceptance Criteria}\\
+Upon commencement of use, an initial connection routine should run to pair the operator device system with the remote vehicle system. After successfully creating a connection, the operator device should be capable of sending a data packet. This data packet should be successfully received by the remote vehicle. The remote vehicle should also be capable of sending a data packet. This data packet should be successfully received by the operator device. After some duration has passed, the same functionality shall be preserved without the need to re-run the initial pairing routine.\\
+
+
+\textbf{R00002: Ability for the control device to detect severance of communications}\\
+\textbf{Priority:} High.\\
+\textbf{Description}\\
+The operator device will be capable of detecting when the remote vehicle is no longer receiving or transmitting correctly, and is unresponsive.\\
+\textbf{Rationale}\\
+The user operator should act only in a supervisory role but the operator device should maintain constant telemetry with the remote vehicle. It is unsafe for the vehicle to be operating without control, and the user operator should be notified immediately in the event that the remote vehicle has become unresponsive, and cannot be controlled from the operator device.\\
+\textbf{Acceptance Criteria}\\
+A communications link will be established between the operator device and the remote vehicle, then artificially severed. After a short duration (to be determined as appropriate) the operator device should acknowledge (and warn the operator) that the remote vehicle is no longer responsive. The operator device should detect if the vehicle is unresponsive within the same time period irrespective of whether any commands have actually been sent.\\
+
+
+\textbf{R00003: Ability for the remote vehicle to detect severance of communications}\\
+\textbf{Priority:} High.\\
+\textbf{Description}\\
+The remote vehicle will be capable of detecting when the operator device is no longer receiving or transmitting correctly, and is unresponsive.\\
+\textbf{Rationale}\\
+It is unsafe for the vehicle to be operating without control, and the vehicle should identify when it is no longer capable of receiving commands from the operator device. This would allow the vehicle to execute a safe shutdown routine rather than continue operating without full telemetry.\\
+\textbf{Acceptance Criteria}\\
+A communications link will be established between the operator device and the remote vehicle, then artificially severed. After a short duration (to be determined as appropriate) the remote vehicle should acknowledge (and react appropriately) that the operator device is no longer responsive. The vehicle should detect if the operator device is unresponsive within the same time period irrespective of whether any commands have actually been sent.\\
+ 
+\textbf{R00004: Receive and store in an appropriate data structure a frequency domain signal from a metal detector / GPR}\\
+\textbf{Priority:} High.\\
+\textbf{Description}\\
+The landmine detection/sensor subsystem should be capable of receiving raw input data from the physical sensors, and then store the data in a useable format for further processing.\\
+\textbf{Rationale}\\
+The collection of data from landmine detection sensors is key project goal.\\
+\textbf{Acceptance Criteria}\\
+A known signal will be generated, either from a metal detector unit/GPR unit, or from a proxy device using the same input protocol as the metal detector unit/GPR unit, and this signal will be read accurately by the sensor subsystem. The sensor data will be stored and will be recallable.
+
+\textbf{R00005: Conversion of frequency domain samples into time domain samples (A-scans)}\\
+\textbf{Priority:} High.\\
+\textbf{Description}\\
+The landmine detection/sensor subsystem should be capable of creating A-scans from the raw input data.\\
+\textbf{Rationale}\\
+Creating a time domain sample of a source signal is the precursor step to almost all signal processing algorithms. This is a key requirement to achieving the project goals of interpreting sensor data.\\
+\textbf{Acceptance Criteria}\\
+A known signal will be generated, with a known Fourier transform equivalent. The software system will generate the same Fourier transform, within tolerances accounting for numerical methods.\\
+
+
+\textbf{R00006: Control of remote vehicle throttle}\\
+\textbf{Priority:} High.\\
+\textbf{Description}\\
+The software system will be capable of full control of the vehicle throttle, with response within a reasonable timeframe and control for zero throttle, and continuous gradient control up until a maximum throttle (not necessarily the full throttle permitted by physical actuator).\\
+\textbf{Rationale}\\
+Automation of the remote platform is a key project goal and the control of the throttle is a key component of these goals.\\
+\textbf{Acceptance Criteria}\\
+While the vehicle is not running, the throttle actuator and therefore throttle should be visually inspected and seen to be responsive to control from the software. While the vehicle is running, the throttle should be capable of being set to zero (or idle, minimum) and increased or decreased as desired and as response to software input. This should have the expected effect on the vehicle’s engine.\\
+
+\textbf{R00007: Control of remote vehicle brakes}\\
+\textbf{Priority: }High.\\
+\textbf{Description}\\
+The software system will be capable of full control of the vehicle braking actuator, with response within a reasonable timeframe and control for zero braking, and continuous gradient control up until a maximum braking (not necessarily the full braking force permitted by physical actuator).\\
+\textbf{Rationale}\\
+Automation of the remote platform is a key project goal and the control of the throttle is a key component of these goals. Full control of the vehicle’s braking systems is required for safety purposes.\\
+\textbf{Acceptance Criteria}\\
+While the vehicle is not running, the brake actuator and therefore brakes should be visually inspected and seen to be responsive to control from the software. While the vehicle is running, the braking actuator should be capable of being set to zero (or minimum) and increased or decreased as desired and as response to software input. This should have the expected effect on the vehicle’s brakes. The effectiveness of the brakes at slowing or stopping the vehicle are not a requirement of the software system but of the mechanical systems, and so these should be tested accordingly to the standards of the mechanical requirements specifications also.\\
+
+\textbf{R00008: Control of remote vehicle steering}\\
+\textbf{Priority:} High.\\
+\textbf{Description}\\
+The software system will be capable of full control of the vehicle steering, with the ability to position at zero or neutral position, full lock left, full lock right, and a continuous region between.\\
+\textbf{Rationale}\\
+Automation of the remote platform is a key project goal and the control of the steering is a key component of these goals.\\
+\textbf{Acceptance Criteria}\\
+While the vehicle is not running, the steering actuator and therefore steering should be visually inspected and seen to be responsive to control from the software. While the vehicle is running, the steering actuator should be capable of being set to a setpoint as desired and as response to software input. This should have the expected effect on the vehicle’s motion.\\
+
+\textbf{R00009: Control of remote vehicle forwards/reverse selection}\\
+\textbf{Priority:} Medium\\
+\textbf{Description}\\
+The software system will be capable of setting the gearing on the physical vehicle to either forwards motion or reverse motion.\\
+\textbf{Rationale}\\
+Automation of the remote platform is a key project goal and the control of the direction of motion is a major component of these goals.\\
+\textbf{Acceptance Criteria}\\
+While the vehicle is not running, the gear selector actuator and therefore gear selector should be visually inspected and seen to be responsive to control from the software. While the vehicle is running, the throttle should be capable of being set to zero (or idle, minimum) and the desired gear selected. Upon resumption of throttle the vehicle should move in the intended direction.\\
+
+\textbf{R00010: Receiving of actuator status indicators}\\
+\textbf{Priority:} High.\\
+\textbf{Description}\\
+The software system should be capable, within a reasonable degree, of assessing the position of all of the actuators involved in automating the vehicle. In particular, the software system should be capable of acquiring information on whether the actuators are resting at their zero point.\\
+\textbf{Rationale}\\
+It is important to know what the position the actuators are currently in, both to prevent dangerous overextension or over-retraction of equipment which could damage the quad bike. It also provides necessary feedback to the automation systems to ensure that the intended behaviour is being produced by the actuators in response to the software's output signals.\\
+\textbf{Acceptance Criteria}\\
+The software at any given time should be able to detect whether the braking system is engaged, or fully relaxed. It is not necessary for the software to know the precise braking force being applied. The software must be able to report the position of the throttle servo at all times. It is not required for the software to interpret the extension of the throttle cable as a result of movement in the throttle servo. The software must be able to report the current gear that the quad bike gearbox is currently engaged in. The acceptable delay between an actuator movement and the software being capable of reporting on the position of an actuator is set at 200 ms.\\
+
+\textbf{R00011: Emergency Stop}\\
+\textbf{Priority: }High.\\
+\textbf{Description}\\
+The software system will be capable of, at any time, issuing a stop command which will have the effect of halting all motion of the physical vehicle.\\
+\textbf{Rationale}\\
+For safety purposes it is important to have an Emergency Stop feature.\\
+\textbf{Acceptance Criteria}\\
+The system will be tested under all operating conditions, including idle modes, manual movement control mode, autonomous scanning mode, etc. Under all conditions the remote vehicle must behave as expected in response to an Emergency Stop signal sent at an arbitrary point in time.\\
+
+
+\subsection{Software Interfaces}
+All software systems must be capable of interacting with each other by using a packet structure for all data. This packet structure must be shared between all communications interfaces between all software subsystems, to ensure maximum cross-compatibility and allow pass-through of packets. This packet system is detailed in the Communications Packet Format design document. This document is a living document and should reflect any changes deemed necessary to provide communications as the project progresses. All systems which are capable of receiving packets must contain the full definition of all packet types, which will allow the system to understand any possible packet it receives, and allow it to identify corrupted packets. A system does not have to produce a response to all packets it receives if it is not applicable to the receiving system's purpose. 
+
+\subsection{Non-functional Requirements}
+The software developed must meet quality standards for readability and should conform to established standards. To achieve this requirement the Google Code Style Guide shall be followed for all programs, using the appropriate style guide for the language being written. All code will be stored in the online GitHub repository and committed to the main branch frequently, and at a minimum for every stable configuration of the code. Commit messages must be suitably descriptive, and at a minimum describe the systems which were altered and which alterations were made. If issues persist between commits it is required that these be noted in the commit message. 
+Encryption and data security is not deemed to be an important issue for this project and it will not be required for the code base to be maintained in an encrypted format, or secure from public release (though best efforts should be made to limit public access to the code repository). Transmission of data during the system operation is also not required to be encrypted, or secured against malicious interception. 
+
+
+
+
+\chapter{Communications Packet Format}
 \chaplabel{packets}
 
 \begin{enumerate}
@@ -565,30 +798,24 @@ An array of floats containing arbitrary data, length as specified. The way this 
 
 A typical valid packet will be of the following format:\\
 
-0x \textcolor{blue}{01} 52 \textcolor{blue}{01} 3F 8C CC CD \textcolor{blue}{17}\\
+0x 01 52 01 3F 8C CC CD 17\\
 
 This format is explained in the \Tabref{packetBreakdown} below.
 
 \nohyphens{	% Stop hyphenation in table
 \begin{longtable}{L{0.2\textwidth} L{0.25\textwidth} L{0.45\textwidth}}
-\caption[Stakeholders]{Stakeholders of the project.}\tablabel{packetBreakdown}\\ \toprule
-\textbf{Item} & \textbf{Hexadecimal} & \textbf{Description}\\ \midrule\endfirsthead 
+\caption[Packet Structure]{Breakdown of the example packet.}\tablabel{packetBreakdown}\\ \toprule
+\textbf{Item} & \textbf{Hexadecimal} & \textbf{Interpretation}\\ \midrule\endfirsthead 
 \caption[]{Stakeholders of the project (continued).}\\ \toprule
-\textbf{Members} & \textbf{Roles} & \textbf{Description}\\ \midrule\endhead
+\textbf{Item} & \textbf{Hexadecimal} & \textbf{Interpretation}\\  \midrule\endhead
 
-Peter Dawson & Project Manager, Document Manager & The project manager is responsible for the overall management of the project. Their tasks involve communicating with the supervisor, group members, project sponsor and other external parties. Additionally, they are responsible for assignment of tasks and chairing of meetings. The document manager is responsible for document collation and data backup. \\ \midrule
+Heading & 0x01 & ASCII SOH byte, indicating the start of a new transmission packet \\
+Packet ID & 0x52 & ID\_QUAD\_SPEED, indicating that this packet contains the current speed of the quad bike \\
+Packet Length & 0x01 & Packet contains a single float as data \\
+Data & 0x3F8CCCCD & An IEEE 754 floating point number, specifying the value 1.1f. This corresponds to a quad bike speed of 1.1 m/s. \\
+Terminus & 0x17 & Terminating character indicating the receipt of the full packet. \\
 
-Jonathan Targett & Technical Manager & The technical manager’s responsibility is the overall management of the technical aspects of the project. The technical aspects may include procurement mechanical resources, electronic resources and other materials for the project.\\ \midrule
-
-Rahul Kalampattel & Safety Manager & The safety manager is responsible for lloking after the safety aspects of the project. This includes conducting risk assessments, providing a safe operating procedure (SOP), overseeing the completion of such documents and liaising with the necessary third parties to provide relevant safety information.\\ \midrule
-
-Racquel Punu & Secretary, Test Manager & The secretary is responsible for the administrative requirements of the project, including producing meeting minutes, and submission of documents through MyUni. The test manager is responsible for overall management of any testing conducted on systems and their components as required.\\ \midrule
-
-Harrison Vince & Treasurer, Manufacturing Manager & The treasurer is responsible for managing finances within the project. The manufacturing manager is responsible for overseeing any manufacturing processes undertaken, and dealing with other design related issues.\\ \midrule
-
-Dr Maziar Arjomandi & Project Supervisor & Supervises student members and guides them accordingly.\\ \midrule
-
-DSTG & Project Partner and Sponsor & Supports the project and project members in providing expertise, loaning of equipment, and funding. A research agreement entitles the Project Partner to share in all knowledge gained over the course of the project.\\ \bottomrule
+\bottomrule
 
 \end{longtable}}
 
@@ -622,7 +849,7 @@ DSTG & Project Partner and Sponsor & Supports the project and project members in
   \arabic{gpr}% 
 }
 \newenvironment{gpr}[1][]{\refstepcounter{gpr}\par\medskip\indent{}
-   \textbf{TC 2.\thegpr:#1} \rmfamily}{\bigskip}
+   \textbf{TC 3.\thegpr:#1} \rmfamily}{\bigskip}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -635,11 +862,11 @@ DSTG & Project Partner and Sponsor & Supports the project and project members in
   \arabic{mds}% 
 }
 \newenvironment{mds}[1][]{\refstepcounter{mds}\par\medskip\indent{}
-   \textbf{TC 3.\themds:#1} \rmfamily}{\bigskip}
+   \textbf{TC 2.\themds:#1} \rmfamily}{\bigskip}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Goals}
-The development of a functioning platform with landmine detection using ground penetrating radar (GPR) and metal detector panel. Platform tests includes subsystem breakdowns and independent system testing to identify and confirm their functionality. These subsystems include steering, braking, throttle control, gear selection, wheel encoder, and navigation (GPS). Sensor tests identify how the signals detected by the GPR and metal detector panel vary under differing conditions, and how this impacts the ability to identify a landmine effectively. This plan outlines the testing approach, sequence and specific instructions required to meet the project objectives. 
+The development of a functioning platform with landmine detection using a metal detector panel and ground penetrating radar (GPR) . Platform tests includes subsystem breakdowns and independent system testing to identify and confirm their functionality. These subsystems include steering, braking, throttle control, gear selection, wheel encoder, and navigation (GPS). Sensor tests identify how the signals detected by the metal detector panel and GPR vary under differing conditions, and how this impacts the ability to identify a landmine effectively. This plan outlines the testing approach, sequence and specific instructions required to meet the project objectives. 
 
 % \section{References}
 % Documentation relevant to each system are referenced accordingly to provide additional information regarding the performed tests.
@@ -674,10 +901,10 @@ The development of a functioning platform with landmine detection using ground p
 % \end{itemize}
 
 \section{Test plan}
-A systems breakdown for the whole project in respects to testing is required. The quad bike and sensory systems are required to be tested independently in order to determine their individual operating states before fusing them together. The quad bike will require subsystem tests leading up to full system automation tests wile the sensory systems will require data collection and analysis in order to produce the required metrics for the software decision making processes. In order to complete this, each system requires a test plan to be created. The test plan highlights the testing objective for each system and their corresponding subsystems as well as the required outcomes. These outcomes are essential to the goals and objectives of the project as they allow for the project as a whole to advance forwards.
+A systems breakdown for the whole project with respects to testing is required. The quad bike and sensory systems are required to be tested independently in order to determine their individual operating states before integrating them together. The quad bike will require subsystem tests leading up to full system automation tests. The sensory systems will require data collection and analysis in order to produce the required metrics for the software decision making processes. In order to complete this, each system requires a test plan to be created. The test plan highlights the testing objective and required outcomes for each system and their corresponding subsystems. These outcomes are essential to the goals and objectives as they allow the project as a whole to advance forwards.
 
 \subsection{Testing objectives}
-In order for a successful test plan to be created, objectives are required. These are chosen as the building blocks that when accumulated together create the final product. The testing objectives are broken down into the quad bike subsystem, the metal detector and the GPR. The testing objectives allow for the test cases to be generated with a measurable outcome.
+In order for a successful test plan to be created, objectives are required. These are selected as the building blocks that when accumulated together create the final product. The testing objectives are broken down into the quad bike subsystem, the metal detector and the GPR. The testing objectives allow for the test cases to be generated with a measurable outcome.
 
 \subsubsection{Quad bike}
 The quad bike systems will be broken down into individual mechatronic subsystems for testing to identify if any components need replacing and the characteristics of the subsystem. The tests will encompass the steering, braking, throttle, gear selecting, wheel encoder, GPS, and engine systems to ensure correct operation.
@@ -803,46 +1030,6 @@ Testing of the navigation software is the final step. This incorporates all the 
 
 % \end{enumerate}
 
-\subsubsection{Ground penetrating radar}
-
-The ground penetrating radar’s characteristics and data generated will verify  and compare the signals produced from changes in frequency, material type, soil properties and depth. The tests will be conducted at an overall system level in order to:
-% \begin{enumerate}
-% \item Identify the GPR frequency used to produce the optimum strength and quality of signal 
-\begin{gpr}
-\textbf{Identify GPR frequency to be used}\\
-\textbf{Objectives:} Confirm which of the three GPR frequency heads to use between 800 MHz, 1.4 GHz and 2 GHz. The frequency is required to be selected to optimise the penetration depth and resolution of signals received by the GPR. 
-\end{gpr}
-% \item Identify the signals generated by different types of materials
-\begin{gpr}
-\textbf{Identify the signals generated by different types of materials}\\
-\textbf{Objectives:} Confirm that different materials affect the amplitude of signals reflected by the object to the GPR. Identify the signatures of the replica (dummy) landmines and clutter objects. This is to be able to extract necessary features from the GPR data to use in designed algorithms. 
-\end{gpr}
-
-% \item Identify the depth limit at which the GPR can detect an object
-\begin{gpr}
-\textbf{Test objects at different depths}\\
-\textbf{Objectives:} Confirm the sensitivity of signals received based on target depth. This identifies how large or small the signals are for three different increasing depths to be able to calculate the output metrics as accurate as possible. 
-\end{gpr}
-% \item Identify how object data signals change with soil types
-\begin{gpr}
-\textbf{Identify how object data signals change with soil types}\\
-\textbf{Objectives:} Confirm that for each different types of soil,  the signal strength (resolution) reflected changes and penetration ability may be hindered. The effect of certain types of soil hinders the ability to extract the features accurately. 
-\end{gpr}
-
-\begin{gpr}
-\textbf{Confirms functionality of GPR signal processing algorithm}\\
-\textbf{Objectives:} The data from the GPR is processed using the designed algorithm and stored in the database to define the output metrics such as feature width and feature depth. The test will enable further development of the algorithms designed. 
-\end{gpr}
-
-% \item Identify how environmental conditions affect signals 
-% \end{enumerate}
-
-\medskip\noindent
-The tests will be completed outdoors with the GPR head and scanned over the objects. Manual scanning will be completed to ensure consistent speed over the objects. Further details of the test environment will be completed in the 
-
-\medskip\noindent
-Input parameters will be identified for each test case to provide consistency in data produced. These parameters include, and are not limited to: the initial settings as set by the SIROPULSE II program as defined in the user manual, different types of objects, type of soil and depths targets are buried.
-
 \subsubsection{Metal detector panel}
 The data generated by the metal detector in different tests will be verified against results described in literature. These results will also be used to test the algorithms designed to extract phase angle and magnitude of the target. The tests that will be conducted aim to:
 % \begin{enumerate}
@@ -885,6 +1072,45 @@ Testing will be completed using a trolley, which allows the sensor mount to be p
 
 \medskip\noindent
 Input parameters will be identified for each test case to provide consistency in data produced and will be noted in the test procedure document for each test. 
+
+\subsubsection{Ground penetrating radar}
+The ground penetrating radar’s characteristics and data generated will verify  and compare the signals produced from changes in frequency, material type, soil properties and depth. The tests will be conducted at an overall system level in order to:
+% \begin{enumerate}
+% \item Identify the GPR frequency used to produce the optimum strength and quality of signal 
+\begin{gpr}
+\textbf{Identify GPR frequency to be used}\\
+\textbf{Objectives:} Confirm which of the three GPR frequency heads to use between 800 MHz, 1.4 GHz and 2 GHz. The frequency is required to be selected to optimise the penetration depth and resolution of signals received by the GPR. 
+\end{gpr}
+% \item Identify the signals generated by different types of materials
+\begin{gpr}
+\textbf{Identify the signals generated by different types of materials}\\
+\textbf{Objectives:} Confirm that different materials affect the amplitude of signals reflected by the object to the GPR. Identify the signatures of the replica (dummy) landmines and clutter objects. This is to be able to extract necessary features from the GPR data to use in designed algorithms. 
+\end{gpr}
+
+% \item Identify the depth limit at which the GPR can detect an object
+\begin{gpr}
+\textbf{Test objects at different depths}\\
+\textbf{Objectives:} Confirm the sensitivity of signals received based on target depth. This identifies how large or small the signals are for three different increasing depths to be able to calculate the output metrics as accurate as possible. 
+\end{gpr}
+% \item Identify how object data signals change with soil types
+\begin{gpr}
+\textbf{Identify how object data signals change with soil types}\\
+\textbf{Objectives:} Confirm that for each different types of soil,  the signal strength (resolution) reflected changes and penetration ability may be hindered. The effect of certain types of soil hinders the ability to extract the features accurately. 
+\end{gpr}
+
+\begin{gpr}
+\textbf{Confirms functionality of GPR signal processing algorithm}\\
+\textbf{Objectives:} The data from the GPR is processed using the designed algorithm and stored in the database to define the output metrics such as feature width and feature depth. The test will enable further development of the algorithms designed. 
+\end{gpr}
+
+% \item Identify how environmental conditions affect signals 
+% \end{enumerate}
+
+\medskip\noindent
+The tests will be completed outdoors with the GPR head and scanned over the objects. Manual scanning will be completed to ensure consistent speed over the objects. Further details of the test environment will be completed in the 
+
+\medskip\noindent
+Input parameters will be identified for each test case to provide consistency in data produced. These parameters include, and are not limited to: the initial settings as set by the SIROPULSE II program as defined in the user manual, different types of objects, type of soil and depths targets are buried.
 
 \subsection{Fault reporting and data recording}
 Test results will be saved in an appropriate data format and noted in the test procedure documents. Any faults or failures of the tests will be included in the test procedure document as additional comments. 
@@ -945,7 +1171,7 @@ The GPR and metal detector will be used to scan a test area with objects buried 
 The people responsible for the tests are the project safety officer, the engineer and the test manager. The project safety officer approves and inducts the relevant persons conducting the tests. The engineer will supervise how the tests are completed and the test manager completes the tests as outlined in the test procedures.  
 
 \section{Test procedures}
-Every test case listed for each system and their relevant procedures are outlined in a separate testing procedures document.
+Every test case objective listed for each system and their relevant procedures are outlined in a separate testing procedures document.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
@@ -1116,7 +1342,7 @@ Unlikely&\cellcolor{OliveGreen}Negligible&\cellcolor{LimeGreen}Low&\cellcolor{Ye
 The quad bike and associated hardware may not be sufficient to meet the performance specifications or achieve the project objectives} & \multicolumn{1}{L{0.1\textwidth}}{\cellcolor{Yellow}Medium} & \multicolumn{1}{L{0.5\textwidth}}{If the hardware on the quad bike does not function as well as required, it will be difficult to control the vehicle remotely, and even more difficult to automate. This will affect the entire system during the integrated testing stages of the project. In order to ensure that this does not become an issue later on, all aspects of quad bike will be tested and evaluated as soon as it is available. Necessary components will be serviced or replaced, and in the event that the extent of repairs is too large, sufficient funding is available to purchase a new platform.} \\ \midrule
 
 \multicolumn{1}{L{0.3\textwidth}}{\textbf{Unable to successfully find targets}
-The multi-sensor system may not be able to detect and confirm mines with a sufficient confidence level} & \multicolumn{1}{L{0.1\textwidth}}{\cellcolor{Yellow}Medium} & \multicolumn{1}{L{0.5\textwidth}}{Limited target detection and confirmation ability is likely to be due to difficulties encountered during signal processing and data fusion. This would mean the project goal could not be met. To reduce the likelihood of this occurring, a detailed plan has been devised for software development and testing. The multi-sensor system will only be tested once the performance of the individual sensor systems has been confirmed. In the event that the confidence level is still too low, simulated data can be used, allowing the testing of other related systems, such as the GPS logging system.} \\ \midrule
+The multi-sensor system may not be able to detect and confirm landmines with a sufficient confidence level} & \multicolumn{1}{L{0.1\textwidth}}{\cellcolor{Yellow}Medium} & \multicolumn{1}{L{0.5\textwidth}}{Limited target detection and confirmation ability is likely to be due to difficulties encountered during signal processing and data fusion. This would mean the project goal could not be met. To reduce the likelihood of this occurring, a detailed plan has been devised for software development and testing. The multi-sensor system will only be tested once the performance of the individual sensor systems has been confirmed. In the event that the confidence level is still too low, simulated data can be used, allowing the testing of other related systems, such as the GPS logging system.} \\ \midrule
 
 \multicolumn{1}{L{0.3\textwidth}}{\textbf{Automation and navigation cannot be achieved} Unable to operate the quad bike autonomously due to complexity, part failure or poor time management} & \multicolumn{1}{L{0.1\textwidth}}{\cellcolor{Yellow}Medium} & \multicolumn{1}{L{0.5\textwidth}}{Controlling the platform remotely is not anticipated to be a difficult task. Full automation of the system, to the level required for operation, carries increased risk due to complexity of the control software. To ensure that automation can be implemented successfully, control systems will be developed with a milestone based approach, whereby lower-level and simpler controls are implemented before more complex systems are commenced. Additionally, the software will be tested using a virtual platform.} \\ \midrule
 

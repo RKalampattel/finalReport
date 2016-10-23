@@ -8,20 +8,14 @@ Tests were conducted to ensure that each subsystem was functioning correctly. Qu
 %%%%(\textcolor{red}{Need to explain testing for GPR and metal detector and integrated systems testing})
 
 \section{Test plan}
-\textcolor{red}{Maz wants a new section that explains why we are doing the tests we are doing, and what the structure of the overall test plan is. \textbf{Within each subsequent section, start with aims of test, cover the test plan/requirements (need to include schematics and tables), discuss the results and talk about the relevance to the project objectives}}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\todo[inline]{Rac (Sensors) and Peter (Quad bike) to explain}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-Test plans were completed and include specific objectives of the tests for the quad bike platform and two sensors, AMDS metal detector and SIROPULSE II GPR. They can be seen in \Chapref{testProcedureApp}. The quad bike test objectives outlines the requirement to ensure functionality of the modified actuators and sensors and to test the navigation software on the real platform. The sensor suite test objective is to gather data in order to verify sensitivities of the frequency, material properties and soil type, and foremost the signal processing algorithm outlines in detailed design. The test plan also outlines the required resources to complete the objectives and describes the environment and set-up required for the quad bike and the sensors. It also discusses who is responsible for the tests and additional documentation required to record test data. 
+Test plans were completed and include specific objectives of the tests for the quad bike and the two sensors. These are presented in \Chapref{testProcedureApp}. The quad bike test objectives outline the requirement to ensure functionality of the modified actuators and sensors, and to test the navigation software on the real platform. The sensor suite test objective is to gather data in order to verify sensitivities of the sensors to frequency, material properties and soil type, and foremost the signal processing algorithm outlines in detailed design. The test plan also outlines the required resources to complete the objectives and describes the environment and set-up required for the quad bike and the sensors. Finally, it also discusses who is responsible for the tests and additional documentation required to record test data. 
 
 \section{Sensor testing}
-The completed tests and its procedure is discussed and includes details of the target objects buried and scanned with the AMDS metal detector and SIROPULSE II GPR. The results from these tests are provided with further analysis of the limitations and how the data is used. 
+This section details the completed tests and testing procedures, including details of the target objects. The results from these tests are provided with further analysis of the limitations, and how the data can be used. 
 
 \subsection{Test procedure}
 \seclabel{testProcedure}
-The purpose of sensor testing was to confirm that the algorithm produced in the detailed design section functioned correctly, and to gather further data points in order to build up a database for target identification. The testing plan outlined in (\Chapref{testProcedureApp}) provides detailed information regarding the overall goals and objectives for each test completed and the procedures for testing with the two sensors. 
+The purpose of sensor testing was to confirm that the signal processing algorithms produced in the detailed design section functioned correctly, and to gather further data points in order to build up a database for target identification. The testing plan outlined in (\Chapref{testProcedureApp}) provides detailed information regarding the overall goals and objectives for each test completed, as well as the procedures for testing with the two sensors. 
 
 \Figref{testlane} shows the schematic of the test grid that landmines and clutter objects were buried. The target objects were scanned forwards from the APM to the AT and back six times to produce 12 sets of data. 
 
@@ -32,31 +26,29 @@ The purpose of sensor testing was to confirm that the algorithm produced in the 
 \figlabel{testlane}
 \end{figure}
 
-In order to identify landmine signatures, replica (dummy) landmines loaned from the DSTG were used. These dummy landmines have similar characteristics to real landmines, including size, material composition and density. The three dummy landmines used were an metallic anti-tank mine (AT), a high metal content anti-personnel mine (APM) and a low metal content anti-personnel mines (APC) as seen in \Figref{dummy}. The APM contains greater than 10 grams of metal, and the APC contains less than 10 grams of metal \parencite{chant2005dsto}. The insides of the replica landmines are filled with paraffin wax and nylon to simulate the properties of real landmines when used with electromagnetic induction equipment \parencite{chant2005dsto}. These landmines are expected to have a density between 1.6 to 1.8 g/cm$^3$, whereas, the soil is expected to have a density between 1.0 to 2.5 g/cm$^3$ \parencite{das2002soil}.		
+In order to identify landmine signatures, replica landmines loaned from the DSTG were used. These dummy landmines have similar characteristics to real landmines, including size, material composition and density. The three dummy landmines used were a metallic anti-tank mine (AT), a high metal content anti-personnel mine (APM) and a low metal content anti-personnel mines (APC) as seen in \Figref{dummy}. The APM contains greater than 10 grams of metal, and the APC contains less than 10 grams of metal \parencite{chant2005dsto}. The insides of the replica landmines are filled with paraffin wax and nylon to simulate the properties of real landmines when used with electromagnetic induction equipment \parencite{chant2005dsto}. These landmines are expected to have a density between 1.6 to 1.8 g/cm$^3$ whereas, the soil is expected to have a density between 1.0 to 2.5 g/cm$^3$ \parencite{das2002soil}.		
 \begin{figure}[ht]
 \includegraphics[width=0.9\textwidth]{5-Testing/dummy.PNG}
 \centering
 \caption{Landmine replicas used for testing }
 \figlabel{dummy}
 \end{figure}
-% \nomenclature{APM}{Anti-Personnel (Metallic)}%
-% \nomenclature{APC}{Anti-Personnel (Composite)}%
-% \nomenclature{AT}{Anti-Tank}%
+\nomenclature{APM}{Anti-Personnel (Metallic)}%
+\nomenclature{APC}{Anti-Personnel (Composite)}%
+\nomenclature{AT}{Anti-Tank}%
 
-The dummy landmines were compared to several clutter objects present, representing false positives that could be found in conflict areas. The clutter objects used in the test are shown in \Figref{clutter}. These can be categorised as metallic (steel, aluminium, tin, lead) and non-metallic content (rocks, plastic, wood). Some of these objects were used as they were expected to have similar properties and signatures to real landmines. Identifying these objects using both sensors and producing the metrics defined in detailed design will then lead to a quantifiable range of outputs to classify both dummy landmines and clutter objects.
+The dummy landmines were compared to several clutter objects, items that could be found as false positives in conflict areas. The clutter objects used in the test are shown in \Figref{clutter}. These can be categorised as metallic (steel, aluminium, tin, lead) and non-metallic content (rocks, plastic, wood). Some of these objects were used as they were expected to have similar properties and signatures to real landmines. Identifying these objects using both sensors and producing the metrics defined in detailed design will then lead to a quantifiable range of outputs to classify both dummy landmines and clutter objects.
 
 \begin{figure}[ht]
 \includegraphics[width=0.6\textwidth]{5-Testing/clutter.PNG}
 \centering
-\caption[Clutter objects buried in the ground]{Clutter objects buried in the ground, from top left to bottom right: aluminium, tin can, glass bottle, steel rebar, pvc pipe, large rock, lead pipe, galvanised metal plate and wooden stump}
+\caption[Clutter objects buried in the ground]{Clutter objects buried in the ground, from top left to bottom right: aluminium, tin can, glass bottle, steel rebar, PVC pipe, large rock, lead pipe, galvanised metal plate and wooden stump}
 \figlabel{clutter}
 \end{figure}
 
-The dummy landmines were buried at three different depths, 2.5 cm, 7.5 cm and 15 cm respectively as shown in \Figref{testlane}, as these depths are used by the DSTG in their standardised landmine detection test procedures. The depths are used to identify and compare the strength of the reflected signals for both metal detector and GPR as landmines are buried at varying depths. The clutter objects were buried at only 7.5 cm depth for an average comparison between the two depths. 
+The dummy landmines were buried at three different depths, 2.5 cm, 7.5 cm and 15 cm respectively as shown in \Figref{testlane}, as these depths are used by the DSTG in their standardised landmine detection test procedures. The depths are used to identify and compare the strength of the reflected signals for both metal detector and GPR. The clutter objects were buried at a single depth of 7.5 cm.
 
-The central transmission frequency of 1.4 GHz was selected for the GPR antennae head. This frequency was found to provide a balance between detection depth and signal resolution and increase signal to noise ratio in comparison to both 800 MHz and 2 GHz GPR antennae. Data was recorded at all four available frequencies for the metal detector.
-
-The testing was completed by scanning over each target column in the grid 12 times, six forwards and six backwards in order to produce large dataset. The data from both metal detector and ground penetrating radar were collected and processed with the algorithms defined in the detailed design chapter. Discussion and analysis of the results from the test is provided in the next section. 
+As explained in the detailed design, a central transmission frequency of 1.4 GHz was selected for the GPR antenna head. Data was recorded at all four available frequencies for the metal detector, however on the central channel was used. Testing was completed by scanning over each target column in the grid 12 times, six forwards and six backwards in order to produce large dataset. The data from both the metal detector and ground penetrating radar was collected and processed with the algorithms defined in the detailed design chapter. Discussion and analysis of the results from these test is provided in the next section. 
 
 \subsection{Results}
 Analysis of the results from the main test will enable confirmation of unique metrics for both metal detector and ground penetrating radar. Feature analysis will be completed independently due to the different output metrics produced by the different signals. 
@@ -64,7 +56,7 @@ Analysis of the results from the main test will enable confirmation of unique me
 \subsubsection{Metal detector}
 The phase angle and signal magnitude are the two main characteristics that were investigated. The metal detector data processed was analysed based on the magnitude and phase angle variation with target depth, and the phase angle variation versus the signal magnitude.
 
-\Figref{phaseDepth} shows the phase angle result of the objects at varying depths. It is found that the phase angle is consistent across the three operating depths, as expected based on the results of the completed outdoor preliminary tests. The average phase angle for both anti-tank and high metal content anti-personnel mine were positive 25 degrees and negative 50 degrees, respectively. From the nine clutter objects tested, only five signatures may be compared with these two landmines. Based on the calculated results, the only object with phase angles closely similar to the anti-tank mine is the thin galvanised plate with an average phase angle of positive 16 degrees. However, the plate’s signature is differentiable from the actual anti-tank mine using the second metric. 
+\Figref{phaseDepth} shows the phase angle result of the objects at varying depths. It was found that the phase angle was consistent across the three operating depths. The average phase angles for the anti-tank and high metal content anti-personnel mine were positive 25 degrees and negative 50 degrees respectively. From the nine clutter objects tested, only five signatures were metallic. Based on the calculated results, the only object a phase angle similar to the anti-tank mine was the thin galvanised plate with an average phase angle of positive 16 degrees. However, the plate’s signature is differentiable from the actual anti-tank mine using the second metric. 
 \begin{figure}[ht]
 \includegraphics[width=\textwidth]{5-Testing/phaseDepth.PNG}
 \centering
@@ -72,9 +64,7 @@ The phase angle and signal magnitude are the two main characteristics that were 
 \figlabel{phaseDepth}
 \end{figure}
 
-Upon inspection of the graph (\Figref{magDepth}), signal magnitude with varying depths, the two landmines provide distinguishable magnitudes when compared with the other clutter objects. This graph also confirms that there is a differentiation between the anti-tank mine and the thin galvanised plate. This information can then be used to increase the probability of detection between these two objects. 
-
-The anti-personnel mine and steel rebar have two similar signatures, with an average signal magnitude of 7.9e4 and 6.9e4, respectively. This factor provides an increase in false positive detection rate for the anti-personnel mine if they are both detected simultaneously. However, this false positive detection rate is reduced by analysing the phase angle of the object shown in the previous \Figref{phaseDepth}.
+Upon inspection of \Figref{magDepth}, which shows the signal magnitude with varying depths, the two landmines provide distinguishable magnitudes when compared with the other clutter objects. This graph also confirms that there is a differentiation between the anti-tank mine and the thin galvanised plate. The anti-personnel mine and steel rebar have two similar signatures, with an average signal magnitude of 7.9e4 and 6.9e4, respectively. This factor provides an increase in false positive detection rate for the anti-personnel mine if they are both detected simultaneously. However, this false positive detection rate is reduced by analysing the phase angle of the object shown in the previous \Figref{phaseDepth}. Finally, there is a clear logarithmic relationship between the magnitude and depth of the object. 
 
 \begin{figure}[!ht]
 \includegraphics[width=\textwidth]{5-Testing/magDepth.PNG}
@@ -83,9 +73,7 @@ The anti-personnel mine and steel rebar have two similar signatures, with an ave
 \figlabel{magDepth}
 \end{figure}
 
-When the phase angle is plotted against the signal magnitude (\Figref{phaseMag}), it was found that the phase angle calculated was consistent with a variation in magnitude of signals and thus, can be deduced that the phase angle is independent of the depth or magnitude. From this point, a confidence interval may be given to a phase angle value and confirmed with the corresponding signal magnitude range. 
-
-A noticeable result for this plot is that the thin galvanised plate was within the signatures of the anti-tank mines. This means that it may be detected by the metal detector as an anti-tank mine and increase the false positive rate. 
+When the phase angle is plotted against the signal magnitude (\Figref{phaseMag}), it was found that the phase angle calculated was consistent with a variation in magnitude of signals and thus, can be deduced that the phase angle is independent of the depth or magnitude. From this point, a confidence interval may be given to a phase angle value and confirmed with the corresponding signal magnitude range. A noticeable result for this plot is that the thin galvanised plate was within the signatures of the anti-tank mines. This means that it may be detected by the metal detector as an anti-tank mine and increase the false positive rate. 
 
 \begin{figure}[ht]
 \includegraphics[width=\textwidth]{5-Testing/phaseMag.PNG}
@@ -94,11 +82,11 @@ A noticeable result for this plot is that the thin galvanised plate was within t
 \figlabel{phaseMag}
 \end{figure}
 
-In summary, the anti-tank and anti-personnel mines produced distinguishable metrics for both phase angle and signal magnitude. However, as tabulated below (table xx), each metric can produce at least one false positive out of eleven objects, giving an approximate percentage confidence of detection of 90\%. It is possible to increase this probability of detection as one metric can confirm the other. The  thin galvanised plate can be identified and confirmed based on its magnitude calculation than its phase angle calculation. Similarly, the rebar can be identified with its phase angle calculation than its magnitude calculation as highlighted in \Tabref{mdMetrics}. Confirmation of the GPR feature width and depth may also increase this percentage confidence and will be discussed in the following subsection.
+In summary, the anti-tank and anti-personnel mines produced distinguishable metrics for both phase angle and signal magnitude. However, as tabulated below \Tabref{mdMetrics}, each metric can produce at least one false positive out of eleven objects, giving an approximate percentage confidence of detection of 90\%. It is possible to increase this probability of detection as one metric can confirm the other. The thin galvanised plate can be identified and confirmed based on its magnitude calculation rather than its phase angle calculation. Similarly, the rebar can be identified with its phase angle calculation rather than its magnitude calculation as highlighted in \Tabref{mdMetrics}. Confirmation of the GPR feature width and depth may also increase this percentage confidence and will be discussed in the following subsection. 
 
 \begin{table}[ht]
 \centering
-\caption{ Summary of the false positive detection for metal detector metrics}
+\caption{ Summary of the false positive detections for metal detector metrics}
 \tablabel{mdMetrics}
 \begin{tabular}{lll}
 \toprule
@@ -119,9 +107,9 @@ Lead pipe & Lead pipe & Lead pipe\\ \bottomrule
 \end{table}
 
 \subsubsection{Ground penetrating radar}
-The ground penetrating radar results are analysed based on the feature width and feature depth variation with target depth, and feature depth variation with feature width. 
+The ground penetrating radar results were analysed based on the feature width and feature depth variation with target depth, and feature depth variation with feature width. 
 
-\Figref{featureWidth} shows the  feature width plotted against the target depth, where AT is clearly distinguishable for all three depths. It also shows that both APC and APM have almost identical signals at depths of 2.5 and 7.5 cm. A number of clutter objects (glass bottle, PVC pipe and tin can) also have similar feature widths to the APM and APC at 7.5 cm, making it difficult to identify the mines. 
+\Figref{featureWidth} shows the feature width plotted against the target depth, where the AT is clearly distinguishable for all three depths. It also shows that both APC and APM have almost identical signals at depths of 2.5 and 7.5 cm. A number of clutter objects (glass bottle, PVC pipe and tin can) also have similar feature widths to the APM and APC at 7.5 cm, making it difficult to identify the mines. 
 
 \begin{figure}[ht]
 \includegraphics[width=\textwidth]{5-Testing/featureWidth.PNG}
@@ -130,7 +118,7 @@ The ground penetrating radar results are analysed based on the feature width and
 \figlabel{featureWidth}
 \end{figure}
 
-The results for the feature depth (\Figref{featureDepth}) are quite similar to the feature width at the target depth of 7.5cm. The characteristics and false positive rates are high for both APC and AT where the feature depth was similar to that of a large rock. However, this percentage probability can be differentiated using the feature width metric. Similarly, the feature width false detections for the tin can, glass bottle and PVC pipe can be differentiated using the feature depth.  The APM is distinguishable for all three depths for this plot.
+The results for the feature depth, shown in \Figref{featureDepth}, are quite similar to the feature width at the target depth of 7.5cm. The characteristics and false positive rates are high for both APC and AT where the feature depth was similar to that of a large rock. However, this percentage probability can be differentiated using the feature width metric. Similarly, the feature width false detections for the tin can, glass bottle and PVC pipe can be differentiated using the feature depth. The APM is distinguishable for all three depths for this plot.
 
 \begin{figure}[!ht]
 \includegraphics[width=\textwidth]{5-Testing/featureDepth.PNG}
@@ -139,7 +127,7 @@ The results for the feature depth (\Figref{featureDepth}) are quite similar to t
 \figlabel{featureDepth}
 \end{figure}
 
-When feature depth is plotted against the variation of feature width, all three mines have distinguishable features, with no clutter within their calculated ranges (\Figref{depthWidth}). Although it is differentiable, the clutter objects (aluminium can, tin can, glass bottle and PVC pipe) were found to be within close proximity to the signatures of both APM and APC at shallow target depths of 2.5 cm and 7.5 cm.
+When feature depth is plotted against the variation of feature width, all three landmines have distinguishable features, with no clutter within their calculated ranges (\Figref{depthWidth}). Although it is differentiable, the clutter objects (aluminium can, tin can, glass bottle and PVC pipe) were found to be within close proximity to the signatures of both APM and APC at shallow target depths of 2.5 cm and 7.5 cm.
 
 \begin{figure}[!ht]
 \includegraphics[width=\textwidth]{5-Testing/depthWidth.PNG}
@@ -175,15 +163,10 @@ Lead pipe & Lead pipe/Rock & Lead pipe/Tin can\\ \bottomrule
 \subsubsection{Discussion}
 The results show that the algorithm can produce unique sets of data and is able to distinguish between the landmines and clutter objects. The metal detector output metrics produced consistent results and identified the AT and APM mines from both tests. In comparison, the GPR was able to distinguish between both metallic and non metallic objects, however, it was not as consistent as the metal detector output metrics and, therefore, produced a higher rate of false positives.
 
-Although data has been consistent, there were limitations to this data that require further work, such as, burying objects at 2.5 cm and 15 cm similar to the dummy landmines. This will enable better comparison due to the larger data set and because it will show whether there is a higher or lower false positive rate at the different depths for the clutter objects. \\
-Another limitation for this data is that it cannot be replicated for other soil types as there is a difference between sensor signals when objects are placed in this type of soil. This may be due to a number of factors, such as inconsistencies with soil, other ground objects and moisture content. The moisture content of the soil may have affected results as the tests were completed after heavy rainfall and it was calculated to have approximately 20\% moisture. \\
-Further tests may be completed in a controlled environment to enable change to the object's orientation, type of soil and moisture control. This will enable further comparison of these effects on the signals and false positive reduction. Hence, it will also enable an improved algorithm design by making it more dynamic according to the differences in environment and other inputs. 
+Although data has been consistent, there were limitations to this data that require further work, such as, burying objects at 2.5 cm and 15 cm similar to the dummy landmines. This will enable better comparison due to having a larger data set and because it will show whether there is a higher or lower false positive rate at the different depths for the clutter objects.
+Another limitation for this data is that it cannot be replicated for other soil types. This may be due to a number of factors, such as inconsistencies with soil, other ground objects and moisture content. The moisture content of the soil may have also affected results, as the tests were completed after heavy rainfall and the soil moisture was calculated to have approximately 20\% moisture. 
 
-Regardless, the false positives can be reduced when the results from both sensors are combined using the sensor fusion algorithm discussed in detailed design.
-
-\todo[inline]{why is this in blue? - Discussion of points from below}
-
-\textcolor{red}{Seems to be some repetition here from the detailed design for sensor fusion. Need to discuss what some of the limitations of the tests were. Only a small number of clutter objects were used, clutter was only buried at one depth, if it was some other depth is might have led to more/less false positives, i.e. the current data set needs to be expanded on largely in order to make the detection algorithm more robust. The same type object would have a different signature if it was a different size, or in a different orientation - need to do more sensitivity testing, ideally in a controlled environment with the use of a test rig, allowing for repeated sweeps in an identical manner. \textbf{Some of these points could go in future work.}The results can't really be applied to any other scenarios, as both metal detector and GPR signals will look different in different soil types. Soil moisture was high, and the soil wasn't very clean (not layered nicely, rocks and things present), this may have had an effect on GPR results.Would be better to test in DSTG test lanes. Could not achieve real time processing, however the sensor fusion algorithm (still needs to be done) was tested with sample data to simulate batch processing of results.}
+Further tests may be completed in a controlled environment to enable changes to the orientation of the buried object, type of soil and moisture control. This will enable further comparison of these effects on the signals and false positive reduction. Hence, it will also enable an improved algorithm design by making it more dynamic according to the differences in environment and other inputs. Regardless, it has been shown that false positives can be reduced when the results from both sensors are combined using the sensor fusion algorithm discussed in detailed design.
 
 \section{Quad bike systems testing}
 Preliminary testing of the quad bike subsystems were required to determine their working range, functionalities and integration. The systems tested were the brakes, steering, throttle, gear selector, wheel encoder, and positioning system. Additional safety systems were also tested to ensure they functioned as intended.
@@ -206,7 +189,7 @@ The time required for the brake actuator to go from the chosen zero brake positi
 
 During testing, it was found that the throttle response was much faster in operational response and did benefit in the braking distance. Strategic braking locations were implemented into the navigation software to ensure that the path traversed was accurate. However, if the quad bike were to detect a landmine, there would be no time for the sensors and the throttle to slow the bike down in time. An overshoot of the desired stopping point was approximately 1 meter (see \secref{navigationtesting}).
 
-The brake speed and thus actuator choice were insufficient for the required task and only proved useful in holding the position of the bike during navigation manoeuvres. With only engine braking, the quad was found to coast to a stop from operating speeds in 1.2 m. With the brakes activating, the quad bike was able to come to a complete stop in 1 meter. This exceeds the platform requirements resulting in the need for a faster brake actuator. A Deluxe Rod Actuator type FA-HF-100-12-9" from Firgelli Automations is the recommended part for any future use. It provides similar dynamic force capabilities, 444 N compared with 578 N, and much faster actuator speeds, 76 mm/s compared with 12 mm/s. This actuator would take 0.4 seconds to engage the brake from 0 to 100\% intensity. At an operational speed of 5 km/hr the quad bike would stop in 0.5 meters meeting the platform requirements.
+The brake speed and thus actuator choice were insufficient for the required task and only proved useful in holding the position of the bike during navigation manoeuvres. With only engine braking, the quad bike was found to coast to a stop from operating speeds in 1.2 m. With the brakes activating, the quad bike was able to come to a complete stop in 1 meter. This exceeds the platform requirements resulting in the need for a faster brake actuator. A Deluxe Rod Actuator type FA-HF-100-12-9" from Firgelli Automations is the recommended part for any future use. It provides similar dynamic force capabilities, 444 N compared with 578 N, and much faster actuator speeds, 76 mm/s compared with 12 mm/s. This actuator would take 0.4 seconds to engage the brake from 0 to 100\% intensity. At an operational speed of 5 km/hr the quad bike would stop in 0.5 meters meeting the platform requirements.
 \todo[inline]{is this in the requiremetns?}
 
 \subsection{Gear testing}
@@ -327,7 +310,7 @@ To test the encoder, data was compared with values obtained from the display uni
 
 \begin{table}[ht]
 \centering
-\caption{Wheel encoder distance integration tests}
+\caption[Wheel encoder distance integration tests]{Wheel encoder distance integration tests, red is the display output, blue is the encoder output and green is the difference}
 \tablabel{encoderIntegration}
 \begin{tabular}{llll}
 \toprule
@@ -395,7 +378,7 @@ The initial straight line test was used to find the stopping distance and necess
 
 \begin{table}[ht]
 \centering
-\caption{Navigation test results}
+\caption{Navigation tests}
 \tablabel{navtesttable}
 \begin{tabular}{lccccc}
 \toprule
